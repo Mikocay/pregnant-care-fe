@@ -18,7 +18,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+
+    /* Thêm các cấu hình sau */
+    "composite": true,
+    "types": ["node"]
   },
   "include": ["vite.config.ts"]
 }
