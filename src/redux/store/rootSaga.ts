@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 
 // Import sagas
-import counterSaga from '@/features/counter/saga';
+import counterSaga from '@/redux/features/counter/saga';
 
 // Combine sagas
 export function* rootSaga() {

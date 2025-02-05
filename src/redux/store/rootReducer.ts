@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 // Import reducers
-import counterReducer from '@/features/counter/slice';
+import counterReducer from '@/redux/features/counter/slice';
 
 // Combine reducers
 const rootReducers = combineReducers({
