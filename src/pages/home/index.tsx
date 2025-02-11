@@ -9,7 +9,7 @@ const mockUser: User = {
 };
 
 const Home = () => {
-  <div>home</div>;
+  <div>asdas</div>;
   return <Header />;
 };
 
