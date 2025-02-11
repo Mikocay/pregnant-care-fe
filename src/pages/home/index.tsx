@@ -1,16 +1,7 @@
-import Header, { User } from '@/components/layout/Header';
-import { Role } from '@/constants';
-
-const mockUser: User = {
-  id: '1',
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  role: Role.ADMIN, // Hoặc 'MANAGER' hoặc 'USER'
-};
+import React from 'react';
 
 const Home = () => {
-  <div>asdas</div>;
-  return <Header />;
+  return <div>Home</div>;
 };
 
 export default Home;
