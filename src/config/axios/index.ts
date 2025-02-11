@@ -1,27 +1,31 @@
 import axios, { AxiosError } from 'axios';
 
 const axiosClient = axios.create({
-  //   baseURL: API_URL,
+  baseURL: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 const axiosPrivate = axios.create({
-  //   baseURL: API_URL,
+  baseURL: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
-
 // Interceptors cho axiosPrivate
 axiosPrivate.interceptors.request.use(
   (config) => {
-    // Example get token from localStorage...
+    // ********** Example **********
     const token = localStorage.getItem('accessToken');
+    const userRole = localStorage.getItem('userRole');
+
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (userRole) {
+      config.headers['X-User-Role'] = userRole;
     }
     return config;
   },
