@@ -1,0 +1,66 @@
+.layout .ant-layout {
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    background-color: #fff;
+    height: 70px;
+    border: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    border-right: 1px solid #ddd;
+    transition: all 0.2s;
+}
+
+.logo.fold {
+    width: 80px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.nav .left,
+.nav .right {
+    display: flex;
+    align-items: center;
+}
+
+.main {
+    margin-left: 200px;
+    transition: all 0.2s;
+}
+
+.main.fold {
+    margin-left: 80px;
+}
+
+.sider {
+    position: fixed !important;
+    top: 70px;
+    left: 0;
+    z-index: 1;
+    border-right: 1px solid #ddd;
+    height: calc(100vh - 70px);
+    background: #fff !important;
+}
+
+.content {
+    padding: 20px;
+    background: #fff;
+    min-height: 210vh;
+}
