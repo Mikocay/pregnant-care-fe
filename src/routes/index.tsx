@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import ROUTES from '@/config/routes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AdminRoutes from './AdminRoutes';
+// import AdminRoutes from './AdminRoutes';
 
 //* Layouts
 import GuestLayout from '@/layouts/GuestLayout';
@@ -36,6 +38,7 @@ const RouterComponent = () => {
       element: <MemeberSidebarLayout />,
       children: [],
     },
+    AdminRoutes
   ]);
 
   return <RouterProvider router={router} />;
