@@ -1,15 +1,13 @@
-import config from "@/config";
-import AdminLayout from "@/layouts/AdminLayout";
-import Dashboard from "@/pages/Admin/Dashboard";
-import ManageMember from "@/pages/Admin/ManageMember";
+import config from '@/config/routes/index';
+import AdminLayout from '@/layouts/AdminLayout';
+import Dashboard from '@/pages/Admin/Dashboard';
+import ManageMember from '@/pages/Admin/ManageMember';
 
 // Authorization
 const AdminRouter = () => {
   // const { role } = useAuth();
   // return role === Role.ADMIN ? <AdminLayout /> : <Navigate to="/" />;
-  return <AdminLayout />
-
-
+  return <AdminLayout />;
 };
 
 // Define routes for admin

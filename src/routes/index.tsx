@@ -1,14 +1,13 @@
 import { lazy } from 'react';
-import ROUTES from '@/config/routes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdminRoutes from './AdminRoutes';
 // import AdminRoutes from './AdminRoutes';
 
 //* Layouts
 import GuestLayout from '@/layouts/GuestLayout';
-import AdminLayout from '@/layouts/AdminLayout';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
+import config from '@/config/routes';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/home'));
@@ -18,16 +17,15 @@ const RouterComponent = () => {
     //* PUBLIC routes
     {
       element: <GuestLayout />,
-      children: [{ index: true, path: ROUTES.HOME, element: <Home /> }],
+      children: [
+        { index: true, path: config.routes.public.home, element: <Home /> },
+      ],
     },
 
     //**** PRIVATE routes ****
 
     //* Admin *
-    {
-      element: <AdminLayout />,
-      children: [],
-    },
+    AdminRoutes,
 
     //* Member *
     {
@@ -38,7 +36,6 @@ const RouterComponent = () => {
       element: <MemeberSidebarLayout />,
       children: [],
     },
-    AdminRoutes
   ]);
 
   return <RouterProvider router={router} />;
