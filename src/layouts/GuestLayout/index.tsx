@@ -1,9 +1,10 @@
+import { Outlet } from 'react-router-dom';
 import HeaderLayout from '../DefautLayouts/HeaderLayout';
 
 const GuestLayout = () => {
   return (
     <HeaderLayout>
-      <div>Hi</div>
+      <Outlet />
     </HeaderLayout>
   );
 };
