@@ -9,11 +9,11 @@ const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-enum Role {
-  ADMIN = 'ADMIN',
-  MANAGER = 'MANAGER',
-  USER = 'USER',
-}
+const ROLE = {
+  GUEST: 'guest',
+  MEMBER: 'member',
+  ADMIN: 'admin',
+};
 
 const APPOINTMENT_RULE = [];
 
@@ -25,4 +25,4 @@ const WEB_SOCKET_STATE = {
   NOTCONNECTED: 4,
 };
 
-export { STRING_EMPTY, HTTP_STATUS, Role, APPOINTMENT_RULE, WEB_SOCKET_STATE };
+export { STRING_EMPTY, HTTP_STATUS, ROLE, APPOINTMENT_RULE, WEB_SOCKET_STATE };

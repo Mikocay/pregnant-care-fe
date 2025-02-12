@@ -1,0 +1,59 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff6b6b;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.logo img {
+  height: 32px;
+  width: auto;
+}
+
+.navigation {
+  display: flex;
+  gap: 32px;
+}
+
+.navigation a {
+  color: #262626;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.navigation a:hover {
+  color: #ff6b6b;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  /* background: #fff1f0; */
+  padding: 8px 16px;
+  border-radius: 24px;
+}
+
+.welcome {
+  font-size: 14px;
+  color: #262626;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}

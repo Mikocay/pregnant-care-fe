@@ -1,0 +1,125 @@
+.footer {
+  background-color: #ffe4e6;
+  padding: 48px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoImage {
+  width: 40px;
+  height: 40px;
+}
+
+.logoText {
+  color: #ff6b6b;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #4b5563;
+  font-size: 14px;
+  max-width: 200px;
+  line-height: 1.5;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.navigation h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.navLinks a {
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.navLinks a:hover {
+  color: #ff6b6b;
+}
+
+.download {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.downloadText {
+  font-size: 14px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.storeButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.storeButton {
+  width: 140px;
+  height: auto;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.storeButton:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .brand {
+    align-items: center;
+  }
+
+  .navigation {
+    align-items: center;
+  }
+
+  .download {
+    align-items: center;
+  }
+
+  .subtitle {
+    max-width: 100%;
+  }
+}
