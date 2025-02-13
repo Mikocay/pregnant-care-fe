@@ -27,7 +27,7 @@ const WEB_SOCKET_STATE = {
 
 const LOCAL_STOREAGE = {
   ACCESS_TOKEN: 'access_token',
-  USER_ROLE: 'userRole',
+  USER: 'user',
 };
 
 export {

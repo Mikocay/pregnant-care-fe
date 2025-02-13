@@ -1,26 +1,23 @@
-import type React from 'react';
+import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
-import { useNavigate } from 'react-router-dom';
-import config from '@/config/routes';
+import { useLogin } from './useLogin';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
+  const { isLoading, error, handleSubmit } = useLogin();
+  const [form] = Form.useForm(); // Sử dụng Form của Ant Design để quản lý state
 
-  const onFinish = async (values: { email: string; password: string }) => {
-    const { email, password } = values;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    const result = await useLogin(email, password);
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-    if (result.success) {
-      console.log('Đăng nhập thành công!');
-      navigate(config.routes.public.home); // Điều hướng sau khi đăng nhập thành công
-    } else {
-      console.log(result.message);
-    }
-  };
+  console.log(import.meta.env.API_BASE_URL);
 
   return (
     <div className={styles.container}>
@@ -39,18 +36,16 @@ const Login: React.FC = () => {
             <Button icon={<GoogleOutlined />} size="large">
               Google
             </Button>
-            {/* <Button icon={<FacebookOutlined />} size="large">
-              Facebook
-            </Button> */}
           </div>
 
           <div className={styles.divider}>OR</div>
 
           <Form
+            form={form} // Quản lý Form bằng Ant Design
             name="login"
-            onFinish={onFinish}
+            onFinish={handleSubmit}
             layout="vertical"
-            requiredMark="optional"
+            initialValues={{ email: '', password: '' }}
           >
             <Form.Item
               name="email"
@@ -66,6 +61,11 @@ const Login: React.FC = () => {
               name="password"
               rules={[
                 { required: true, message: 'Please input your password!' },
+                {
+                  min: 8,
+                  max: 126,
+                  message: 'Password must be 8-126 characters',
+                },
               ]}
             >
               <Input.Password placeholder="Enter your password" size="large" />
@@ -97,8 +97,7 @@ const Login: React.FC = () => {
           </a>
 
           <div className={styles.footer}>
-            Don't have an account?
-            <a href="/signup">Sign Up</a>
+            Don't have an account? <a href="/signup">Sign Up</a>
           </div>
         </div>
       </div>

@@ -1,19 +1,25 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { loginRequest, loginSuccess, loginFailure } from './slice';
 import { userService } from '@/services/user.service';
+import { loginFailure, loginRequest, loginSuccess } from './slice';
 
-function* loginSaga(action: ReturnType<typeof loginRequest>): Generator {
+function* loginSaga(
+  action: PayloadAction<{ email: string; password: string }>,
+): Generator {
   try {
     const response = yield call(userService.postLogin, action.payload);
-
-    const { accessToken, user } = response.data;
-
-    yield put(loginSuccess({ accessToken, userRole: user }));
-  } catch (error: ) {
-    yield put(loginFailure(error.response?.data?.message || 'Login failed'));
+    yield put(loginSuccess(response.data));
+    localStorage.setItem('accessToken', response.data.accessToken);
+    console.log('Login success:', response.data);
+  } catch (error: unknown) {
+    let errorMessage = 'Login failed';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    yield put(loginFailure(errorMessage));
   }
 }
 
-export default function* authSaga() {
+export function* watchAuth() {
   yield takeLatest(loginRequest.type, loginSaga);
 }

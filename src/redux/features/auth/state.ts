@@ -1,8 +1,18 @@
-import { UserState } from '../types/authType';
+export interface User {
+  id: string;
+  email: string;
+  // thêm các trường khác của user nếu cần
+}
+interface AuthState {
+  isLoading: boolean;
+  error: string | null;
+  accessToken: string | null;
+  user: User | null;
+}
 
-export const initialState: UserState = {
-  accessToken: localStorage.getItem('accessToken') || null,
-  userRole: localStorage.getItem('role') || null,
-  loading: false,
+export const initialState: AuthState = {
+  isLoading: false,
   error: null,
+  accessToken: null,
+  user: null,
 };

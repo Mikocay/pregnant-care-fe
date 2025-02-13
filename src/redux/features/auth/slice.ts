@@ -1,40 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from './state';
-import { LOCAL_STOREAGE } from '@/constants';
+import { initialState, User } from './state';
+import { LoginFormData } from '../types/authType';
 
-const userSlice = createSlice({
-  name: 'user',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    loginRequest: (state) => {
-      state.loading = true;
+    loginRequest: (state, _action: PayloadAction<LoginFormData>) => {
+      state.isLoading = true;
       state.error = null;
     },
     loginSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; userRole: string }>,
+      action: PayloadAction<{ accessToken: string; user: User }>,
     ) => {
-      state.loading = false;
+      state.isLoading = false;
       state.accessToken = action.payload.accessToken;
-      localStorage.setItem(LOCAL_STOREAGE.USER_ROLE, action.payload.userRole);
-      localStorage.setItem(
-        LOCAL_STOREAGE.ACCESS_TOKEN,
-        action.payload.accessToken,
-      );
+      state.user = action.payload.user;
+      state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
+      state.isLoading = false;
       state.error = action.payload;
     },
     logout: (state) => {
       state.accessToken = null;
-      state.userRole = null;
-      localStorage.removeItem(LOCAL_STOREAGE.USER_ROLE);
-      localStorage.removeItem(LOCAL_STOREAGE.ACCESS_TOKEN);
+      state.user = null;
+      state.error = null;
     },
   },
 });
 
 export const { loginRequest, loginSuccess, loginFailure, logout } =
-  userSlice.actions;
-export default userSlice.reducer;
+  authSlice.actions;
+export default authSlice.reducer;
