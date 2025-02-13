@@ -1,14 +1,14 @@
 import axios, { AxiosError } from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 const axiosPrivate = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: process.env.API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,6 +18,7 @@ const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use(
   (config) => {
     // ********** Example **********
+    //! lấy token & userRole từ redux store
     const token = localStorage.getItem('accessToken');
     const userRole = localStorage.getItem('userRole');
 

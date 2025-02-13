@@ -1,35 +1,35 @@
 import { lazy } from 'react';
-import ROUTES from '@/config/routes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AdminRoutes from './AdminRoutes';
+// import AdminRoutes from './AdminRoutes';
 
 //* Layouts
 import GuestLayout from '@/layouts/GuestLayout';
-import AdminLayout from '@/layouts/AdminLayout';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
+import config from '@/config/routes';
 
 //* Lazy load pages
-const Home = lazy(() => import('@/pages/home'));
-const Login = lazy(() => import('@/pages/auth/Login'));
-const SignUp = lazy(() => import('@/pages/auth/SignUp'));
+const Home = lazy(() => import('@/pages/Home'));
+const Login = lazy(() => import('@/pages/Auth/Login'));
+const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
-    { path: ROUTES.LOGIN, element: <Login /> },
-    { path: ROUTES.SIGNUP, element: <SignUp /> },
+    { path: config.routes.public.login, element: <Login /> },
+    { path: config.routes.public.signUp, element: <SignUp /> },
     {
       element: <GuestLayout />,
-      children: [{ index: true, path: ROUTES.HOME, element: <Home /> }],
+      children: [
+        { index: true, path: config.routes.public.home, element: <Home /> },
+      ],
     },
 
     //**** PRIVATE routes ****
 
     //* Admin *
-    {
-      element: <AdminLayout />,
-      children: [],
-    },
+    AdminRoutes,
 
     //* Member *
     {

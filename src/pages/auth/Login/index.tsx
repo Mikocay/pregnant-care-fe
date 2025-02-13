@@ -3,10 +3,23 @@ import { Form, Input, Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
+import { useNavigate } from 'react-router-dom';
+import config from '@/config/routes';
 
 const Login: React.FC = () => {
-  const onFinish = () => {
-    console.log('Success:');
+  const navigate = useNavigate();
+
+  const onFinish = async (values: { email: string; password: string }) => {
+    const { email, password } = values;
+
+    const result = await useLogin(email, password);
+
+    if (result.success) {
+      console.log('Đăng nhập thành công!');
+      navigate(config.routes.public.home); // Điều hướng sau khi đăng nhập thành công
+    } else {
+      console.log(result.message);
+    }
   };
 
   return (
