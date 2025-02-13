@@ -6,6 +6,8 @@ const routes = {
 
   public: {
     home: '/',
+    signUp: '/sign-up',
+    login: '/login',
   },
 };
 

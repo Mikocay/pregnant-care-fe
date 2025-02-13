@@ -10,11 +10,15 @@ import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import config from '@/config/routes';
 
 //* Lazy load pages
-const Home = lazy(() => import('@/pages/home'));
+const Home = lazy(() => import('@/pages/Home'));
+const Login = lazy(() => import('@/pages/Auth/Login'));
+const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
+    { path: config.routes.public.login, element: <Login /> },
+    { path: config.routes.public.signUp, element: <SignUp /> },
     {
       element: <GuestLayout />,
       children: [
