@@ -10,4 +10,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'), // Alias tương ứng với "src"
     },
   },
+  server: {
+    port: 3000,
+  },
 });

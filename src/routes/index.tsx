@@ -8,6 +8,7 @@ import GuestLayout from '@/layouts/GuestLayout';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import config from '@/config/routes';
+import ValidateEmail from '@/pages/Auth/SignUp/ConfirmEmail/emailConfirm';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
@@ -17,8 +18,9 @@ const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
-    { path: config.routes.public.login, element: <Login /> },
-    { path: config.routes.public.signUp, element: <SignUp /> },
+    { path: config.routes.auth.login, element: <Login /> },
+    { path: config.routes.auth.signUp, element: <SignUp /> },
+    { path: '/users/validate-email', element: <ValidateEmail /> },
     {
       element: <GuestLayout />,
       children: [

@@ -6,18 +6,7 @@ import ASSETS from '@/assets';
 import { useLogin } from './useLogin';
 
 const Login: React.FC = () => {
-  const { isLoading, error, handleSubmit } = useLogin();
-  const [form] = Form.useForm(); // Sử dụng Form của Ant Design để quản lý state
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  console.log(import.meta.env.API_BASE_URL);
+  const { handleSubmit, form, handleClick } = useLogin();
 
   return (
     <div className={styles.container}>
@@ -41,7 +30,7 @@ const Login: React.FC = () => {
           <div className={styles.divider}>OR</div>
 
           <Form
-            form={form} // Quản lý Form bằng Ant Design
+            form={form}
             name="login"
             onFinish={handleSubmit}
             layout="vertical"
@@ -77,6 +66,7 @@ const Login: React.FC = () => {
                 htmlType="submit"
                 size="large"
                 block
+                onClick={handleClick}
                 style={{ backgroundColor: '#ff7875' }}
               >
                 Login

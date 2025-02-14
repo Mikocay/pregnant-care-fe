@@ -1,4 +1,5 @@
 import { axiosClient } from '@/config/axios';
+import { RegisterFormData } from '@/redux/features/types/authType';
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -7,7 +8,7 @@ interface LoginPayload {
   password: string;
 }
 
-interface LoginResponse {
+interface AuthResponse {
   accessToken: string;
   user: {
     id: string;
@@ -17,9 +18,17 @@ interface LoginResponse {
 }
 
 export const userService = {
-  postLogin: (payload: LoginPayload): Promise<AxiosResponse<LoginResponse>> => {
-    console.log(API_ENDPOINTS.auth.login);
-
+  //* Login *******************
+  postLogin: (payload: LoginPayload): Promise<AxiosResponse<AuthResponse>> => {
     return axiosClient.post(API_ENDPOINTS.auth.login, payload);
+  },
+  //* Register *******************
+  postRegister: (
+    payload: RegisterFormData,
+  ): Promise<AxiosResponse<{ message: string }>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.signUp, payload);
+  },
+  confirmEmail: (token: string): Promise<AxiosResponse<AuthResponse>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.comfirmEmail, { token });
   },
 };

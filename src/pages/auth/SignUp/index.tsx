@@ -1,13 +1,13 @@
-import type React from 'react';
+import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
+import { useSignup } from './useSignup';
 
 const SignUp: React.FC = () => {
-  const onFinish = () => {
-    console.log('Success:');
-  };
+  const { handleSubmit, handleClick, form } = useSignup();
 
   return (
     <div className={styles.container}>
@@ -24,47 +24,50 @@ const SignUp: React.FC = () => {
 
           <div className={styles.socialButtons}>
             <Button icon={<GoogleOutlined />} size="large">
-              Google
+              Sign up with Google
             </Button>
-            {/* <Button icon={<FacebookOutlined />} size="large">
-              Facebook
-            </Button> */}
           </div>
 
           <div className={styles.divider}>OR</div>
 
           <Form
             name="signup"
-            onFinish={onFinish}
+            onFinish={handleSubmit}
             layout="vertical"
             requiredMark="optional"
+            form={form}
           >
             <Form.Item
               name="fullname"
               rules={[
-                { required: true, message: 'Please input your full name!' },
+                { required: true, message: 'Please enter your full name!' },
               ]}
             >
-              <Input placeholder="Enter your fullname" size="large" />
+              <Input placeholder="Full Name" size="large" />
             </Form.Item>
 
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please input your email!' },
-                { type: 'email', message: 'Please enter a valid email!' },
+                { required: true, message: 'Please enter your email!' },
+                { type: 'email', message: 'Invalid email format!' },
               ]}
             >
-              <Input placeholder="Enter your email" size="large" />
+              <Input placeholder="Email" size="large" />
             </Form.Item>
 
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please input your password!' },
+                { required: true, message: 'Please enter your password!' },
+                {
+                  min: 8,
+                  max: 126,
+                  message: 'Password must be 8-126 characters',
+                },
               ]}
             >
-              <Input.Password placeholder="Enter your password" size="large" />
+              <Input.Password placeholder="Password" size="large" />
             </Form.Item>
 
             <Form.Item
@@ -74,18 +77,14 @@ const SignUp: React.FC = () => {
                 { required: true, message: 'Please confirm your password!' },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('Passwords do not match!'));
+                    return value && getFieldValue('password') === value
+                      ? Promise.resolve()
+                      : Promise.reject(new Error('Passwords do not match!'));
                   },
                 }),
               ]}
             >
-              <Input.Password
-                placeholder="Enter your confirm password"
-                size="large"
-              />
+              <Input.Password placeholder="Confirm Password" size="large" />
             </Form.Item>
 
             <Form.Item>
@@ -94,7 +93,8 @@ const SignUp: React.FC = () => {
                 htmlType="submit"
                 size="large"
                 block
-                style={{ backgroundColor: '#ff7875' }}
+                onClick={handleClick}
+                className={styles.submitBtn}
               >
                 Register
               </Button>
@@ -102,8 +102,7 @@ const SignUp: React.FC = () => {
           </Form>
 
           <div className={styles.footer}>
-            Already have an account?
-            <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </div>
         </div>
       </div>
