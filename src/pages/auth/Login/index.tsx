@@ -1,26 +1,12 @@
-import type React from 'react';
+import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
-import { useNavigate } from 'react-router-dom';
-import config from '@/config/routes';
+import { useLogin } from './useLogin';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
-
-  const onFinish = async (values: { email: string; password: string }) => {
-    const { email, password } = values;
-
-    const result = await useLogin(email, password);
-
-    if (result.success) {
-      console.log('Đăng nhập thành công!');
-      navigate(config.routes.public.home); // Điều hướng sau khi đăng nhập thành công
-    } else {
-      console.log(result.message);
-    }
-  };
+  const { handleSubmit, form, handleClick } = useLogin();
 
   return (
     <div className={styles.container}>
@@ -39,18 +25,16 @@ const Login: React.FC = () => {
             <Button icon={<GoogleOutlined />} size="large">
               Google
             </Button>
-            {/* <Button icon={<FacebookOutlined />} size="large">
-              Facebook
-            </Button> */}
           </div>
 
           <div className={styles.divider}>OR</div>
 
           <Form
+            form={form}
             name="login"
-            onFinish={onFinish}
+            onFinish={handleSubmit}
             layout="vertical"
-            requiredMark="optional"
+            initialValues={{ email: '', password: '' }}
           >
             <Form.Item
               name="email"
@@ -66,6 +50,11 @@ const Login: React.FC = () => {
               name="password"
               rules={[
                 { required: true, message: 'Please input your password!' },
+                {
+                  min: 8,
+                  max: 126,
+                  message: 'Password must be 8-126 characters',
+                },
               ]}
             >
               <Input.Password placeholder="Enter your password" size="large" />
@@ -77,6 +66,7 @@ const Login: React.FC = () => {
                 htmlType="submit"
                 size="large"
                 block
+                onClick={handleClick}
                 style={{ backgroundColor: '#ff7875' }}
               >
                 Login
@@ -97,8 +87,7 @@ const Login: React.FC = () => {
           </a>
 
           <div className={styles.footer}>
-            Don't have an account?
-            <a href="/signup">Sign Up</a>
+            Don't have an account? <a href="/signup">Sign Up</a>
           </div>
         </div>
       </div>

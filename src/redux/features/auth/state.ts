@@ -1,8 +1,10 @@
-import { UserState } from '../types/authType';
+import { AuthState } from '../types/authType';
 
-export const initialState: UserState = {
-  accessToken: localStorage.getItem('accessToken') || null,
-  userRole: localStorage.getItem('role') || null,
-  loading: false,
+export const initialState: AuthState = {
+  isLoading: false,
   error: null,
+  accessToken: null,
+  isUser: '',
+  registrationStatus: 'idle',
+  registeredEmail: null,
 };

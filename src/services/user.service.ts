@@ -1,23 +1,34 @@
-import axios from 'axios';
 import { axiosClient } from '@/config/axios';
+import { RegisterFormData } from '@/redux/features/types/authType';
 import { API_ENDPOINTS } from '@/utils/api';
+import { AxiosResponse } from 'axios';
 
-type LoginResponse = {
+interface LoginPayload {
   email: string;
   password: string;
-};
+}
+
+interface AuthResponse {
+  accessToken: string;
+  user: {
+    id: string;
+    email: string;
+    // thêm các trường khác của user nếu cần
+  };
+}
 
 export const userService = {
-  postLogin: async (data: LoginResponse) => {
-    try {
-      const response = await axiosClient.post(API_ENDPOINTS.auth.login, data);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.log('Error login: ', error.response.data);
-        return error.response.data;
-      }
-      return { success: false, message: 'Error from server' };
-    }
+  //* Login *******************
+  postLogin: (payload: LoginPayload): Promise<AxiosResponse<AuthResponse>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.login, payload);
+  },
+  //* Register *******************
+  postRegister: (
+    payload: RegisterFormData,
+  ): Promise<AxiosResponse<{ message: string }>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.signUp, payload);
+  },
+  confirmEmail: (token: string): Promise<AxiosResponse<AuthResponse>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.comfirmEmail, { token });
   },
 };

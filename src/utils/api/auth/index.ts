@@ -1,5 +1,5 @@
 export const AUTH = {
-  login: '/signin',
-  signUp: '/signup',
-  comfirmEmail: '/confirm-email',
+  login: '/auth/signin',
+  signUp: '/auth/signup',
+  comfirmEmail: '/auth/confirm-email',
 };

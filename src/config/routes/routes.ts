@@ -6,8 +6,12 @@ const routes = {
 
   public: {
     home: '/',
-    signUp: '/sign-up',
+  },
+
+  auth: {
+    signUp: '/signup',
     login: '/login',
+    confirmEmail: '/confirm-email',
   },
 };
 
