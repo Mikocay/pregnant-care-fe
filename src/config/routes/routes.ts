@@ -2,6 +2,7 @@ const routes = {
   admin: {
     dashboard: '/admin',
     manageMember: '/admin/manage-member',
+    growthMatrics: '/admin/grouth-matrics',
   },
 
   public: {
