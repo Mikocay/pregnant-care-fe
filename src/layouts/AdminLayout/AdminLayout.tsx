@@ -40,7 +40,7 @@ const AdminLayout = () => {
     {
       key: '5',
       icon: <BellOutlined />,
-      label: 'Notification',
+      label: <Link to={config.routes.admin.growthMatrics}>Grouth Matrics</Link>,
     },
   ];
 
