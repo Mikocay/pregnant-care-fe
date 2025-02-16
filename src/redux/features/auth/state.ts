@@ -7,4 +7,5 @@ export const initialState: AuthState = {
   isUser: '',
   registrationStatus: 'idle',
   registeredEmail: null,
+  // waitingForConfirmation: false,
 };

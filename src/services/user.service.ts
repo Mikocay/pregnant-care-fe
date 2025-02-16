@@ -1,5 +1,8 @@
 import { axiosClient } from '@/config/axios';
-import { RegisterFormData } from '@/redux/features/types/authType';
+import {
+  RegisterFormData,
+  ResetPasswordForm,
+} from '@/redux/features/types/authType';
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -28,7 +31,21 @@ export const userService = {
   ): Promise<AxiosResponse<{ message: string }>> => {
     return axiosClient.post(API_ENDPOINTS.auth.signUp, payload);
   },
+  //* Confirm Email *******************
   confirmEmail: (token: string): Promise<AxiosResponse<AuthResponse>> => {
     return axiosClient.post(API_ENDPOINTS.auth.comfirmEmail, { token });
+  },
+  //* Reset Password *******************
+  requestResetPassword: (
+    email: string,
+  ): Promise<AxiosResponse<{ message: string }>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.resetPasswordRequest, { email });
+  },
+  resetPassword: (
+    payload: ResetPasswordForm,
+  ): Promise<AxiosResponse<{ message: string }>> => {
+    return axiosClient.post(API_ENDPOINTS.auth.resetPassword, {
+      payload,
+    });
   },
 };

@@ -1,4 +1,4 @@
-import config from '@/config/routes';
+import config from '@/config';
 import { confirmEmailRequest } from '@/redux/features/auth/slice';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';

@@ -18,6 +18,11 @@ export interface UserState {
 export interface User {
   id: string;
 }
+
+export interface ResetPasswordForm {
+  token: string;
+  newPassword: string;
+}
 export interface AuthState {
   isLoading: boolean;
   error: string | null;

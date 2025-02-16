@@ -1,4 +1,4 @@
-import config from '@/config/routes/index';
+import config from '@/config/index';
 import AdminLayout from '@/layouts/AdminLayout';
 import Dashboard from '@/pages/Admin/Dashboard';
 import ManageMember from '@/pages/Admin/ManageMember';
