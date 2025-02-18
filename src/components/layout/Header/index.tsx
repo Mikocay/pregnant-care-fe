@@ -4,7 +4,6 @@ import ASSETS from '@/assets';
 import { Link } from 'react-router-dom';
 import { useHeader } from './useHeader';
 
-
 const navigationItems = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
@@ -14,9 +13,8 @@ const navigationItems = [
   { label: 'Contact us', href: '/contact' },
 ];
 
-export default function Header() {
+function Header() {
   //   Example user state and logout handler
-
   const { user, handleLogout } = useHeader();
 
   return (
@@ -43,3 +41,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default Header;
