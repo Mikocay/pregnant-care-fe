@@ -1,5 +1,6 @@
 import { axiosClient, axiosPrivate } from '@/config/axios';
 import { RegisterFormData } from '@/redux/features/types/authType';
+
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -47,5 +48,6 @@ export const userService = {
   //* Get User Info *******************
   getUserInfoById: (userId: string): Promise<AxiosResponse<User>> => {
     return axiosPrivate.get(`${API_ENDPOINTS.users.oneUser}/${userId}`);
+
   },
 };

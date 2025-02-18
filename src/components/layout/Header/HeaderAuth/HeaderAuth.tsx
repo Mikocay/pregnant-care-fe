@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
 import { Dropdown, Avatar } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button, Dropdown, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
 import {
   BellOutlined,
@@ -12,6 +13,7 @@ import styles from './HeaderAuth.module.css';
 import config from '@/config';
 import { User } from '@/types';
 
+
 interface HeaderAuthProps {
   user?: User | null;
   onLogout: () => void;
@@ -19,6 +21,7 @@ interface HeaderAuthProps {
 
 export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
   const dropdownItemsAuth: MenuProps['items'] = [
+
     {
       key: 'profile',
       label: (
@@ -72,6 +75,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
         <Link to={config.routes.auth.signUp} className={styles.authText}>
           Sign Up
         </Link>
+
       </div>
     );
   }
@@ -82,6 +86,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
       <span>Welcome, {user.firstName || 'guest'}</span>
       <Dropdown
         menu={{ items: dropdownItemsAuth }}
+
         placement="bottomRight"
         trigger={['click']}
         overlayClassName={styles.dropdownMenu}
@@ -89,6 +94,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
         <Avatar
           src={user.avatarUrl}
           icon={!user.avatarUrl && <UserOutlined />}
+
           className={styles.userAvatar}
         />
       </Dropdown>

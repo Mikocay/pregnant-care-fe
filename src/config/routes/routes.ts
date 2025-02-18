@@ -19,6 +19,7 @@ const routes = {
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
     unauthorized: '/unauthorized',
+
   },
 };
 
