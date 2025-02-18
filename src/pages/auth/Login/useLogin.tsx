@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Form } from 'antd';
 import { loginRequest } from '@/redux/features/auth/slice';
 import { LoginFormData } from '@/redux/features/types/authType';
@@ -7,36 +7,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import config from '@/config';
-import { userService } from '@/services/user.service';
+import { ROLE } from '@/constants';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, userId, accessToken } = useSelector(
+  const { isLoading, error, userRole, accessToken } = useSelector(
     (state: RootState) => state.auth,
   );
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [userRole, setUserRole] = useState<string>(''); // dùng state để theo dõi role
 
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
-
-  // Cập nhật user role sau khi login
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const response = await userService.getUserInfoById(userId);
-        setUserRole(response.data.data.role);
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-
-    if (userId) {
-      fetchUserRole();
-    }
-  }, [userId]); // Chỉ gọi khi `userId` thay đổi
 
   // Cập nhật lỗi vào form nếu có
   useEffect(() => {
@@ -66,7 +49,7 @@ export const useLogin = () => {
   //! Navigate based on user role
   useEffect(() => {
     if (userRole && accessToken) {
-      if (userRole === 'admin') {
+      if (userRole === ROLE.ADMIN) {
         navigate(config.routes.admin.dashboard);
       } else {
         navigate(config.routes.public.home);

@@ -20,23 +20,33 @@ function* loginSaga(
 ): Generator {
   try {
     const response = yield call(userService.postLogin, action.payload);
-    yield put(loginSuccess(response.data.data));
+    const tokenData = response.data.data; // Gồm accessToken và userId
 
-    //* Ensure to save token to localStorage
-    yield call(
-      [localStorage, 'setItem'],
-      'accessToken',
-      response.data.data.accessToken,
-    );
+    //* Lưu accessToken vào localStorage (hoặc sessionStorage)
+    yield call([localStorage, 'setItem'], 'accessToken', tokenData.accessToken);
+    yield call([localStorage, 'setItem'], 'userId', tokenData.userId);
+
+    //* Gọi API lấy thông tin user (nếu bắt buộc)
+    const getUser = yield call(userService.getUserInfoById, tokenData.userId);
+    const userRole = getUser.data.data.role;
+
+    //* Lưu userRole vào localStorage (hoặc sessionStorage)
+    yield call([localStorage, 'setItem'], 'userRole', userRole);
+
+    //* Dispatch action lưu thông tin user vào Redux
+    yield put(loginSuccess({ tokenData, user: getUser.data.data }));
   } catch (error: unknown) {
     let errorMessage = 'Login failed';
 
     if (error instanceof AxiosError) {
-      errorMessage = error.response?.data.message
-        ? error.response?.data.message
-        : error.message;
+      errorMessage = error.response?.data.message || error.message;
     }
+
     yield put(loginFailure(errorMessage));
+
+    // Xóa token nếu login thất bại
+    yield call([localStorage, 'removeItem'], 'accessToken');
+    yield call([localStorage, 'removeItem'], 'userId');
   }
 }
 
@@ -62,7 +72,6 @@ function* confirmEmailSaga(action: PayloadAction<string>): Generator {
     const response = yield call(userService.confirmEmail, action.payload);
     console.log('Confirm email success:', response.data);
     yield put(confirmEmailSuccess(response.data.data));
-    // localStorage.setItem('accessToken', response.data.data.accessToken);
   } catch (error: unknown) {
     let errorMessage = 'Confirm failed';
 

@@ -9,13 +9,11 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(logout()); // Cập nhật trạng thái redux nếu cần
-
-    // Điều hướng về trang login hoặc trang home
+    dispatch(logout());
     navigate(config.routes.auth.login);
   }, [dispatch, navigate]);
 
-  return null; // Hoặc có thể không render gì cả
+  return null;
 };
 
 export default Logout;

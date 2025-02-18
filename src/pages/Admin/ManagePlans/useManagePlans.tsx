@@ -17,8 +17,12 @@ export const useManagePlans = () => {
   };
 
   useEffect(() => {
-    getAllData();
-  }, []);
+    console.log('datas:', datas);
+
+    if (!datas?.length) {
+      getAllData();
+    }
+  }, [datas]);
 
   const editButton = async (id: string) => {
     const response = await axiosPrivate.get(

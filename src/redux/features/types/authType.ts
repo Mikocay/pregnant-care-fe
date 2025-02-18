@@ -28,6 +28,7 @@ export interface AuthState {
   error: string | null;
   accessToken: string | null;
   userId: string;
+  userRole: string;
   registrationStatus:
     | 'idle'
     | 'pending_confirmation'

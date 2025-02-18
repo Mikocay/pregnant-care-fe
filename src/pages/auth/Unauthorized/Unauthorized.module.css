@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.button {
+  margin: 0 8px;
+}
+
+@media (max-width: 768px) {
+  .button {
+    margin: 8px 0;
+    width: 100%;
+  }
+}

@@ -16,6 +16,8 @@ export const useAdmin = () => {
   };
 
   useEffect(() => {
+    console.log('Path:', path);
+
     if (path.includes(config.routes.admin.formPlan)) {
       setIsCreate(true);
     }

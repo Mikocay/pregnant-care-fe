@@ -18,6 +18,7 @@ const routes = {
     confirmEmail: '/confirm-email',
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
+    unauthorized: '/unauthorized',
   },
 };
 
