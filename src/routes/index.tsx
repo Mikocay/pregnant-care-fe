@@ -8,6 +8,7 @@ import config from '@/config';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import PublicLayout from '@/layouts/PublicLayout';
+import Logout from '@/components/Logout';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
@@ -31,6 +32,7 @@ const RouterComponent = () => {
     //* AUTH routes
     { path: config.routes.auth.login, element: <Login /> },
     { path: config.routes.auth.signUp, element: <SignUp /> },
+    { path: config.routes.auth.logout, element: <Logout /> },
     { path: config.routes.auth.validateEmail, element: <ValidateEmail /> },
     { path: config.routes.auth.forgotPassword, element: <ForgetPassword /> },
 

@@ -11,12 +11,9 @@ import {
   registerFailure,
   registerPendingConfirmation,
   registerRequest,
-  resetPasswordRequest,
-  resetPasswordFailure,
-  resetPasswordSuccess,
 } from './slice';
 import { AxiosError } from 'axios';
-import { RegisterFormData, ResetPasswordForm } from '../types/authType';
+import { RegisterFormData } from '../types/authType';
 
 function* loginSaga(
   action: PayloadAction<{ email: string; password: string }>,
@@ -24,7 +21,13 @@ function* loginSaga(
   try {
     const response = yield call(userService.postLogin, action.payload);
     yield put(loginSuccess(response.data.data));
-    localStorage.setItem('accessToken', response.data.accessToken);
+
+    //* Ensure to save token to localStorage
+    yield call(
+      [localStorage, 'setItem'],
+      'accessToken',
+      response.data.data.accessToken,
+    );
   } catch (error: unknown) {
     let errorMessage = 'Login failed';
 
@@ -72,46 +75,8 @@ function* confirmEmailSaga(action: PayloadAction<string>): Generator {
   }
 }
 
-function* requestResetPasswordSaga(action: PayloadAction<string>): Generator {
-  try {
-    const response = yield call(
-      userService.requestResetPassword,
-      action.payload,
-    );
-    console.log('Request reset password success:', response.data);
-  } catch (error: unknown) {
-    let errorMessage = 'Request reset password failed';
-
-    if (error instanceof AxiosError) {
-      errorMessage = error.response?.data.message
-        ? error.response?.data.message
-        : error.message;
-    }
-    console.error(errorMessage);
-  }
-}
-
-function* resetPasswordSaga(
-  action: PayloadAction<ResetPasswordForm>,
-): Generator {
-  try {
-    const response = yield call(userService.resetPassword, action.payload);
-    console.log('Reset password success:', response.data);
-  } catch (error: unknown) {
-    let errorMessage = 'Reset password failed';
-
-    if (error instanceof AxiosError) {
-      errorMessage = error.response?.data.message
-        ? error.response?.data.message
-        : error.message;
-    }
-    console.error(errorMessage);
-  }
-}
-
 export function* authSaga() {
   yield takeLatest(loginRequest.type, loginSaga);
   yield takeLatest(registerRequest.type, registerSaga);
   yield takeLatest(confirmEmailRequest.type, confirmEmailSaga);
-  yield takeLatest(resetPasswordRequest.type, resetPasswordSaga);
 }

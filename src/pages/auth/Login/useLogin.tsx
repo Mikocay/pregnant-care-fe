@@ -1,26 +1,42 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import { loginRequest } from '@/redux/features/auth/slice';
 import { LoginFormData } from '@/redux/features/types/authType';
 import { RootState } from '@/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import showNotification from '@/components/Notification';
+import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import config from '@/config';
+import { userService } from '@/services/user.service';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, isUser } = useSelector(
+  const { isLoading, error, userId, accessToken } = useSelector(
     (state: RootState) => state.auth,
   );
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
-  console.log(isUser);
+  const [userRole, setUserRole] = useState<string>(''); // dùng state để theo dõi role
 
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
+
+  // Cập nhật user role sau khi login
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await userService.getUserInfoById(userId);
+        setUserRole(response.data.data.role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+
+    if (userId) {
+      fetchUserRole();
+    }
+  }, [userId]); // Chỉ gọi khi `userId` thay đổi
 
   // Cập nhật lỗi vào form nếu có
   useEffect(() => {
@@ -47,13 +63,16 @@ export const useLogin = () => {
     }
   };
 
-  //* Navigate after login
   //! Navigate based on user role
   useEffect(() => {
-    if (isUser) {
-      navigate(config.routes.public.home);
+    if (userRole && accessToken) {
+      if (userRole === 'admin') {
+        navigate(config.routes.admin.dashboard);
+      } else {
+        navigate(config.routes.public.home);
+      }
     }
-  });
+  }, [userRole, accessToken, navigate]);
 
   return {
     isLoading,

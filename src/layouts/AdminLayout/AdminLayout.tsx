@@ -7,6 +7,7 @@ import {
   ClockCircleOutlined,
   EyeOutlined,
   BellOutlined,
+  InboxOutlined,
 } from '@ant-design/icons';
 import MiniAvatar from '@/components/MiniAvatar';
 import './AdminLayout.css';
@@ -34,11 +35,16 @@ const AdminLayout = () => {
     },
     {
       key: '4',
+      icon: <InboxOutlined />,
+      label: <Link to={config.routes.admin.managePlans}>Manage Plans</Link>,
+    },
+    {
+      key: '5',
       icon: <EyeOutlined />,
       label: 'Mother status',
     },
     {
-      key: '5',
+      key: '6',
       icon: <BellOutlined />,
       label: <Link to={config.routes.admin.growthMatrics}>Grouth Matrics</Link>,
     },
@@ -56,6 +62,7 @@ const AdminLayout = () => {
             <MiniAvatar />
           </div>
         </Header>
+        {/* !Create Button */}
         <div
           style={{
             display: 'flex',

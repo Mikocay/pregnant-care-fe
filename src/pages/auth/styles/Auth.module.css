@@ -53,6 +53,12 @@
   color: #666;
 }
 
+.orDivider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .footer {
   text-align: center;
   margin-top: 1rem;

@@ -68,23 +68,25 @@ const Login: React.FC = () => {
             </Form.Item>
           </Form>
 
-          <div className={styles.socialButtons}>
-            <Button icon={<GoogleOutlined />} size="large">
-              Google
-            </Button>
-          </div>
+          <div className={styles.orDivider}>
+            <div className={styles.socialButtons}>
+              <Button icon={<GoogleOutlined />} size="large">
+                Google
+              </Button>
+            </div>
 
-          <Link
-            to={config.routes.auth.forgotPassword}
-            style={{
-              display: 'block',
-              textAlign: 'center',
-              marginBottom: '1rem',
-              color: '#666',
-            }}
-          >
-            Forgot password?
-          </Link>
+            <Link
+              to={config.routes.auth.forgotPassword}
+              style={{
+                display: 'block',
+                textAlign: 'center',
+                marginBottom: '1rem',
+                color: '#666',
+              }}
+            >
+              Forgot password?
+            </Link>
+          </div>
 
           <div className={styles.footer}>
             Don't have an account?{' '}

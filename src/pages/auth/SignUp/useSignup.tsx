@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Omit } from 'lodash';
 import { useAppSelector } from '@/redux/store/hooks';
 import { selectRegistrationStatus } from '@/redux/features/auth/selector';
-import showNotification from '@/components/Notification';
+import showNotification from '@/components/Notification/Notification';
 import { useEffect } from 'react';
 import { Form } from 'antd';
 

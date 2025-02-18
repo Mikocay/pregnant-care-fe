@@ -1,5 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Table } from 'antd';
+import '@/layouts/AdminLayout/AdminLayout.css';
 
 function Dashboard() {
   const columns = [

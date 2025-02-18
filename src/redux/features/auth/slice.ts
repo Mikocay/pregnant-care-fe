@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
-import {
-  LoginFormData,
-  RegisterFormData,
-  ResetPasswordForm,
-} from '../types/authType';
+import { LoginFormData, RegisterFormData } from '../types/authType';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -21,7 +17,7 @@ const authSlice = createSlice({
     ) => {
       state.isLoading = false;
       state.accessToken = action.payload.accessToken;
-      state.isUser = action.payload.userId;
+      state.userId = action.payload.userId;
       state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
@@ -30,7 +26,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.accessToken = null;
-      state.isUser = null;
+      state.userId = '';
       state.error = null;
     },
     //* Register *******************************************************
@@ -69,30 +65,6 @@ const authSlice = createSlice({
       state.registrationStatus = 'failed';
       state.error = action.payload;
     },
-    //* Request Reset Password *******************************************************
-    requestResetPasswordRequest: (state, _action: PayloadAction<string>) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    //* Reset Password *******************************************************
-    resetPasswordRequest: (
-      state,
-      _action: PayloadAction<ResetPasswordForm>,
-    ) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    resetPasswordSuccess: (
-      state,
-      _action: PayloadAction<{ message: string }>,
-    ) => {
-      state.isLoading = false;
-      state.error = null;
-    },
-    resetPasswordFailure: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
   },
 });
 
@@ -107,8 +79,5 @@ export const {
   confirmEmailFailure,
   confirmEmailRequest,
   confirmEmailSuccess,
-  resetPasswordFailure,
-  resetPasswordRequest,
-  resetPasswordSuccess,
 } = authSlice.actions;
 export default authSlice.reducer;
