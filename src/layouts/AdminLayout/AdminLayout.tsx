@@ -15,6 +15,7 @@ import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
 import config from '@/config';
 import { useAdmin } from '../hooks/useAdmin';
+
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {

@@ -88,6 +88,7 @@ const Login: React.FC = () => {
             </Link>
           </div>
 
+
           <div className={styles.footer}>
             Don't have an account?{' '}
             <Link to={config.routes.auth.signUp}>Sign Up</Link>

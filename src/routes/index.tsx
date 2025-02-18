@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdminRoutes from './AdminRoutes';
 import config from '@/config';
 import { ROLE } from '@/constants';
+
 // import AdminRoutes from './AdminRoutes';
 
 //* Layouts
@@ -16,6 +17,7 @@ import PersistToken from '@/components/Auth/PeristLogin';
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
 
+
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
@@ -28,6 +30,7 @@ const RouterComponent = () => {
 
     //* AUTH routes *
     ...AuthRoutes,
+
 
     //**** PRIVATE routes ****
     {

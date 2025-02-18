@@ -1,5 +1,6 @@
 import config from '@/config/index';
 import { lazy } from 'react';
+
 import AdminLayout from '@/layouts/AdminLayout';
 
 //* Lazy load pages
