@@ -44,11 +44,11 @@
 }
 
 .menu :global(.ant-menu-item-selected .ant-menu-item-icon) {
-  color: #ff6b6b;
+  color: #ff6b6b !important;
 }
 
 .menu :global(.ant-menu-item-selected .ant-menu-title-content) {
-  color: #ff6b6b;
+  color: #ff6b6b !important;
 }
 
 .menu :global(.ant-menu-item:hover) {
@@ -94,7 +94,7 @@
   top: 0;
   height: 100%;
   width: 4px;
-  background-color: #ff6b6b;
+  background-color: #ff6b6b !important;
 }
 
 .menu-item:hover {

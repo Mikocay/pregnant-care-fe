@@ -13,10 +13,12 @@ export interface User {
 }
 
 export interface Plan {
-  key: string;
-  avatar: string;
-  packageName: string;
-  features: string[];
+  id: string;
+  name: string;
   price: number;
-  dateCreate: string;
+  duration: number;
+  description: string;
+  isActive: boolean;
+  benefits: string[];
+  createdAt: string;
 }

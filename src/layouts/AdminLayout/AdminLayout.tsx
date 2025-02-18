@@ -14,9 +14,11 @@ import './AdminLayout.css';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
 import config from '@/config';
+import { useAdmin } from '../hooks/useAdmin';
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
+  const { createButton, isCreate } = useAdmin();
   const menuItems = [
     {
       key: '1',
@@ -63,28 +65,34 @@ const AdminLayout = () => {
           </div>
         </Header>
         {/* !Create Button */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            padding: '10px 20px',
-          }}
-        >
-          <Button type="primary" className="create-button">
-            Create <EditOutlined />
-          </Button>
-        </div>
-
-        <Content className="content">
-          <div className="content-header">
-            <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              className="search-input"
-            />
-            <div className="sort-dropdown">Sort by: Newest</div>
+        {isCreate ? null : (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              padding: '10px 20px',
+            }}
+          >
+            <Button
+              type="primary"
+              className="create-button"
+              onClick={createButton}
+            >
+              Create <EditOutlined />
+            </Button>
           </div>
-
+        )}
+        <Content className="content">
+          {isCreate ? null : (
+            <div className="content-header">
+              <Input
+                placeholder="Search"
+                prefix={<SearchOutlined />}
+                className="search-input"
+              />
+              <div className="sort-dropdown">Sort by: Newest</div>
+            </div>
+          )}
           {/* Admin Content */}
           <Outlet />
         </Content>

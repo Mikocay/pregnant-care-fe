@@ -4,6 +4,7 @@ const routes = {
     manageMember: '/admin/manage-member',
     growthMatrics: '/admin/grouth-matrics',
     managePlans: '/admin/manage-plans',
+    formPlan: '/admin/form-plan',
   },
 
   public: {

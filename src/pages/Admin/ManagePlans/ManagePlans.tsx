@@ -1,75 +1,45 @@
 import { Table, Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+} from '@ant-design/icons';
 import styles from './ManagePlans.module.css';
 import { Plan } from '@/types';
+import { useManagePlans } from './useManagePlans';
+import ASSETS from '@/assets';
 
 const ManagePlans = () => {
-  const data: Plan[] = [
-    {
-      key: '1',
-      avatar:
-        'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-vwRMx4Sb5LghJfg7BuHpU6BB5493fU.png',
-      packageName: 'Free trial (3 days)',
-      features: [
-        'Full access to all features',
-        'Priority customer support',
-        'Cancel anytime with no extra charges',
-      ],
-      price: 0,
-      dateCreate: '10:30 5-10-2025',
-    },
-    {
-      key: '2',
-      avatar:
-        'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-vwRMx4Sb5LghJfg7BuHpU6BB5493fU.png',
-      packageName: 'Each month',
-      features: [
-        'Access to all basic features',
-        'No credit card required',
-        'Experience the platform risk-free',
-      ],
-      price: 19.99,
-      dateCreate: '10:30 5-10-2025',
-    },
-    {
-      key: '3',
-      avatar:
-        'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-vwRMx4Sb5LghJfg7BuHpU6BB5493fU.png',
-      packageName: 'Lifetime',
-      features: [
-        'All features unlocked permanently',
-        'Exclusive lifetime member perk',
-        'No recurring payments',
-      ],
-      price: 199,
-      dateCreate: '10:30 5-10-2025',
-    },
-  ];
+  //* use manage plans
+  const { editButton, datas } = useManagePlans();
+
+  console.log(datas);
 
   const columns = [
     {
       title: 'Package name',
       dataIndex: 'packageName',
       key: 'packageName',
-      render: (text: string, record: Plan) => (
+      render: (_name: string, record: Plan) => (
         <div className={styles.packageInfo}>
           <img
-            src={record.avatar || '/placeholder.svg'}
+            src={ASSETS.logo || '/placeholder.svg'}
             alt="avatar"
             className={styles.avatar}
           />
-          <span>{text}</span>
+          <span>{record.name}</span>
         </div>
       ),
     },
     {
-      title: 'Features',
-      dataIndex: 'features',
-      key: 'features',
-      render: (features: string[]) => (
+      title: 'Benefits',
+      dataIndex: 'benefits',
+      key: 'benefits',
+      render: (benefits: string[]) => (
         <ul className={styles.featuresList}>
-          {features.map((feature, index) => (
-            <li key={index}>• {feature}</li>
+          {benefits.map((benefit, index) => (
+            <li key={index}>• {benefit}</li>
           ))}
         </ul>
       ),
@@ -84,18 +54,43 @@ const ManagePlans = () => {
     },
     {
       title: 'Date create',
-      dataIndex: 'dateCreate',
-      key: 'dateCreate',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: string) => {
+        const dateObj = new Date(date);
+        return dateObj.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+      },
+    },
+    {
+      title: 'Active',
+      dataIndex: 'isActive',
+      key: 'isActive',
+      render: (isActive: boolean) =>
+        isActive ? (
+          <CheckCircleOutlined
+            style={{
+              color: '#52c41a',
+              fontSize: '18px',
+            }}
+          />
+        ) : (
+          <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: '18px' }} />
+        ),
     },
     {
       title: 'Action',
       key: 'action',
-      render: () => (
+      render: (_text: string, record: Plan) => (
         <Space size="middle">
           <Button
             type="primary"
             icon={<EditOutlined />}
             className={styles.editButton}
+            onClick={() => editButton(record.id)}
           />
           <Button
             danger
@@ -110,9 +105,10 @@ const ManagePlans = () => {
   return (
     <Table
       columns={columns}
-      dataSource={data}
+      dataSource={datas}
       pagination={false}
       className={styles.table}
+      rowKey={(record) => record.id}
     />
   );
 };

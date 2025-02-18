@@ -55,6 +55,7 @@ function Dashboard() {
     <Table
       columns={columns}
       dataSource={data}
+      rowKey={(record) => record.key}
       pagination={{
         total: 256,
         pageSize: 8,
