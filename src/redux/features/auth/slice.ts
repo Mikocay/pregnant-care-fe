@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
-import {
-  LoginFormData,
-  RegisterFormData,
-  ResetPasswordForm,
-} from '../types/authType';
+import { LoginFormData, RegisterFormData } from '../types/authType';
+import { User } from '@/types';
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -17,11 +15,15 @@ const authSlice = createSlice({
     },
     loginSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; userId: string }>,
+      action: PayloadAction<{
+        tokenData: { accessToken: string; userId: string };
+        user: User;
+      }>,
     ) => {
       state.isLoading = false;
-      state.accessToken = action.payload.accessToken;
-      state.isUser = action.payload.userId;
+      state.accessToken = action.payload.tokenData.accessToken;
+      state.userId = action.payload.tokenData.userId;
+      state.userRole = action.payload.user.role;
       state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
@@ -30,8 +32,11 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.accessToken = null;
-      state.isUser = null;
+      state.userId = '';
+      state.userRole = '';
       state.error = null;
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
     },
     //* Register *******************************************************
     registerRequest: (state, _action: PayloadAction<RegisterFormData>) => {

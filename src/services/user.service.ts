@@ -1,8 +1,6 @@
-import { axiosClient } from '@/config/axios';
-import {
-  RegisterFormData,
-  ResetPasswordForm,
-} from '@/redux/features/types/authType';
+import { axiosClient, axiosPrivate } from '@/config/axios';
+import { RegisterFormData } from '@/redux/features/types/authType';
+
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -13,10 +11,22 @@ interface LoginPayload {
 
 interface AuthResponse {
   accessToken: string;
-  user: {
+  userId: string;
+}
+
+export interface User {
+  data: {
     id: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    // thêm các trường khác của user nếu cần
+    phoneNumber: string;
+    role: string;
+    status: string;
+    bloodType: string;
+    nationality: string;
+    dateOfBirth: string | null;
+    avatarUrl: string | null;
   };
 }
 
@@ -35,17 +45,9 @@ export const userService = {
   confirmEmail: (token: string): Promise<AxiosResponse<AuthResponse>> => {
     return axiosClient.post(API_ENDPOINTS.auth.comfirmEmail, { token });
   },
-  //* Reset Password *******************
-  requestResetPassword: (
-    email: string,
-  ): Promise<AxiosResponse<{ message: string }>> => {
-    return axiosClient.post(API_ENDPOINTS.auth.resetPasswordRequest, { email });
-  },
-  resetPassword: (
-    payload: ResetPasswordForm,
-  ): Promise<AxiosResponse<{ message: string }>> => {
-    return axiosClient.post(API_ENDPOINTS.auth.resetPassword, {
-      payload,
-    });
+  //* Get User Info *******************
+  getUserInfoById: (userId: string): Promise<AxiosResponse<User>> => {
+    return axiosPrivate.get(`${API_ENDPOINTS.users.oneUser}/${userId}`);
+
   },
 };

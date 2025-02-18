@@ -12,6 +12,8 @@ const ValidateEmail = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('Token:', token);
+
     if (!token) {
       return;
     }

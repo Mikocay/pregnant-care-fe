@@ -3,7 +3,7 @@ import { selectCount } from '@/redux/features/counter/selector';
 import { decrement, increment, reset } from '@/redux/features/counter/slice';
 import styles from './Counter.module.css';
 import { Button } from 'antd';
-import showNotification from '@/components/Notification';
+import showNotification from '@/components/Notification/Notification';
 import { axiosPrivate } from '@/config/axios';
 
 export default function Counter() {

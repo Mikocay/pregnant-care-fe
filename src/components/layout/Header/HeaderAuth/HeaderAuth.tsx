@@ -1,3 +1,4 @@
+import { Dropdown, Avatar } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Dropdown, Avatar } from 'antd';
 import type { MenuProps } from 'antd';
@@ -10,11 +11,8 @@ import {
 } from '@ant-design/icons';
 import styles from './HeaderAuth.module.css';
 import config from '@/config';
+import { User } from '@/types';
 
-interface User {
-  name: string;
-  avatar?: string;
-}
 
 interface HeaderAuthProps {
   user?: User | null;
@@ -22,9 +20,8 @@ interface HeaderAuthProps {
 }
 
 export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
-  const navigate = useNavigate();
+  const dropdownItemsAuth: MenuProps['items'] = [
 
-  const dropdownItems: MenuProps['items'] = [
     {
       key: 'profile',
       label: (
@@ -70,19 +67,15 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
 
   if (!user) {
     return (
-      <div className={styles.container}>
-        {/* <Button
-          className={styles.signUpButton}
-          onClick={() => navigate(ROUTES.REGISTER)}
-        >
+      <div className={styles.authContainer}>
+        <Link to={config.routes.auth.login} className={styles.authText}>
+          Login
+        </Link>
+        |
+        <Link to={config.routes.auth.signUp} className={styles.authText}>
           Sign Up
-        </Button> */}
-        <Button
-          className={styles.signInButton}
-          onClick={() => navigate(config.routes.auth.login)}
-        >
-          Sign In
-        </Button>
+        </Link>
+
       </div>
     );
   }
@@ -90,16 +83,18 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
   return (
     <div className={styles.container}>
       <BellOutlined className={styles.notification} />
-      <span>Welcome, {user.name}</span>
+      <span>Welcome, {user.firstName || 'guest'}</span>
       <Dropdown
-        menu={{ items: dropdownItems }}
+        menu={{ items: dropdownItemsAuth }}
+
         placement="bottomRight"
         trigger={['click']}
         overlayClassName={styles.dropdownMenu}
       >
         <Avatar
-          src={user.avatar}
-          icon={!user.avatar && <UserOutlined />}
+          src={user.avatarUrl}
+          icon={!user.avatarUrl && <UserOutlined />}
+
           className={styles.userAvatar}
         />
       </Dropdown>

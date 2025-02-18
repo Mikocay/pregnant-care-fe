@@ -4,19 +4,19 @@ import { loginRequest } from '@/redux/features/auth/slice';
 import { LoginFormData } from '@/redux/features/types/authType';
 import { RootState } from '@/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import showNotification from '@/components/Notification';
+import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import config from '@/config';
+import { ROLE } from '@/constants';
+
 
 export const useLogin = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, isUser } = useSelector(
+  const { isLoading, error, userRole, accessToken } = useSelector(
     (state: RootState) => state.auth,
   );
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
-  console.log(isUser);
 
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
@@ -47,13 +47,16 @@ export const useLogin = () => {
     }
   };
 
-  //* Navigate after login
   //! Navigate based on user role
   useEffect(() => {
-    if (isUser) {
-      navigate(config.routes.public.home);
+    if (userRole && accessToken) {
+      if (userRole === ROLE.ADMIN) {
+        navigate(config.routes.admin.dashboard);
+      } else {
+        navigate(config.routes.public.home);
+      }
     }
-  });
+  }, [userRole, accessToken, navigate]);
 
   return {
     isLoading,

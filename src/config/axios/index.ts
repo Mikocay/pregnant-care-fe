@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import config from '..';
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -39,8 +40,9 @@ axiosPrivate.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Xử lý khi bị unauthorized
       console.error('Unauthorized! Redirecting to login...');
-      //   window.location.href = '/login';
+      window.location.href = config.routes.auth.login;
     }
     return Promise.reject(error);
   },

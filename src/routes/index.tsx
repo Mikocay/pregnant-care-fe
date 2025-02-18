@@ -2,21 +2,21 @@ import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdminRoutes from './AdminRoutes';
 import config from '@/config';
+import { ROLE } from '@/constants';
+
 // import AdminRoutes from './AdminRoutes';
 
 //* Layouts
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import PublicLayout from '@/layouts/PublicLayout';
+import PrivateRoute from '@/components/Auth/PrivateRoutes';
+import AuthRoutes from './AuthRoutes';
+import PersistToken from '@/components/Auth/PeristLogin';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
-const Login = lazy(() => import('@/pages/Auth/Login'));
-const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
-const ValidateEmail = lazy(
-  () => import('@/pages/Auth/SignUp/ConfirmEmail/emailConfirm'),
-);
-const ForgetPassword = lazy(() => import('@/pages/Auth/ForgotPassword'));
+
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
@@ -28,16 +28,21 @@ const RouterComponent = () => {
       ],
     },
 
-    //* AUTH routes
-    { path: config.routes.auth.login, element: <Login /> },
-    { path: config.routes.auth.signUp, element: <SignUp /> },
-    { path: config.routes.auth.validateEmail, element: <ValidateEmail /> },
-    { path: config.routes.auth.forgotPassword, element: <ForgetPassword /> },
+    //* AUTH routes *
+    ...AuthRoutes,
+
 
     //**** PRIVATE routes ****
-
-    //* Admin *
-    AdminRoutes,
+    {
+      element: <PersistToken />,
+      children: [
+        //* Admin routes *
+        {
+          element: <PrivateRoute allowedRoles={[ROLE.ADMIN]} />,
+          children: [AdminRoutes],
+        },
+      ],
+    },
 
     //* Member *
     {

@@ -2,6 +2,8 @@ import HeaderAuth from './HeaderAuth/HeaderAuth';
 import styles from './Header.module.css';
 import ASSETS from '@/assets';
 import { Link } from 'react-router-dom';
+import { useHeader } from './useHeader';
+
 
 const navigationItems = [
   { label: 'Home', href: '/' },
@@ -14,16 +16,8 @@ const navigationItems = [
 
 export default function Header() {
   //   Example user state and logout handler
-  const user = {
-    name: 'Tina',
-    avatar: ASSETS.logo,
-  };
 
-  const handleLogout = () => {
-    console.log('Logout');
-
-    // Add your logout logic here
-  };
+  const { user, handleLogout } = useHeader();
 
   return (
     <header className={styles.header}>

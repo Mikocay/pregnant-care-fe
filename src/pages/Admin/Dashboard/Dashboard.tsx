@@ -1,5 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Table } from 'antd';
+import '@/layouts/AdminLayout/AdminLayout.css';
 
 function Dashboard() {
   const columns = [
@@ -54,6 +55,7 @@ function Dashboard() {
     <Table
       columns={columns}
       dataSource={data}
+      rowKey={(record) => record.key}
       pagination={{
         total: 256,
         pageSize: 8,
