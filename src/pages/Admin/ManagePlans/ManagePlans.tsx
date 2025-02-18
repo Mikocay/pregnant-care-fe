@@ -1,4 +1,4 @@
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, Popconfirm } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
@@ -12,9 +12,7 @@ import ASSETS from '@/assets';
 
 const ManagePlans = () => {
   //* use manage plans
-  const { editButton, datas } = useManagePlans();
-
-  console.log(datas);
+  const { editButton, deleteButton, datas } = useManagePlans();
 
   const columns = [
     {
@@ -92,11 +90,20 @@ const ManagePlans = () => {
             className={styles.editButton}
             onClick={() => editButton(record.id)}
           />
-          <Button
-            danger
-            icon={<DeleteOutlined />}
-            className={styles.deleteButton}
-          />
+          <Popconfirm
+            title="Are you sure you want to delete this plan?"
+            onConfirm={() => deleteButton(record.id)}
+            okText="Yes"
+            cancelText="No"
+            placement="topRight"
+            className={styles.deleteConfirm}
+          >
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              className={styles.deleteButton}
+            />
+          </Popconfirm>
         </Space>
       ),
     },
