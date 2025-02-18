@@ -3,7 +3,6 @@ import { initialState } from './state';
 import { LoginFormData, RegisterFormData } from '../types/authType';
 import { User } from '@/types';
 
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -74,30 +73,6 @@ const authSlice = createSlice({
       state.registrationStatus = 'failed';
       state.error = action.payload;
     },
-    //* Request Reset Password *******************************************************
-    requestResetPasswordRequest: (state, _action: PayloadAction<string>) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    //* Reset Password *******************************************************
-    resetPasswordRequest: (
-      state,
-      _action: PayloadAction<ResetPasswordForm>,
-    ) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    resetPasswordSuccess: (
-      state,
-      _action: PayloadAction<{ message: string }>,
-    ) => {
-      state.isLoading = false;
-      state.error = null;
-    },
-    resetPasswordFailure: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
   },
 });
 
@@ -112,8 +87,5 @@ export const {
   confirmEmailFailure,
   confirmEmailRequest,
   confirmEmailSuccess,
-  resetPasswordFailure,
-  resetPasswordRequest,
-  resetPasswordSuccess,
 } = authSlice.actions;
 export default authSlice.reducer;

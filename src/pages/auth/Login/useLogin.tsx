@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import config from '@/config';
 import { ROLE } from '@/constants';
 
-
 export const useLogin = () => {
   const dispatch = useDispatch();
   const { isLoading, error, userRole, accessToken } = useSelector(
@@ -18,11 +17,22 @@ export const useLogin = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  //* Handle submit & navigate after login
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
 
-  // Cập nhật lỗi vào form nếu có
+  useEffect(() => {
+    if (userRole && accessToken) {
+      if (userRole === ROLE.ADMIN) {
+        navigate(config.routes.admin.dashboard);
+      } else {
+        navigate(config.routes.public.home);
+      }
+    }
+  }, [userRole, accessToken, navigate]);
+
+  //* Cập nhật lỗi vào form nếu có
   useEffect(() => {
     if (error) {
       form.setFields([
@@ -38,6 +48,7 @@ export const useLogin = () => {
     }
   }, [error, form]);
 
+  //* Show notification when user is not active
   const handleClick = () => {
     if (error == 'User is not active') {
       showNotification({
@@ -46,17 +57,6 @@ export const useLogin = () => {
       });
     }
   };
-
-  //! Navigate based on user role
-  useEffect(() => {
-    if (userRole && accessToken) {
-      if (userRole === ROLE.ADMIN) {
-        navigate(config.routes.admin.dashboard);
-      } else {
-        navigate(config.routes.public.home);
-      }
-    }
-  }, [userRole, accessToken, navigate]);
 
   return {
     isLoading,

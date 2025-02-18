@@ -15,8 +15,6 @@ export const useHeader = () => {
   useEffect(() => {
     if (!userId) return; // Chỉ gọi API nếu userId hợp lệ
 
-    console.log('User id:', userId);
-
     const fetchUser = async () => {
       try {
         const response = await userService.getUserInfoById(userId);
