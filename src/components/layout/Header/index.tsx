@@ -1,6 +1,7 @@
-import HeaderAuth from './HeaderAuth';
+import HeaderAuth from './HeaderAuth/HeaderAuth';
 import styles from './Header.module.css';
 import ASSETS from '@/assets';
+import { Link } from 'react-router-dom';
 
 const navigationItems = [
   { label: 'Home', href: '/' },
@@ -35,9 +36,9 @@ export default function Header() {
       {/* Navigation Section */}
       <nav className={styles.navigation}>
         {navigationItems.map((item) => (
-          <a key={item.label} href={item.href}>
+          <Link key={item.label} to={item.href}>
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
 

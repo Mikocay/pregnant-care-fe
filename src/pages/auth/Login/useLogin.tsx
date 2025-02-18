@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import showNotification from '@/components/Notification';
 import { useNavigate } from 'react-router-dom';
-import config from '@/config/routes';
+import config from '@/config';
 
 export const useLogin = () => {
   const dispatch = useDispatch();

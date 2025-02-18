@@ -13,6 +13,8 @@ const routes = {
     signUp: '/signup',
     login: '/login',
     confirmEmail: '/confirm-email',
+    validateEmail: '/users/validate-email',
+    forgotPassword: '/forgot-password',
   },
 };
 

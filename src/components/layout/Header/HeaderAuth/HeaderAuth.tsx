@@ -9,7 +9,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import styles from './HeaderAuth.module.css';
-import ROUTES from '@/config/routes';
+import config from '@/config';
 
 interface User {
   name: string;
@@ -28,7 +28,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'profile',
       label: (
-        <Link to={ROUTES.PROFILE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <UserOutlined /> My Profile
           </div>
@@ -38,7 +38,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'settings',
       label: (
-        <Link to={ROUTES.PROFILE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <SettingOutlined /> Settings
           </div>
@@ -48,7 +48,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'schedule',
       label: (
-        <Link to={ROUTES.SCHEDULE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <CalendarOutlined /> My Schedule
           </div>
@@ -79,7 +79,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
         </Button> */}
         <Button
           className={styles.signInButton}
-          onClick={() => navigate(ROUTES.LOGIN)}
+          onClick={() => navigate(config.routes.auth.login)}
         >
           Sign In
         </Button>

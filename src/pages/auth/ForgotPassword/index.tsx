@@ -1,14 +1,12 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import { GoogleOutlined } from '@ant-design/icons';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
-import { useLogin } from './useLogin';
-import config from '@/config';
 import { Link } from 'react-router-dom';
+import config from '@/config';
 
-const Login: React.FC = () => {
-  const { handleSubmit, form, handleClick } = useLogin();
+const ForgetPassword: React.FC = () => {
+  //   const { handleSubmit, form, handleClick } = useLogin();
 
   return (
     <div className={styles.container}>
@@ -21,12 +19,12 @@ const Login: React.FC = () => {
       </div>
       <div className={styles.formSection}>
         <div className={styles.formContainer}>
-          <p className={styles.title}>Welcome to PregnaCare</p>
+          <p className={styles.title}>Forget Password</p>
 
           <Form
-            form={form}
-            name="login"
-            onFinish={handleSubmit}
+            // form={form}
+            name="forgetPassword"
+            // onFinish={handleSubmit}
             layout="vertical"
             initialValues={{ email: '', password: '' }}
           >
@@ -43,7 +41,7 @@ const Login: React.FC = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please input your password!' },
+                { required: true, message: 'Please enter your new password!' },
                 {
                   min: 8,
                   max: 126,
@@ -51,7 +49,24 @@ const Login: React.FC = () => {
                 },
               ]}
             >
-              <Input.Password placeholder="Enter your password" size="large" />
+              <Input.Password placeholder="New Password" size="large" />
+            </Form.Item>
+
+            <Form.Item
+              name="confirmPassword"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: 'Please confirm your password!' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    return value && getFieldValue('password') === value
+                      ? Promise.resolve()
+                      : Promise.reject(new Error('Passwords do not match!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="Confirm Password" size="large" />
             </Form.Item>
 
             <Form.Item>
@@ -60,35 +75,15 @@ const Login: React.FC = () => {
                 htmlType="submit"
                 size="large"
                 block
-                onClick={handleClick}
+                // onClick={handleClick}
                 style={{ backgroundColor: '#ff7875' }}
               >
-                Login
+                Reset Password
               </Button>
             </Form.Item>
           </Form>
-
-          <div className={styles.socialButtons}>
-            <Button icon={<GoogleOutlined />} size="large">
-              Google
-            </Button>
-          </div>
-
-          <Link
-            to={config.routes.auth.forgotPassword}
-            style={{
-              display: 'block',
-              textAlign: 'center',
-              marginBottom: '1rem',
-              color: '#666',
-            }}
-          >
-            Forgot password?
-          </Link>
-
           <div className={styles.footer}>
-            Don't have an account?{' '}
-            <Link to={config.routes.auth.signUp}>Sign Up</Link>
+            <Link to={config.routes.auth.login}>Login</Link>
           </div>
         </div>
       </div>
@@ -96,4 +91,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;

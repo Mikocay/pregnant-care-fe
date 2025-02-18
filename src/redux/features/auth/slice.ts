@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
-import { LoginFormData, RegisterFormData } from '../types/authType';
+import {
+  LoginFormData,
+  RegisterFormData,
+  ResetPasswordForm,
+} from '../types/authType';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -15,8 +19,6 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ accessToken: string; userId: string }>,
     ) => {
-      console.log('Login success:', action.payload.accessToken);
-
       state.isLoading = false;
       state.accessToken = action.payload.accessToken;
       state.isUser = action.payload.userId;
@@ -55,20 +57,40 @@ const authSlice = createSlice({
     },
     confirmEmailSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; userId: string }>,
+      _action: PayloadAction<{ accessToken: string; userId: string }>,
     ) => {
-      console.log('Confirm email success:', action.payload.accessToken);
-
       state.isLoading = false;
       state.registrationStatus = 'confirmed';
-      state.accessToken = action.payload.accessToken;
-      state.isUser = action.payload.userId;
       state.registeredEmail = null;
       state.error = null;
     },
     confirmEmailFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.registrationStatus = 'failed';
+      state.error = action.payload;
+    },
+    //* Request Reset Password *******************************************************
+    requestResetPasswordRequest: (state, _action: PayloadAction<string>) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    //* Reset Password *******************************************************
+    resetPasswordRequest: (
+      state,
+      _action: PayloadAction<ResetPasswordForm>,
+    ) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    resetPasswordSuccess: (
+      state,
+      _action: PayloadAction<{ message: string }>,
+    ) => {
+      state.isLoading = false;
+      state.error = null;
+    },
+    resetPasswordFailure: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
       state.error = action.payload;
     },
   },
@@ -85,5 +107,8 @@ export const {
   confirmEmailFailure,
   confirmEmailRequest,
   confirmEmailSuccess,
+  resetPasswordFailure,
+  resetPasswordRequest,
+  resetPasswordSuccess,
 } = authSlice.actions;
 export default authSlice.reducer;

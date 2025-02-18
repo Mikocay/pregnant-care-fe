@@ -12,7 +12,7 @@ import MiniAvatar from '@/components/MiniAvatar';
 import './AdminLayout.css';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
-import config from '@/config/routes';
+import config from '@/config';
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
