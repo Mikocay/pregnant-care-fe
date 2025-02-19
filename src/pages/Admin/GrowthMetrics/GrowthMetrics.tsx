@@ -1,16 +1,35 @@
+import { selectFetus } from '@/redux/features/fetus/selector';
+import { setFetusStandards } from '@/redux/features/fetus/slice';
+import { EditOutlined } from '@ant-design/icons';
 import { Table, TableProps } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface DataType {
   key: string;
   name: string;
   unit: string;
-  description: string;
-  min_value: number;
-  max_value: number;
-  week: number;
+  created_at: string;
+  action?: React.ReactNode;
 }
 
 function GrowthMetrics() {
+  const dispatch = useDispatch();
+  const fetusState = useSelector(selectFetus);
+  useEffect(() => {
+    dispatch(setFetusStandards());
+  }, [dispatch]);
+  console.log('fetusState', fetusState);
+
+
+  const data: DataType[] = Array.isArray(fetusState) ? fetusState.map((fetus: any) => ({
+    key: fetus.id,
+    name: fetus.name,
+    unit: fetus.unit,
+    created_at: fetus.created_at,
+    action: <EditOutlined />,
+  })) : [];
+
   const columns: TableProps<DataType>['columns'] = [
     {
       title: 'Name',
@@ -23,41 +42,16 @@ function GrowthMetrics() {
       key: 'unit',
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Created At',
+      dataIndex: 'created_at',
+      key: 'created_at',
     },
     {
-      title: 'Min value',
-      dataIndex: 'min_value',
-      key: 'min_value',
-    },
-    {
-      title: 'Max value',
-      dataIndex: 'max_value',
-      key: 'max_value',
-    },
-  ];
-
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'Crown-Rump Length',
-      unit: 'cm',
-      description: 'Length of the baby from head to bottom.',
-      min_value: 0.1,
-      max_value: 10,
-      week: 8,
-    },
-    {
-      key: '2',
-      name: 'Crown-Rump Length',
-      unit: 'cm',
-      description: 'Length of the baby from head to bottom.',
-      min_value: 0.1,
-      max_value: 10,
-      week: 8,
-    },
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      render: () => <EditOutlined />,
+    }
   ];
 
   return <Table<DataType> columns={columns} dataSource={data} />;
