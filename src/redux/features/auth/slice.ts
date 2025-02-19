@@ -36,6 +36,7 @@ const authSlice = createSlice({
       state.error = null;
       localStorage.removeItem('accessToken');
       localStorage.removeItem('userId');
+      localStorage.removeItem('userRole');
     },
     //* Register *******************************************************
     registerRequest: (state, _action: PayloadAction<RegisterFormData>) => {
