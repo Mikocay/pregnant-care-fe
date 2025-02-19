@@ -8,12 +8,12 @@ import GuestLayout from '@/layouts/GuestLayout';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import config from '@/config/routes';
-import ValidateEmail from '@/pages/Auth/SignUp/ConfirmEmail/emailConfirm';
+import ValidateEmail from '@/pages/auth/SignUp/ConfirmEmail/emailConfirm';
 
 //* Lazy load pages
-const Home = lazy(() => import('@/pages/Home'));
-const Login = lazy(() => import('@/pages/Auth/Login'));
-const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
+const Home = lazy(() => import('@/pages/home'));
+const Login = lazy(() => import('@/pages/auth/Login'));
+const SignUp = lazy(() => import('@/pages/auth/SignUp'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([

@@ -3,6 +3,7 @@ const routes = {
     dashboard: '/admin',
     manageMember: '/admin/manage-member',
     growthMatrics: '/admin/grouth-matrics',
+    blog: '/admin/blog',
   },
 
   public: {
