@@ -48,6 +48,5 @@ export const userService = {
   //* Get User Info *******************
   getUserInfoById: (userId: string): Promise<AxiosResponse<User>> => {
     return axiosPrivate.get(`${API_ENDPOINTS.users.oneUser}/${userId}`);
-
   },
 };

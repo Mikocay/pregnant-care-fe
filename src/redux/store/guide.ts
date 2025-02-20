@@ -1,5 +1,5 @@
-// ├── src/
-// │   ├── redux/
+// ├── redux/
+// │   ├── store/
 // │   │   ├── store.js             # Cấu hình Redux store
 // │   │   └── rootSaga.js          # Combine tất cả sagas
 // │   │
