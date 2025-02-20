@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import config from '@/config';
 import LoadingPage from '@/pages/Loading';
+import { ROLE } from '@/constants';
 
 interface PrivateRouteProps {
   allowedRoles: string[];
@@ -17,7 +18,7 @@ const PrivateRoute = ({ allowedRoles }: PrivateRouteProps) => {
     return <LoadingPage />;
   }
 
-  if (!allowedRoles.includes(userRole)) {
+  if (!allowedRoles.includes(userRole) && userRole !== ROLE.ADMIN) {
     return <Navigate to={config.routes.auth.unauthorized} replace />;
   }
 

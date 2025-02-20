@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store'; // Đảm bảo đường dẫn đúng
 import config from '@/config';
 import LoadingPage from '@/pages/Loading';
-import { jwtDecode } from 'jwt-decode';
-import { UserToken } from '@/types';
 import { logout } from '@/redux/features/auth/slice';
+import { isTokenExpired } from '@/utils/token/isTokenExpired';
 
 const PersistToken = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,19 +13,6 @@ const PersistToken = () => {
 
   const { accessToken } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-
-  //* Check if token is expired
-  const isTokenExpired = (token: string | null) => {
-    if (!token) return true;
-    try {
-      const decodedToken = jwtDecode<UserToken>(token);
-      const currentTime = Date.now() / 1000;
-      return decodedToken.exp < currentTime;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return true;
-    }
-  };
 
   useEffect(() => {
     const checkAccessToken = () => {

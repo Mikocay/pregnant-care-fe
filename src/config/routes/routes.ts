@@ -7,6 +7,11 @@ const routes = {
     formPlan: '/admin/form-plan',
   },
 
+  member: {
+    dashboard: '/member',
+    calendar: '/member/calendar',
+  },
+
   public: {
     home: '/',
   },
@@ -19,7 +24,6 @@ const routes = {
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
     unauthorized: '/unauthorized',
-
   },
 };
 

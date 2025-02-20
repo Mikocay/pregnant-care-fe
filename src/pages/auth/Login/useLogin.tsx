@@ -8,8 +8,7 @@ import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import config from '@/config';
 import { ROLE } from '@/constants';
-import { jwtDecode } from 'jwt-decode';
-import { UserToken } from '@/types';
+import { isTokenExpired } from '@/utils/token/isTokenExpired';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
@@ -19,27 +18,12 @@ export const useLogin = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  //* Check if token is expired
-  const isTokenExpired = (token: string | null) => {
-    if (!token) return true;
-    try {
-      const decodedToken = jwtDecode<UserToken>(token);
-      const currentTime = Date.now() / 1000;
-      return decodedToken.exp < currentTime;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return true;
-    }
-  };
-
   //* Handle submit & navigate after login
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
 
   useEffect(() => {
-    console.log('userRole asdasda', userRole);
-
     if (userRole && accessToken && !isTokenExpired(accessToken)) {
       if (userRole === ROLE.ADMIN) {
         navigate(config.routes.admin.dashboard);
