@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Form } from 'antd';
-import { loginRequest } from '@/redux/features/auth/slice';
+import { loginRequest, logout } from '@/redux/features/auth/slice';
 import { LoginFormData } from '@/redux/features/types/authType';
 import { RootState } from '@/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,8 @@ import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
 import config from '@/config';
 import { ROLE } from '@/constants';
+import { jwtDecode } from 'jwt-decode';
+import { UserToken } from '@/types';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
@@ -17,20 +19,39 @@ export const useLogin = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  //* Check if token is expired
+  const isTokenExpired = (token: string | null) => {
+    if (!token) return true;
+    try {
+      const decodedToken = jwtDecode<UserToken>(token);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp < currentTime;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true;
+    }
+  };
+
   //* Handle submit & navigate after login
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
 
   useEffect(() => {
-    if (userRole && accessToken) {
+    console.log('userRole asdasda', userRole);
+
+    if (userRole && accessToken && !isTokenExpired(accessToken)) {
       if (userRole === ROLE.ADMIN) {
         navigate(config.routes.admin.dashboard);
-      } else {
+      }
+      //TODO: Navigate member role
+      if (userRole !== ROLE.ADMIN) {
         navigate(config.routes.public.home);
       }
+    } else {
+      dispatch(logout());
     }
-  }, [userRole, accessToken, navigate]);
+  }, [userRole, accessToken, navigate, dispatch]);
 
   //* Cập nhật lỗi vào form nếu có
   useEffect(() => {

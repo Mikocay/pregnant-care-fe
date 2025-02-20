@@ -44,9 +44,10 @@ function* loginSaga(
 
     yield put(loginFailure(errorMessage));
 
-    // Xóa token nếu login thất bại
+    //* Xóa token nếu login thất bại
     yield call([localStorage, 'removeItem'], 'accessToken');
     yield call([localStorage, 'removeItem'], 'userId');
+    yield call([localStorage, 'removeItem'], 'userRole');
   }
 }
 
