@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined, DownOutlined } from '@ant-design/icons'
 import { Editor } from '@tiptap/react'
-import { Tooltip, Button, Dropdown, Menu, Divider } from 'antd'
+import { Dropdown, Menu, Divider, Button, Modal, Input, Upload } from 'antd'
+import MenuButton from './MenuButton'
+import { UploadOutlined } from '@ant-design/icons'
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -10,6 +12,11 @@ interface FloatingMenuProps {
 }
 
 const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
+  const [linkModalVisible, setLinkModalVisible] = useState(false)
+  const [imageModalVisible, setImageModalVisible] = useState(false)
+  const [link, setLink] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+
   if (!editor) {
     return null
   }
@@ -25,6 +32,18 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
     </Menu>
   )
 
+  const handleLinkOk = () => {
+    editor.chain().focus().setLink({ href: link }).run()
+    setLinkModalVisible(false)
+    setLink('')
+  }
+
+  const handleImageOk = () => {
+    editor.chain().focus().setImage({ src: imageUrl }).run()
+    setImageModalVisible(false)
+    setImageUrl('')
+  }
+
   return (
     <div style={{ marginBottom: '10px', display: 'flex', gap: '8px' }}>
       <Dropdown overlay={headingMenu}>
@@ -33,77 +52,96 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
         </Button>
       </Dropdown>
       <Divider type="vertical" />
-      <Tooltip title="Bold">
-        <Button
-          icon={<BoldOutlined />}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          type={editor.isActive('bold') ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Italic">
-        <Button
-          icon={<ItalicOutlined />}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          type={editor.isActive('italic') ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Strikethrough">
-        <Button
-          icon={<StrikethroughOutlined />}
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          type={editor.isActive('strike') ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Underline">
-        <Button
-          icon={<UnderlineOutlined />}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          type={editor.isActive('underline') ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Highlight">
-        <Button
-          icon={<HighlightOutlined />}
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
-          type={editor.isActive('highlight') ? 'primary' : 'default'}
-        />
-      </Tooltip>
+      <MenuButton
+        tooltipTitle="Bold"
+        icon={<BoldOutlined />}
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        type={editor.isActive('bold') ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Italic"
+        icon={<ItalicOutlined />}
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        type={editor.isActive('italic') ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Strikethrough"
+        icon={<StrikethroughOutlined />}
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        type={editor.isActive('strike') ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Underline"
+        icon={<UnderlineOutlined />}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        type={editor.isActive('underline') ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Highlight"
+        icon={<HighlightOutlined />}
+        onClick={() => editor.chain().focus().toggleHighlight().run()}
+        type={editor.isActive('highlight') ? 'primary' : 'default'} tooltipProps={{}}      />
       <Divider type="vertical" />
-      <Tooltip title="Align Left">
-        <Button
-          icon={<AlignLeftOutlined />}
-          onClick={() => editor.chain().focus().setTextAlign('left').run()}
-          type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Align Center">
-        <Button
-          icon={<AlignCenterOutlined />}
-          onClick={() => editor.chain().focus().setTextAlign('center').run()}
-          type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'}
-        />
-      </Tooltip>
-      <Tooltip title="Align Right">
-        <Button
-          icon={<AlignRightOutlined />}
-          onClick={() => editor.chain().focus().setTextAlign('right').run()}
-          type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'}
-        />
-      </Tooltip>
+      <MenuButton
+        tooltipTitle="Align Left"
+        icon={<AlignLeftOutlined />}
+        onClick={() => editor.chain().focus().setTextAlign('left').run()}
+        type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Align Center"
+        icon={<AlignCenterOutlined />}
+        onClick={() => editor.chain().focus().setTextAlign('center').run()}
+        type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Align Right"
+        icon={<AlignRightOutlined />}
+        onClick={() => editor.chain().focus().setTextAlign('right').run()}
+        type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'} tooltipProps={{}}      />
       <Divider type="vertical" />
-      <Tooltip title="Link">
-        <Button
-          icon={<LinkOutlined />}
-          onClick={() => editor.chain().focus().setLink({ href: 'https://example.com' }).run()}
-          type={editor.isActive('link') ? 'primary' : 'default'}
+      <MenuButton
+        tooltipTitle="Link"
+        icon={<LinkOutlined />}
+        onClick={() => setLinkModalVisible(true)}
+        type={editor.isActive('link') ? 'primary' : 'default'} tooltipProps={{}}      />
+      <MenuButton
+        tooltipTitle="Image"
+        icon={<PictureOutlined />}
+        onClick={() => setImageModalVisible(true)} tooltipProps={{}}      />
+
+      {/* Link Modal */}
+      <Modal
+        title="Insert Link"
+        visible={linkModalVisible}
+        onOk={handleLinkOk}
+        onCancel={() => setLinkModalVisible(false)}
+      >
+        <Input
+          placeholder="Enter URL"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
         />
-      </Tooltip>
-      <Tooltip title="Image">
-        <Button
-          icon={<PictureOutlined />}
-          onClick={() => editor.chain().focus().setImage({ src: 'https://via.placeholder.com/150' }).run()}
-        />
-      </Tooltip>
+      </Modal>
+
+      {/* Image Modal */}
+      <Modal
+        title="Insert Image"
+        visible={imageModalVisible}
+        onOk={handleImageOk}
+        onCancel={() => setImageModalVisible(false)}
+      >
+        <Upload
+          beforeUpload={(file) => {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+              setImageUrl(e.target?.result as string)
+            }
+            reader.readAsDataURL(file)
+            return false
+          }}
+          showUploadList={false}
+        >
+          <Button icon={<UploadOutlined />}>Upload Image</Button>
+        </Upload>
+        {imageUrl && (
+          <img src={imageUrl} alt="Uploaded" style={{ marginTop: '10px', maxWidth: '100%' }} />
+        )}
+      </Modal>
     </div>
   )
 }

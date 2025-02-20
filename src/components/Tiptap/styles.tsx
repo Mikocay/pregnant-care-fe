@@ -2,9 +2,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   margin: 20px 0;
+  height: 100%; /* Ensure the container takes full height */
 `
 
 export const EditorContainer = styled.div`
@@ -12,6 +13,7 @@ export const EditorContainer = styled.div`
   padding: 10px;
   border-radius: 5px;
   width: 100%; /* Make width responsive */
+  height: 100%; /* Ensure the editor container takes full height */
   overflow-y: auto; /* Add scroll if content exceeds the height */
 `
 

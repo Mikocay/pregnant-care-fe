@@ -6,7 +6,6 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Highlight from '@tiptap/extension-highlight'
 import Underline from '@tiptap/extension-underline'
-import { Container, EditorContainer, MenuContainer } from './styles'
 import FloatingMenu from './components/FloatingMenu'
 import { Card } from 'antd'
 
@@ -30,9 +29,9 @@ const TiptapEditor: React.FC = () => {
   return (
     <Card
       title={<FloatingMenu editor={editor} />}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '80vh' }}
     >
-        <EditorContent editor={editor} style={{ height: '100%', border: '1px solid #ddd', padding: '10px', borderRadius: '5px' }} />
+        <EditorContent editor={editor} style={{ outline: 'none' }} />
     </Card>
   )
 }
