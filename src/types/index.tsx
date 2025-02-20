@@ -22,3 +22,17 @@ export interface Plan {
   benefits: string[];
   createdAt: string;
 }
+
+interface Week {
+  week: number;
+  min: number;
+  max: number;
+}
+export interface FetusStandard {
+  name: string;
+  unit: string;
+  weeks: Week[];
+  isDeleted: boolean;
+  createdAt: string;
+}
+
