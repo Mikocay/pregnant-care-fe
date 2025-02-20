@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 import ASSETS from '@/assets';
 
@@ -32,9 +33,9 @@ export default function Footer() {
         <h3>Quick Links</h3>
         <div className={styles.navLinks}>
           {navigationLinks.map((link) => (
-            <a key={link.label} href={link.href}>
+            <Link key={link.label} to={link.href}>
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -43,8 +44,8 @@ export default function Footer() {
       <div className={styles.download}>
         <p className={styles.downloadText}>Get the App</p>
         <div className={styles.storeButtons}>
-          <a
-            href="https://apps.apple.com"
+          <Link
+            to="https://apps.apple.com"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -53,9 +54,9 @@ export default function Footer() {
               alt="Download on App Store"
               className={styles.storeButton}
             />
-          </a>
-          <a
-            href="https://play.google.com"
+          </Link>
+          <Link
+            to="https://play.google.com"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -64,7 +65,7 @@ export default function Footer() {
               alt="Get it on Google Play"
               className={styles.storeButton}
             />
-          </a>
+          </Link>
         </div>
       </div>
     </footer>

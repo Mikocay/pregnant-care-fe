@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from '../styles/Auth.module.css';
 import ASSETS from '@/assets';
 import { useSignup } from './useSignup';
+import config from '@/config';
 
 const SignUp: React.FC = () => {
   const { handleSubmit, handleClick, form } = useSignup();
@@ -20,15 +21,7 @@ const SignUp: React.FC = () => {
       </div>
       <div className={styles.formSection}>
         <div className={styles.formContainer}>
-          <h1 className={styles.title}>SIGN UP</h1>
-
-          <div className={styles.socialButtons}>
-            <Button icon={<GoogleOutlined />} size="large">
-              Sign up with Google
-            </Button>
-          </div>
-
-          <div className={styles.divider}>OR</div>
+          <p className={styles.title}>SIGN UP</p>
 
           <Form
             name="signup"
@@ -95,14 +88,22 @@ const SignUp: React.FC = () => {
                 block
                 onClick={handleClick}
                 className={styles.submitBtn}
+                style={{ backgroundColor: '#ff7875' }}
               >
                 Register
               </Button>
             </Form.Item>
           </Form>
 
+          <div className={styles.socialButtons}>
+            <Button icon={<GoogleOutlined />} size="large">
+              Sign up with Google
+            </Button>
+          </div>
+
           <div className={styles.footer}>
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account?{' '}
+            <Link to={config.routes.auth.login}>Login</Link>
           </div>
         </div>
       </div>

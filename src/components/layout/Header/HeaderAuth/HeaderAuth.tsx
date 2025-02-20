@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, Dropdown, Avatar } from 'antd';
+import { Dropdown, Avatar } from 'antd';
+import { Link } from 'react-router-dom';
 import type { MenuProps } from 'antd';
 import {
   BellOutlined,
@@ -9,12 +9,8 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import styles from './HeaderAuth.module.css';
-import ROUTES from '@/config/routes';
-
-interface User {
-  name: string;
-  avatar?: string;
-}
+import config from '@/config';
+import { User } from '@/types';
 
 interface HeaderAuthProps {
   user?: User | null;
@@ -22,13 +18,11 @@ interface HeaderAuthProps {
 }
 
 export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
-  const navigate = useNavigate();
-
-  const dropdownItems: MenuProps['items'] = [
+  const dropdownItemsAuth: MenuProps['items'] = [
     {
       key: 'profile',
       label: (
-        <Link to={ROUTES.PROFILE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <UserOutlined /> My Profile
           </div>
@@ -38,7 +32,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'settings',
       label: (
-        <Link to={ROUTES.PROFILE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <SettingOutlined /> Settings
           </div>
@@ -48,7 +42,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'schedule',
       label: (
-        <Link to={ROUTES.SCHEDULE}>
+        <Link to="">
           <div className={styles.menuItem}>
             <CalendarOutlined /> My Schedule
           </div>
@@ -70,19 +64,14 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
 
   if (!user) {
     return (
-      <div className={styles.container}>
-        {/* <Button
-          className={styles.signUpButton}
-          onClick={() => navigate(ROUTES.REGISTER)}
-        >
+      <div className={styles.authContainer}>
+        <Link to={config.routes.auth.login} className={styles.authText}>
+          Login
+        </Link>
+        |
+        <Link to={config.routes.auth.signUp} className={styles.authText}>
           Sign Up
-        </Button> */}
-        <Button
-          className={styles.signInButton}
-          onClick={() => navigate(ROUTES.LOGIN)}
-        >
-          Sign In
-        </Button>
+        </Link>
       </div>
     );
   }
@@ -90,16 +79,16 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
   return (
     <div className={styles.container}>
       <BellOutlined className={styles.notification} />
-      <span>Welcome, {user.name}</span>
+      <span>Welcome, {user.firstName || 'guest'}</span>
       <Dropdown
-        menu={{ items: dropdownItems }}
+        menu={{ items: dropdownItemsAuth }}
         placement="bottomRight"
         trigger={['click']}
         overlayClassName={styles.dropdownMenu}
       >
         <Avatar
-          src={user.avatar}
-          icon={!user.avatar && <UserOutlined />}
+          src={user.avatarUrl}
+          icon={!user.avatarUrl && <UserOutlined />}
           className={styles.userAvatar}
         />
       </Dropdown>

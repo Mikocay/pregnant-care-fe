@@ -2,6 +2,7 @@ import ASSETS from '@/assets';
 import Sider from 'antd/es/layout/Sider';
 import { Menu } from 'antd';
 import './Sidebar.css';
+import { useLocation } from 'react-router-dom';
 
 type SidebarItem = {
   key: string;
@@ -12,6 +13,8 @@ type SidebarItem = {
 type SidebarBody = SidebarItem[];
 
 export default function Sidebar({ sidebarBody }: { sidebarBody: SidebarBody }) {
+  const location = useLocation();
+
   return (
     <Sider theme="light" width={260} className="sidebar">
       <div className="sidebar-top">
@@ -27,9 +30,10 @@ export default function Sidebar({ sidebarBody }: { sidebarBody: SidebarBody }) {
       <Sider theme="light" width={250} className="menu-sider">
         <Menu
           mode="inline"
-          defaultSelectedKeys={['1']}
-          items={sidebarBody.map((item) => ({
+          defaultSelectedKeys={[location.pathname ? location.pathname : '1']}
+          items={sidebarBody.map((item, index) => ({
             ...item,
+            key: item.key || index,
             className: 'menu-item',
           }))}
         />

@@ -7,6 +7,17 @@
   font-size: 12px;
 }
 
+.authContainer {
+  display: flex;
+  color: #ff7875;
+  text-align: center;
+  gap: 16px;
+}
+
+.authText {
+  color: #ff7875;
+}
+
 .signUpButton {
   border: 2px solid #ff4d4f;
   color: #ff4d4f;

@@ -1,14 +1,20 @@
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdminRoutes from './AdminRoutes';
+import config from '@/config';
+import { ROLE } from '@/constants';
+
 // import AdminRoutes from './AdminRoutes';
 
 //* Layouts
-import GuestLayout from '@/layouts/GuestLayout';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import config from '@/config/routes';
 import ValidateEmail from '@/pages/auth/SignUp/ConfirmEmail/emailConfirm';
+import PublicLayout from '@/layouts/PublicLayout';
+import PrivateRoute from '@/components/Auth/PrivateRoutes';
+import AuthRoutes from './AuthRoutes';
+import PersistToken from '@/components/Auth/PeristLogin';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/home'));
@@ -18,20 +24,28 @@ const SignUp = lazy(() => import('@/pages/auth/SignUp'));
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
-    { path: config.routes.auth.login, element: <Login /> },
-    { path: config.routes.auth.signUp, element: <SignUp /> },
-    { path: '/users/validate-email', element: <ValidateEmail /> },
     {
-      element: <GuestLayout />,
+      element: <PublicLayout />,
       children: [
         { index: true, path: config.routes.public.home, element: <Home /> },
       ],
     },
 
-    //**** PRIVATE routes ****
+    //* AUTH routes *
+    ...AuthRoutes,
 
-    //* Admin *
-    AdminRoutes,
+
+    //**** PRIVATE routes ****
+    {
+      element: <PersistToken />,
+      children: [
+        //* Admin routes *
+        {
+          element: <PrivateRoute allowedRoles={[ROLE.ADMIN]} />,
+          children: [AdminRoutes],
+        },
+      ],
+    },
 
     //* Member *
     {

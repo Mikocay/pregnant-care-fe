@@ -39,8 +39,8 @@ axiosPrivate.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Xử lý khi bị unauthorized
       console.error('Unauthorized! Redirecting to login...');
-      //   window.location.href = '/login';
     }
     return Promise.reject(error);
   },

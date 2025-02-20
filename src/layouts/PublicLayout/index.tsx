@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import HeaderLayout from '../DefautLayouts/HeaderLayout';
 
-const GuestLayout = () => {
+const PublicLayout = () => {
   return (
     <HeaderLayout>
       <Outlet />
@@ -9,4 +9,4 @@ const GuestLayout = () => {
   );
 };
 
-export default GuestLayout;
+export default PublicLayout;

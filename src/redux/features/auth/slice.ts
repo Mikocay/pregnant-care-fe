@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
 import { LoginFormData, RegisterFormData } from '../types/authType';
+import { User } from '@/types';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -13,13 +14,15 @@ const authSlice = createSlice({
     },
     loginSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; userId: string }>,
+      action: PayloadAction<{
+        tokenData: { accessToken: string; userId: string };
+        user: User;
+      }>,
     ) => {
-      console.log('Login success:', action.payload.accessToken);
-
       state.isLoading = false;
-      state.accessToken = action.payload.accessToken;
-      state.isUser = action.payload.userId;
+      state.accessToken = action.payload.tokenData.accessToken;
+      state.userId = action.payload.tokenData.userId;
+      state.userRole = action.payload.user.role;
       state.error = null;
     },
     loginFailure: (state, action: PayloadAction<string>) => {
@@ -28,8 +31,12 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.accessToken = null;
-      state.isUser = null;
+      state.userId = '';
+      state.userRole = '';
       state.error = null;
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userRole');
     },
     //* Register *******************************************************
     registerRequest: (state, _action: PayloadAction<RegisterFormData>) => {
@@ -55,14 +62,10 @@ const authSlice = createSlice({
     },
     confirmEmailSuccess: (
       state,
-      action: PayloadAction<{ accessToken: string; userId: string }>,
+      _action: PayloadAction<{ accessToken: string; userId: string }>,
     ) => {
-      console.log('Confirm email success:', action.payload.accessToken);
-
       state.isLoading = false;
       state.registrationStatus = 'confirmed';
-      state.accessToken = action.payload.accessToken;
-      state.isUser = action.payload.userId;
       state.registeredEmail = null;
       state.error = null;
     },

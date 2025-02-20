@@ -18,11 +18,17 @@ export interface UserState {
 export interface User {
   id: string;
 }
+
+export interface ResetPasswordForm {
+  token: string;
+  newPassword: string;
+}
 export interface AuthState {
   isLoading: boolean;
   error: string | null;
   accessToken: string | null;
-  isUser: string | null;
+  userId: string;
+  userRole: string;
   registrationStatus:
     | 'idle'
     | 'pending_confirmation'

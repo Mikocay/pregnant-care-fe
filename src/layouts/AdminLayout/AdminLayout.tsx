@@ -7,15 +7,19 @@ import {
   ClockCircleOutlined,
   EyeOutlined,
   BellOutlined,
+  InboxOutlined,
 } from '@ant-design/icons';
 import MiniAvatar from '@/components/MiniAvatar';
 import './AdminLayout.css';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
-import config from '@/config/routes';
+import config from '@/config';
+import { useAdmin } from '../hooks/useAdmin';
+
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
+  const { createButton, isCreate } = useAdmin();
   const menuItems = [
     {
       key: '1',
@@ -34,11 +38,16 @@ const AdminLayout = () => {
     },
     {
       key: '4',
+      icon: <InboxOutlined />,
+      label: <Link to={config.routes.admin.managePlans}>Manage Plans</Link>,
+    },
+    {
+      key: '5',
       icon: <EyeOutlined />,
       label: 'Mother status',
     },
     {
-      key: '5',
+      key: '6',
       icon: <BellOutlined />,
       label: <Link to={config.routes.admin.growthMatrics}>Grouth Matrics</Link>,
     },
@@ -56,28 +65,35 @@ const AdminLayout = () => {
             <MiniAvatar />
           </div>
         </Header>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            padding: '10px 20px',
-          }}
-        >
-          <Button type="primary" className="create-button">
-            Create <EditOutlined />
-          </Button>
-        </div>
-
-        <Content className="content">
-          <div className="content-header">
-            <Input
-              placeholder="Search"
-              prefix={<SearchOutlined />}
-              className="search-input"
-            />
-            <div className="sort-dropdown">Sort by: Newest</div>
+        {/* !Create Button */}
+        {isCreate ? null : (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              padding: '10px 20px',
+            }}
+          >
+            <Button
+              type="primary"
+              className="create-button"
+              onClick={createButton}
+            >
+              Create <EditOutlined />
+            </Button>
           </div>
-
+        )}
+        <Content className="content">
+          {isCreate ? null : (
+            <div className="content-header">
+              <Input
+                placeholder="Search"
+                prefix={<SearchOutlined />}
+                className="search-input"
+              />
+              <div className="sort-dropdown">Sort by: Newest</div>
+            </div>
+          )}
           {/* Admin Content */}
           <Outlet />
         </Content>

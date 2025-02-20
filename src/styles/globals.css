@@ -5,3 +5,7 @@
 .ProseMirror:focus-visible {
   outline: none;
 }
+
+html * {
+  font-family: Arial !important;
+}

@@ -1,28 +1,59 @@
 import { useEffect } from 'react';
 import { Form } from 'antd';
-import { loginRequest } from '@/redux/features/auth/slice';
+import { loginRequest, logout } from '@/redux/features/auth/slice';
 import { LoginFormData } from '@/redux/features/types/authType';
 import { RootState } from '@/redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import showNotification from '@/components/Notification';
+import showNotification from '@/components/Notification/Notification';
 import { useNavigate } from 'react-router-dom';
-import config from '@/config/routes';
+import config from '@/config';
+import { ROLE } from '@/constants';
+import { jwtDecode } from 'jwt-decode';
+import { UserToken } from '@/types';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, isUser } = useSelector(
+  const { isLoading, error, userRole, accessToken } = useSelector(
     (state: RootState) => state.auth,
   );
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  console.log(isUser);
+  //* Check if token is expired
+  const isTokenExpired = (token: string | null) => {
+    if (!token) return true;
+    try {
+      const decodedToken = jwtDecode<UserToken>(token);
+      const currentTime = Date.now() / 1000;
+      return decodedToken.exp < currentTime;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true;
+    }
+  };
 
+  //* Handle submit & navigate after login
   const handleSubmit = (values: LoginFormData) => {
     dispatch(loginRequest(values));
   };
 
-  // Cập nhật lỗi vào form nếu có
+  useEffect(() => {
+    console.log('userRole asdasda', userRole);
+
+    if (userRole && accessToken && !isTokenExpired(accessToken)) {
+      if (userRole === ROLE.ADMIN) {
+        navigate(config.routes.admin.dashboard);
+      }
+      //TODO: Navigate member role
+      if (userRole !== ROLE.ADMIN) {
+        navigate(config.routes.public.home);
+      }
+    } else {
+      dispatch(logout());
+    }
+  }, [userRole, accessToken, navigate, dispatch]);
+
+  //* Cập nhật lỗi vào form nếu có
   useEffect(() => {
     if (error) {
       form.setFields([
@@ -38,6 +69,7 @@ export const useLogin = () => {
     }
   }, [error, form]);
 
+  //* Show notification when user is not active
   const handleClick = () => {
     if (error == 'User is not active') {
       showNotification({
@@ -46,14 +78,6 @@ export const useLogin = () => {
       });
     }
   };
-
-  //* Navigate after login
-  //! Navigate based on user role
-  useEffect(() => {
-    if (isUser) {
-      navigate(config.routes.public.home);
-    }
-  });
 
   return {
     isLoading,
