@@ -11,6 +11,8 @@ export const useAdmin = () => {
   const createButton = () => {
     if (path.includes(config.routes.admin.managePlans)) {
       navigate(config.routes.admin.formPlan);
+    } else if (path.includes(config.routes.admin.growthMatrics)) {
+      navigate(config.routes.admin.formGrwothMatrics);
     }
     //! Add more conditions here
     else if (path.includes(config.routes.admin.blog)) {
@@ -22,6 +24,8 @@ export const useAdmin = () => {
     console.log('Path:', path);
 
     if (path.includes(config.routes.admin.formPlan)) {
+      setIsCreate(true);
+    } else if (path.includes(config.routes.admin.formGrwothMatrics)) {
       setIsCreate(true);
     }
     else if (path.includes(config.routes.admin.createBlog)) {

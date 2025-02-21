@@ -7,6 +7,12 @@ const routes = {
     formPlan: '/admin/form-plan',
     blog: '/admin/blog',
     createBlog: '/admin/create-blog',
+    formGrwothMatrics: '/admin/form-growth-matrics',
+  },
+
+  member: {
+    dashboard: '/member',
+    calendar: '/member/calendar',
   },
 
   public: {
