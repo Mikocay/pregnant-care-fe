@@ -5,16 +5,13 @@ import config from '@/config';
 import { ROLE } from '@/constants';
 import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
 import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
-import ValidateEmail from '@/pages/Auth/SignUp/ConfirmEmail/emailConfirm';
 import PublicLayout from '@/layouts/PublicLayout';
 import PrivateRoute from '@/components/Auth/PrivateRoutes';
 import AuthRoutes from './AuthRoutes';
 import PersistToken from '@/components/Auth/PeristLogin';
 
 //* Lazy load pages
-const Home = lazy(() => import('@/pages/home'));
-const Login = lazy(() => import('@/pages/Auth/Login'));
-const SignUp = lazy(() => import('@/pages/Auth/SignUp'));
+const Home = lazy(() => import('@/pages/Home'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([

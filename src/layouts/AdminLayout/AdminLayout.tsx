@@ -8,6 +8,7 @@ import {
   EyeOutlined,
   BellOutlined,
   InboxOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 import MiniAvatar from '@/components/MiniAvatar';
 import './AdminLayout.css';
@@ -51,6 +52,11 @@ const AdminLayout = () => {
       icon: <BellOutlined />,
       label: <Link to={config.routes.admin.growthMatrics}>Grouth Matrics</Link>,
     },
+    {
+      key: '7',
+      icon: <ReadOutlined />,
+      label: <Link to={config.routes.admin.blog}>Blog</Link>,
+    }
   ];
 
   return (

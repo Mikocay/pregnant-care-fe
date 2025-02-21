@@ -1,4 +1,4 @@
-import React from 'react'
+import { useImperativeHandle, forwardRef } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -8,8 +8,9 @@ import Highlight from '@tiptap/extension-highlight'
 import Underline from '@tiptap/extension-underline'
 import FloatingMenu from './components/FloatingMenu'
 import { Card } from 'antd'
+import BulletList from '@tiptap/extension-bullet-list'
 
-const TiptapEditor: React.FC = () => {
+const TiptapEditor = forwardRef((_props, ref) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -18,9 +19,14 @@ const TiptapEditor: React.FC = () => {
       Image,
       Highlight,
       Underline,
+      BulletList
     ],
     content: '<p>This is your placeholder...</p>',
   })
+
+  useImperativeHandle(ref, () => ({
+    getHTML: () => editor?.getHTML(),
+  }), [editor])
 
   if (!editor) {
     return null
@@ -29,11 +35,11 @@ const TiptapEditor: React.FC = () => {
   return (
     <Card
       title={<FloatingMenu editor={editor} />}
-      style={{ width: '100%', height: '80vh' }}
+      style={{ width: '100%', height: '100%' }}
     >
-        <EditorContent editor={editor} style={{ outline: 'none' }} />
+      <EditorContent editor={editor} style={{ outline: 'none' }} />
     </Card>
   )
-}
+})
 
 export default TiptapEditor

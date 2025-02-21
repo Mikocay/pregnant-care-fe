@@ -1,3 +1,4 @@
+import TiptapEditor from '@/components/Tiptap';
 import { RootState } from '@/redux/store/store';
 import { useSelector } from 'react-redux';
 
@@ -7,7 +8,9 @@ const Home = () => {
   console.log('userId', userId);
 
 
-  return <div>Home</div>;
+  return (
+    <TiptapEditor />
+  )
 };
 
 export default Home;

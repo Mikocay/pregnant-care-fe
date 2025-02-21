@@ -11,6 +11,8 @@ const FormPlan = lazy(
   () => import('@/pages/Admin/ManagePlans/FormPlan/FormPlan'),
 );
 const ManagePlans = lazy(() => import('@/pages/Admin/ManagePlans/ManagePlans'));
+const ManageBlogs = lazy(() => import('@/pages/Admin/ManageBlogs'));
+const FormCreateBlog = lazy(() => import('@/pages/Admin/ManageBlogs/components/FormCreateBlog'));
 
 // Authorization
 const AdminRouter = () => {
@@ -29,8 +31,10 @@ const AdminRoutes = {
     { path: config.routes.admin.manageMember, element: <ManageMember /> },
     { path: config.routes.admin.growthMatrics, element: <GrowthMetrics /> },
     { path: config.routes.admin.managePlans, element: <ManagePlans /> },
-    //* Admin create routes
+    { path: config.routes.admin.blog, element: <ManageBlogs /> },
+    //* Admin create routes 
     { path: config.routes.admin.formPlan, element: <FormPlan /> },
+    { path: config.routes.admin.createBlog, element: <FormCreateBlog /> },
   ],
 };
 

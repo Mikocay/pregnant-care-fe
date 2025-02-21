@@ -6,6 +6,7 @@ const routes = {
     managePlans: '/admin/manage-plans',
     formPlan: '/admin/form-plan',
     blog: '/admin/blog',
+    createBlog: '/admin/create-blog',
   },
 
   public: {
@@ -20,7 +21,6 @@ const routes = {
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
     unauthorized: '/unauthorized',
-
   },
 };
 

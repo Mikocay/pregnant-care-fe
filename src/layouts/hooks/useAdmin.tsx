@@ -13,12 +13,18 @@ export const useAdmin = () => {
       navigate(config.routes.admin.formPlan);
     }
     //! Add more conditions here
+    else if (path.includes(config.routes.admin.blog)) {
+      navigate(config.routes.admin.createBlog);
+    }
   };
 
   useEffect(() => {
     console.log('Path:', path);
 
     if (path.includes(config.routes.admin.formPlan)) {
+      setIsCreate(true);
+    }
+    else if (path.includes(config.routes.admin.createBlog)) {
       setIsCreate(true);
     }
     //! Add more conditions here

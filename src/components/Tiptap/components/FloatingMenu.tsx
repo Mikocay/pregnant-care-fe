@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined, DownOutlined } from '@ant-design/icons'
+import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined, DownOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { Editor } from '@tiptap/react'
 import { Dropdown, Menu, Divider, Button, Modal, Input, Upload } from 'antd'
 import MenuButton from './MenuButton'
@@ -53,56 +53,62 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
       </Dropdown>
       <Divider type="vertical" />
       <MenuButton
+        tooltipTitle='Bullet Lists'
+        icon={<UnorderedListOutlined />}
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        type={editor.isActive('bulletList') ? 'primary' : 'default'} tooltipProps={{}} />
+
+      <MenuButton
         tooltipTitle="Bold"
         icon={<BoldOutlined />}
         onClick={() => editor.chain().focus().toggleBold().run()}
-        type={editor.isActive('bold') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('bold') ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Italic"
         icon={<ItalicOutlined />}
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        type={editor.isActive('italic') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('italic') ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Strikethrough"
         icon={<StrikethroughOutlined />}
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        type={editor.isActive('strike') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('strike') ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Underline"
         icon={<UnderlineOutlined />}
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        type={editor.isActive('underline') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('underline') ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Highlight"
         icon={<HighlightOutlined />}
         onClick={() => editor.chain().focus().toggleHighlight().run()}
-        type={editor.isActive('highlight') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('highlight') ? 'primary' : 'default'} tooltipProps={{}} />
       <Divider type="vertical" />
       <MenuButton
         tooltipTitle="Align Left"
         icon={<AlignLeftOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
-        type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Align Center"
         icon={<AlignCenterOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('center').run()}
-        type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Align Right"
         icon={<AlignRightOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('right').run()}
-        type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'} tooltipProps={{}} />
       <Divider type="vertical" />
       <MenuButton
         tooltipTitle="Link"
         icon={<LinkOutlined />}
         onClick={() => setLinkModalVisible(true)}
-        type={editor.isActive('link') ? 'primary' : 'default'} tooltipProps={{}}      />
+        type={editor.isActive('link') ? 'primary' : 'default'} tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Image"
         icon={<PictureOutlined />}
-        onClick={() => setImageModalVisible(true)} tooltipProps={{}}      />
+        onClick={() => setImageModalVisible(true)} tooltipProps={{}} />
 
       {/* Link Modal */}
       <Modal
