@@ -1,3 +1,7 @@
+import { FetusStandard } from "@/types";
+
 export interface FetusState {
-    fetusStandardsNameAndUnit: [];
+    fetusStandardsNameAndUnit: {
+        data: FetusStandard[];
+    }
 }
