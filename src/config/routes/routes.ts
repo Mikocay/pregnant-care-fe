@@ -15,6 +15,7 @@ const routes = {
 
   public: {
     home: '/',
+    pricing: '/pricing',
   },
 
   auth: {

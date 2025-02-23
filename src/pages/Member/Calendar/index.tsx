@@ -1,7 +1,9 @@
-import TrackingCalendar from '@/components/Calendar';
+import TrackingCalendar from '@/pages/Member/components/TrackingCalendar';
 
 const Calendar = () => {
-  return <TrackingCalendar />;
+  const dueDate = new Date('2025-6-16');
+
+  return <TrackingCalendar dueDate={dueDate} />;
 };
 
 export default Calendar;

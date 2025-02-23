@@ -2,23 +2,19 @@ import config from '@/config';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export const useAdmin = () => {
+export const useMember = () => {
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
   const [hideContent, setHideContent] = useState(false);
 
   const createButton = () => {
-    if (path.includes(config.routes.admin.managePlans)) {
-      navigate(config.routes.admin.formPlan);
-    } else if (path.includes(config.routes.admin.growthMatrics)) {
-      navigate(config.routes.admin.formGrwothMatrics);
-    }
+    console.log('Create button clicked');
     //! Add more conditions here
   };
 
   useEffect(() => {
-    if (path.includes(config.routes.admin.formPlan)) {
+    if (path.includes(config.routes.member.calendar)) {
       setHideContent(true);
     }
     //! Add more conditions here
