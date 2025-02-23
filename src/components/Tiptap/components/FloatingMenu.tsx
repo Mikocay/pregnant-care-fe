@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, AlignCenterOutlined, AlignRightOutlined, DownOutlined, UnorderedListOutlined } from '@ant-design/icons'
+import { 
+  BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, 
+  LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, 
+  AlignCenterOutlined, AlignRightOutlined, DownOutlined, UnorderedListOutlined, 
+  UploadOutlined 
+} from '@ant-design/icons'
 import { Editor } from '@tiptap/react'
 import { Dropdown, Menu, Divider, Button, Modal, Input, Upload } from 'antd'
 import MenuButton from './MenuButton'
-import { UploadOutlined } from '@ant-design/icons'
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -145,7 +149,20 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
           <Button icon={<UploadOutlined />}>Upload Image</Button>
         </Upload>
         {imageUrl && (
-          <img src={imageUrl} alt="Uploaded" style={{ marginTop: '10px', maxWidth: '100%' }} />
+          <img 
+            src={imageUrl} 
+            alt="Uploaded" 
+            style={{ 
+              marginTop: '10px', 
+              maxWidth: '100%', 
+              maxHeight: '200px', // Limit height
+              width: 'auto', 
+              height: 'auto',
+              display: 'block', 
+              marginLeft: 'auto', 
+              marginRight: 'auto'
+            }} 
+          />
         )}
       </Modal>
     </div>

@@ -1,16 +1,41 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { Button, Input, Form, Modal, message, Typography } from 'antd'
 import TiptapEditor from '@/components/Tiptap'
-import { Button, Input, Form, Modal, message } from 'antd'
+
+const { Title, Paragraph } = Typography
+
+// ✅ Validation Schema với Yup
+const schema = yup.object({
+  title: yup.string().required('Title is required'),
+  description: yup.string().required('Description is required'),
+})
+
 const FormCreateBlog = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const [previewVisible, setPreviewVisible] = useState(false)
   const editorRef = useRef<{ getHTML: () => string } | null>(null)
 
-  const handleSave = async () => {
+  // ✅ Sử dụng React Hook Form
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  })
+
+  const title = watch('title')
+  const description = watch('description')
+
+  // ✅ Lưu blog
+  const handleSave = async (data: any) => {
     try {
-      const content = editorRef.current ? editorRef.current.getHTML() : ''
-      console.log(content)
+      const content = editorRef.current?.getHTML() || ''
+      console.log({ ...data, content })
+
       message.success('Blog post saved successfully')
     } catch (error) {
       message.error('Error saving blog post')
@@ -18,40 +43,59 @@ const FormCreateBlog = () => {
     }
   }
 
-  const handlePreview = () => {
-    setPreviewVisible(true)
-  }
-
   return (
     <>
-      <Form>
-        <Form.Item label="Title">
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Form layout="vertical" onFinish={handleSubmit(handleSave)}>
+        {/* ✅ Title */}
+        <Form.Item label="Title" validateStatus={errors.title ? 'error' : ''} help={errors.title?.message}>
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => <Input {...field} placeholder="Enter blog title" />}
+          />
         </Form.Item>
-        <Form.Item label="Description">
-          <Input.TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
+
+        {/* ✅ Description */}
+        <Form.Item
+          label="Description"
+          validateStatus={errors.description ? 'error' : ''}
+          help={errors.description?.message}
+        >
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => <Input.TextArea {...field} placeholder="Enter description" />}
+          />
         </Form.Item>
-        <Form.Item>
+
+        {/* ✅ Tiptap Editor */}
+        <Form.Item label="Content">
           <TiptapEditor ref={editorRef} />
         </Form.Item>
+
+        {/* ✅ Buttons */}
         <Form.Item>
-          <Button type="primary" onClick={handleSave}>
+          <Button type="primary" htmlType="submit">
             Save Blog
           </Button>
-          <Button type="default" onClick={handlePreview} style={{ marginLeft: '10px' }}>
+          <Button type="default" onClick={() => setPreviewVisible(true)} style={{ marginLeft: '10px' }}>
             Preview Blog
           </Button>
         </Form.Item>
       </Form>
 
+      {/* ✅ Preview Modal */}
       <Modal
         title="Preview Blog"
-        visible={previewVisible}
+        open={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
       >
-        <h2>{title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: editorRef.current?.getHTML() || '' }} />
+        <Title level={2}>{title}</Title>
+        <Paragraph>{description}</Paragraph>
+        <Paragraph>
+          <div dangerouslySetInnerHTML={{ __html: editorRef.current?.getHTML() || '' }} />
+        </Paragraph>
       </Modal>
     </>
   )

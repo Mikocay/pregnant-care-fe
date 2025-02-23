@@ -6,6 +6,7 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Highlight from '@tiptap/extension-highlight'
 import Underline from '@tiptap/extension-underline'
+import FileHandler from '@tiptap-pro/extension-file-handler'
 import FloatingMenu from './components/FloatingMenu'
 import { Card } from 'antd'
 import BulletList from '@tiptap/extension-bullet-list'
@@ -19,9 +20,46 @@ const TiptapEditor = forwardRef((_props, ref) => {
       Image,
       Highlight,
       Underline,
-      BulletList
+      BulletList,
+      FileHandler.configure({
+        allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+        onDrop: (currentEditor, files, pos) => {
+          files.forEach((file) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+              currentEditor.chain().insertContentAt(pos, {
+                type: 'image',
+                attrs: {
+                  src: reader.result,
+                },
+              }).focus().run()
+            }
+          });
+        },
+        onPaste: (currentEditor, files) => {
+          files.forEach((file) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+              currentEditor.chain().insertContent({
+                type: 'image',
+                attrs: {
+                  src: reader.result,
+                },
+              }).focus().run()
+            }
+          })
+        }
+      }),
     ],
-    content: '<p>This is your placeholder...</p>',
+    content: `
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>`,
   })
 
   useImperativeHandle(ref, () => ({

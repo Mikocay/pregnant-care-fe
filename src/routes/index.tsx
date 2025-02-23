@@ -2,8 +2,6 @@ import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import config from '@/config';
 import { ROLE } from '@/constants';
-import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
-import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
 import PrivateRoute from '@/components/Auth/PrivateRoutes';
 import PersistToken from '@/components/Auth/PeristLogin';
 

@@ -49,3 +49,16 @@ export interface FetusStandard {
   createdAt: string;
 }
 
+export interface ICreateBlog {
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  thumbnailUrl: string;
+  category: string;
+  tags: string[];
+  featureImageUrls: string[];
+  isActive: boolean;
+  publishedAt: string | null;
+}
+
