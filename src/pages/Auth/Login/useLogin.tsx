@@ -29,8 +29,8 @@ export const useLogin = () => {
         navigate(config.routes.admin.dashboard);
       }
       //TODO: Navigate member role
-      if (userRole !== ROLE.ADMIN) {
-        navigate(config.routes.public.home);
+      if (userRole === ROLE.MEMBER) {
+        navigate(config.routes.member.dashboard);
       }
     } else {
       dispatch(logout());
@@ -43,7 +43,8 @@ export const useLogin = () => {
       form.setFields([
         {
           name: 'email',
-          errors: error.includes('email') ? [error] : [],
+          errors:
+            error.includes('email') || error.includes('User') ? [error] : [],
         },
         {
           name: 'password',

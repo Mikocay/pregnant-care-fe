@@ -15,6 +15,7 @@ import PublicLayout from '@/layouts/PublicLayout';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
+const PricingPage = lazy(() => import('@/pages/Pricing'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const RouterComponent = () => {
       element: <PublicLayout />,
       children: [
         { index: true, path: config.routes.public.home, element: <Home /> },
+        {
+          path: config.routes.public.pricing,
+          element: <PricingPage />,
+        },
       ],
     },
 

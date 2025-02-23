@@ -19,7 +19,8 @@ import { useAdmin } from '../hooks/useAdmin';
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
-  const { createButton, isCreate } = useAdmin();
+  const { createButton, hideContent } = useAdmin();
+
   const menuItems = [
     {
       key: '1',
@@ -66,7 +67,7 @@ const AdminLayout = () => {
           </div>
         </Header>
         {/* !Create Button */}
-        {isCreate ? null : (
+        {hideContent ? null : (
           <div
             style={{
               display: 'flex',
@@ -84,7 +85,7 @@ const AdminLayout = () => {
           </div>
         )}
         <Content className="content">
-          {isCreate ? null : (
+          {hideContent ? null : (
             <div className="content-header">
               <Input
                 placeholder="Search"

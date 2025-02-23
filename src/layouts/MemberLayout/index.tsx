@@ -12,14 +12,14 @@ import {
 import MiniAvatar from '@/components/MiniAvatar';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
-import { useAdmin } from '../hooks/useAdmin';
 import styles from './MemberLayout.module.css'; // Import CSS Module
 import config from '@/config';
+import { useMember } from '../hooks/useMember';
 
 const { Header, Content } = Layout;
 
 const MemberLayout = () => {
-  const { createButton, isCreate } = useAdmin();
+  const { hideContent, createButton } = useMember();
   const menuItems = [
     { key: '1', icon: <HomeOutlined />, label: 'Mother Information' },
     {
@@ -46,7 +46,7 @@ const MemberLayout = () => {
           </div>
         </Header>
         {/* Create Button */}
-        {!isCreate && (
+        {!hideContent && (
           <div
             style={{
               display: 'flex',
@@ -64,7 +64,7 @@ const MemberLayout = () => {
           </div>
         )}
         <Content className={styles.content}>
-          {!isCreate && (
+          {!hideContent && (
             <div className={styles.contentHeader}>
               <Input
                 placeholder="Search"
