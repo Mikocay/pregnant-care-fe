@@ -11,6 +11,8 @@ export const useAdmin = () => {
   const createButton = () => {
     if (path.includes(config.routes.admin.managePlans)) {
       navigate(config.routes.admin.formPlan);
+    } else if (path.includes(config.routes.admin.growthMatrics)) {
+      navigate(config.routes.admin.formGrwothMatrics);
     }
     //! Add more conditions here
   };

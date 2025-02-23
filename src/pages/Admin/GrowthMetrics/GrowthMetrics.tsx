@@ -1,5 +1,7 @@
 import { selectFetus } from '@/redux/features/fetus/selector';
-import { setFetusStandards } from '@/redux/features/fetus/slice';
+import { fetchFetusStandards } from '@/redux/features/fetus/slice';
+import { FetusStandard } from '@/types';
+import { formatDate } from '@/utils/helper';
 import { EditOutlined } from '@ant-design/icons';
 import { Table, TableProps } from 'antd';
 import { useEffect } from 'react';
@@ -15,20 +17,22 @@ interface DataType {
 
 function GrowthMetrics() {
   const dispatch = useDispatch();
+
+  //#region Fetus Standards
   const fetusState = useSelector(selectFetus);
+  const fetusStandards = fetusState.fetusStandardsNameAndUnit.data;
   useEffect(() => {
-    dispatch(setFetusStandards());
-  }, [dispatch]);
-  console.log('fetusState', fetusState);
+    dispatch(fetchFetusStandards());
+  }, []);
 
-
-  const data: DataType[] = Array.isArray(fetusState) ? fetusState.map((fetus: any) => ({
-    key: fetus.id,
+  const data: DataType[] = fetusStandards ? fetusStandards.map((fetus: FetusStandard) => ({
+    key: fetus._id,
     name: fetus.name,
     unit: fetus.unit,
-    created_at: fetus.created_at,
+    created_at: formatDate(fetus.createdAt),
     action: <EditOutlined />,
   })) : [];
+  //#endregion
 
   const columns: TableProps<DataType>['columns'] = [
     {
@@ -54,7 +58,12 @@ function GrowthMetrics() {
     }
   ];
 
-  return <Table<DataType> columns={columns} dataSource={data} />;
+  return (
+    <>
+      <Table<DataType> columns={columns} dataSource={data} />
+    </>
+
+  )
 }
 
 export default GrowthMetrics;

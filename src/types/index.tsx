@@ -40,6 +40,8 @@ interface Week {
   max: number;
 }
 export interface FetusStandard {
+
+  _id: string;
   name: string;
   unit: string;
   weeks: Week[];
