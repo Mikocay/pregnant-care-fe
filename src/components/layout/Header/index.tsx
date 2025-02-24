@@ -4,16 +4,16 @@ import ASSETS from '@/assets';
 import { Link } from 'react-router-dom';
 import { useHeader } from './useHeader';
 
-const navigationItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Community', href: '/community' },
-  { label: 'Contact us', href: '/contact' },
-];
+type NavigationItem = {
+  label: string;
+  href: string;
+};
 
-function Header() {
+type HeaderProps = {
+  items: NavigationItem[];
+};
+
+function Header({ items }: HeaderProps) {
   //   Example user state and logout handler
   const { user, handleLogout } = useHeader();
 
@@ -27,7 +27,7 @@ function Header() {
 
       {/* Navigation Section */}
       <nav className={styles.navigation}>
-        {navigationItems.map((item) => (
+        {items.map((item) => (
           <Link key={item.label} to={item.href}>
             {item.label}
           </Link>

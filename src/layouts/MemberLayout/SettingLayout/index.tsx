@@ -3,16 +3,9 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Outlet } from 'react-router-dom';
 
-const navigationItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Community', href: '/community' },
-  { label: 'Contact us', href: '/contact' },
-];
+const navigationItems = [{ label: 'Home', href: '/' }];
 
-const HeaderLayout = () => {
+const MemberSettingLayout = () => {
   const { Content } = Layout;
 
   return (
@@ -26,4 +19,4 @@ const HeaderLayout = () => {
   );
 };
 
-export default HeaderLayout;
+export default MemberSettingLayout;
