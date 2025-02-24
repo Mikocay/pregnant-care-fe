@@ -4,9 +4,7 @@ import {
   EditOutlined,
   CreditCardOutlined,
   HistoryOutlined,
-  SwapOutlined,
   UserOutlined,
-  UndoOutlined,
 } from '@ant-design/icons';
 import { Typography } from 'antd';
 import styles from './Account.module.css';
@@ -27,35 +25,35 @@ export interface Section {
 const SettingsPage: React.FC = () => {
   const sections: Section[] = [
     {
-      title: 'Tài khoản',
+      title: 'Account',
       items: [
+        { key: 'profile', icon: <EditOutlined />, label: 'Edit profile' },
         {
           key: 'subscription',
           icon: <UserOutlined />,
-          label: 'Quản lý gói đăng ký',
+          label: 'Manage your subscription',
         },
-        { key: 'profile', icon: <EditOutlined />, label: 'Chỉnh sửa hồ sơ' },
-        {
-          key: 'restore',
-          icon: <UndoOutlined />,
-          label: 'Khôi phục danh sách phát',
-        },
+        // {
+        //   key: 'restore',
+        //   icon: <UndoOutlined />,
+        //   label: 'Khôi phục danh sách phát',
+        // },
       ],
     },
     {
-      title: 'Thanh toán',
+      title: 'Payment',
       items: [
         {
           key: 'history',
           icon: <HistoryOutlined />,
-          label: 'Lịch sử đặt hàng',
+          label: 'Order history',
         },
         {
           key: 'payment',
           icon: <CreditCardOutlined />,
-          label: 'Thẻ thanh toán đã lưu',
+          label: 'Saved payment cards',
         },
-        { key: 'change', icon: <SwapOutlined />, label: 'Đổi' },
+        // { key: 'change', icon: <SwapOutlined />, label: 'Đổi' },
       ],
     },
   ];

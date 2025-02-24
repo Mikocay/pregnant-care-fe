@@ -1,5 +1,5 @@
 .wrapper {
-  background-color: white;
+  background-color: #fdf2f4;
 }
 
 .container {
@@ -7,7 +7,7 @@
   margin: 0 auto;
   padding: 32px 24px;
   min-height: 100vh;
-  color: #ffffff;
+  color: #4a4a4a;
 }
 
 .section {
@@ -15,26 +15,29 @@
 }
 
 .sectionTitle {
-  color: #e15267 !important;
+  color: #d23f57 !important;
   font-size: 24px;
   margin-bottom: 16px;
+  font-weight: 600;
 }
 
 .planSection {
-  background-color: #8b6060bc;
+  background-color: #f8d7da;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 40px;
+  box-shadow: 0 4px 6px rgba(210, 63, 87, 0.1);
 }
 
 .planTitle {
-  color: #5d4545;
-  font-size: 14px;
+  color: #721c24;
+  font-size: 16px;
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .planName {
-  color: #ffffff;
+  color: #d23f57;
   font-size: 32px;
   font-weight: 700;
 }
@@ -42,29 +45,52 @@
 .menuItem {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  margin: 4px 0;
-  border-radius: 4px;
+  padding: 16px;
+  margin: 8px 0;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
-  background: #ffe4e694;
-  color: #d25366d8;
+  transition: all 0.3s ease;
+  background: #fff;
+  color: #4a4a4a;
+  box-shadow: 0 2px 4px rgba(210, 63, 87, 0.05);
 }
 
 .menuItemLabel {
   font-size: 16px;
+  font-weight: 500;
 }
 
 .menuItemArrow {
   margin-left: auto;
+  color: #d23f57;
 }
 
 .menuItem:hover {
-  background: #ff82979f !important;
-  color: white !important;
+  background: #fce4e7;
+  color: #d23f57;
+  transform: translateY(-2px);
 }
 
 .menuItemIcon {
   margin-right: 16px;
   font-size: 20px;
+  color: #d23f57;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+  }
+
+  .planSection {
+    padding: 20px;
+  }
+
+  .planName {
+    font-size: 28px;
+  }
+
+  .menuItem {
+    padding: 14px;
+  }
 }
