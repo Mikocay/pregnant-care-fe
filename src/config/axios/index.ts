@@ -1,14 +1,14 @@
 import axios, { AxiosError } from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 const axiosPrivate = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,6 +18,7 @@ const axiosPrivate = axios.create({
 axiosPrivate.interceptors.request.use(
   (config) => {
     // ********** Example **********
+    //! lấy token & userRole từ redux store
     const token = localStorage.getItem('accessToken');
     const userRole = localStorage.getItem('userRole');
 
@@ -38,8 +39,8 @@ axiosPrivate.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Xử lý khi bị unauthorized
       console.error('Unauthorized! Redirecting to login...');
-      //   window.location.href = '/login';
     }
     return Promise.reject(error);
   },

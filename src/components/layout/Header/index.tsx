@@ -1,6 +1,8 @@
-import HeaderAuth from './HeaderAuth';
+import HeaderAuth from './HeaderAuth/HeaderAuth';
 import styles from './Header.module.css';
 import ASSETS from '@/assets';
+import { Link } from 'react-router-dom';
+import { useHeader } from './useHeader';
 
 const navigationItems = [
   { label: 'Home', href: '/' },
@@ -11,18 +13,9 @@ const navigationItems = [
   { label: 'Contact us', href: '/contact' },
 ];
 
-export default function Header() {
+function Header() {
   //   Example user state and logout handler
-  const user = {
-    name: 'Tina',
-    avatar: ASSETS.logo,
-  };
-
-  const handleLogout = () => {
-    console.log('Logout');
-
-    // Add your logout logic here
-  };
+  const { user, handleLogout } = useHeader();
 
   return (
     <header className={styles.header}>
@@ -35,9 +28,9 @@ export default function Header() {
       {/* Navigation Section */}
       <nav className={styles.navigation}>
         {navigationItems.map((item) => (
-          <a key={item.label} href={item.href}>
+          <Link key={item.label} to={item.href}>
             {item.label}
-          </a>
+          </Link>
         ))}
       </nav>
 
@@ -48,3 +41,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default Header;

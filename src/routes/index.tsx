@@ -1,44 +1,55 @@
 import { lazy } from 'react';
-import ROUTES from '@/config/routes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import config from '@/config';
+import { ROLE } from '@/constants';
+import PrivateRoute from '@/components/Auth/PrivateRoutes';
+import PersistToken from '@/components/Auth/PeristLogin';
+
+//* Routes
 import AdminRoutes from './AdminRoutes';
-// import AdminRoutes from './AdminRoutes';
+import MemberRoutes from './MemberRoutes';
+import AuthRoutes from './AuthRoutes';
 
 //* Layouts
-import GuestLayout from '@/layouts/GuestLayout';
-import AdminLayout from '@/layouts/AdminLayout';
-import MemberHeaderLayout from '@/layouts/Member/HeaderLayout';
-import MemeberSidebarLayout from '@/layouts/Member/SidebarLayout';
+import PublicLayout from '@/layouts/PublicLayout';
 
 //* Lazy load pages
-const Home = lazy(() => import('@/pages/home'));
+const Home = lazy(() => import('@/pages/Home'));
+const PricingPage = lazy(() => import('@/pages/Pricing'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
     //* PUBLIC routes
     {
-      element: <GuestLayout />,
-      children: [{ index: true, path: ROUTES.HOME, element: <Home /> }],
+      element: <PublicLayout />,
+      children: [
+        { index: true, path: config.routes.public.home, element: <Home /> },
+        {
+          path: config.routes.public.pricing,
+          element: <PricingPage />,
+        },
+      ],
     },
+
+    //* AUTH routes *
+    ...AuthRoutes,
 
     //**** PRIVATE routes ****
-
-    //* Admin *
     {
-      element: <AdminLayout />,
-      children: [],
+      element: <PersistToken />,
+      children: [
+        //* Admin routes *
+        {
+          element: <PrivateRoute allowedRoles={[ROLE.ADMIN]} />,
+          children: [AdminRoutes],
+        },
+        //* Member routes *
+        {
+          element: <PrivateRoute allowedRoles={[ROLE.MEMBER]} />,
+          children: [MemberRoutes],
+        },
+      ],
     },
-
-    //* Member *
-    {
-      element: <MemberHeaderLayout />,
-      children: [],
-    },
-    {
-      element: <MemeberSidebarLayout />,
-      children: [],
-    },
-    AdminRoutes
   ]);
 
   return <RouterProvider router={router} />;

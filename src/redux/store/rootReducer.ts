@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
 // Import reducers
-import counterReducer from '@/redux/features/counter/slice';
-import userReducer from '@/redux/features/user/userSlice';
+import authReducer from '@/redux/features/auth/slice';
+import fetusReducer from '@/redux/features/fetus/slice';
 
 // Combine reducers
 const rootReducers = combineReducers({
-  counter: counterReducer,
-  users: userReducer,
+  auth: authReducer,
+  fetus: fetusReducer,
 });
 
 export default rootReducers;

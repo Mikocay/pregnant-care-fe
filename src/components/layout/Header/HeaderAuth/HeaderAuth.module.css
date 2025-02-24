@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.authContainer {
+  display: flex;
+  color: #ff7875;
+  text-align: center;
+  gap: 16px;
+}
+
+.authText {
+  color: #ff7875;
+}
+
+.signUpButton {
+  border: 2px solid #ff4d4f;
+  color: #ff4d4f;
+  background: white;
+}
+
+.signInButton {
+  background: #ff4d4f;
+  border: 2px solid #ff4d4f;
+  color: white;
+}
+
+.userAvatar {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.notification {
+  font-size: 20px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.notification:hover {
+  color: #ff4d4f;
+}
+
+.dropdownMenu {
+  min-width: 160px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoutItem {
+  border-top: 1px solid #f0f0f0;
+  color: #ff4d4f;
+}

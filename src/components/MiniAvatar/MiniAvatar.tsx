@@ -1,15 +1,16 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown, MenuProps, Space } from 'antd'
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, MenuProps, Space } from 'antd';
 import { Link } from 'react-router-dom';
-import './MiniAvatar.css'
+import './MiniAvatar.css';
+import config from '@/config';
 
 function MiniAvatar() {
   const items: MenuProps['items'] = [
     {
       key: 'logout',
       label: (
-        <Link to="/logout">
-          <Space >
+        <Link to={config.routes.auth.logout}>
+          <Space className="logoutItem">
             <LogoutOutlined />
             Logout
           </Space>
@@ -24,20 +25,16 @@ function MiniAvatar() {
         trigger={['click']}
         dropdownRender={(menus) => (
           <>
-            <div>
-              {menus}
-            </div>
+            <div>{menus}</div>
           </>
         )}
       >
-
         <Space style={{ cursor: 'pointer' }}>
           <Avatar size={40} icon={<UserOutlined />} />
         </Space>
       </Dropdown>
     </div>
-
-  )
+  );
 }
 
-export default MiniAvatar
+export default MiniAvatar;
