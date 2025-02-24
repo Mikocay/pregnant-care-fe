@@ -9,16 +9,18 @@ import {
   InboxOutlined,
   CalendarOutlined,
 } from '@ant-design/icons';
-import MiniAvatar from '@/components/MiniAvatar';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
 import styles from './MemberLayout.module.css'; // Import CSS Module
 import config from '@/config';
 import { useMember } from '../hooks/useMember';
+import HeaderAuth from '@/components/layout/Header/HeaderAuth/HeaderAuth';
+import { useHeader } from '@/components/layout/Header/useHeader';
 
 const { Header, Content } = Layout;
 
 const MemberLayout = () => {
+  const { user, handleLogout } = useHeader();
   const { hideContent, createButton } = useMember();
   const menuItems = [
     { key: '1', icon: <HomeOutlined />, label: 'Mother Information' },
@@ -38,12 +40,7 @@ const MemberLayout = () => {
       <Sidebar sidebarBody={menuItems} />
       <Layout className={styles.mainContent}>
         <Header className={styles.header}>
-          <div className={styles.headerRight}>
-            <p className={styles.headerName}>
-              Hello <span>UserName</span>
-            </p>
-            <MiniAvatar />
-          </div>
+          <HeaderAuth user={user} onLogout={handleLogout} />
         </Header>
         {/* Create Button */}
         {!hideContent && (

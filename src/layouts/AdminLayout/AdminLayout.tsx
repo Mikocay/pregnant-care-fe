@@ -9,17 +9,19 @@ import {
   BellOutlined,
   InboxOutlined,
 } from '@ant-design/icons';
-import MiniAvatar from '@/components/MiniAvatar';
 import './AdminLayout.css';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
 import config from '@/config';
 import { useAdmin } from '../hooks/useAdmin';
+import HeaderAuth from '@/components/layout/Header/HeaderAuth/HeaderAuth';
+import { useHeader } from '@/components/layout/Header/useHeader';
 
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
   const { createButton, hideContent } = useAdmin();
+  const { user, handleLogout } = useHeader();
 
   const menuItems = [
     {
@@ -59,12 +61,7 @@ const AdminLayout = () => {
       <Sidebar sidebarBody={menuItems} />
       <Layout className="main-content">
         <Header className="header">
-          <div className="header-right">
-            <p className="header-name">
-              Hello <span className=""> UserName</span>{' '}
-            </p>
-            <MiniAvatar />
-          </div>
+          <HeaderAuth user={user} onLogout={handleLogout} />
         </Header>
         {/* !Create Button */}
         {hideContent ? null : (

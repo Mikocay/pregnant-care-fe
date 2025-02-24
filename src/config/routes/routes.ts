@@ -11,6 +11,7 @@ const routes = {
   member: {
     dashboard: '/member',
     calendar: '/member/calendar',
+    account: '/member/account',
   },
 
   public: {
