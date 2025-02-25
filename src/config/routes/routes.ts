@@ -12,6 +12,7 @@ const routes = {
     dashboard: '/member',
     calendar: '/member/calendar',
     account: '/member/account',
+    profile: '/member/account/profile',
   },
 
   public: {

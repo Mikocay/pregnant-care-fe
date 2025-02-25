@@ -17,7 +17,7 @@ export const useHeader = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await userService.getUserInfoById(userId);
+        const response = await userService.getUserSelfInfo();
         setUser(response.data.data);
       } catch (error) {
         console.error('Error fetching user role:', error);

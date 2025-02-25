@@ -4,7 +4,6 @@ import type { MenuProps } from 'antd';
 import {
   BellOutlined,
   UserOutlined,
-  CalendarOutlined,
   LogoutOutlined,
   DashboardOutlined,
 } from '@ant-design/icons';
@@ -26,7 +25,10 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
     {
       key: 'account',
       label: (
-        <Link to={userRole === ROLE.MEMBER ? config.routes.member.account : ''}>
+        <Link
+          className={styles.menuItemLink}
+          to={userRole === ROLE.MEMBER ? config.routes.member.account : ''}
+        >
           <div className={styles.menuItem}>
             <UserOutlined /> Account
           </div>
@@ -37,6 +39,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
       key: 'dashboard',
       label: (
         <Link
+          className={styles.menuItemLink}
           to={
             userRole === ROLE.ADMIN
               ? config.routes.admin.dashboard
@@ -49,16 +52,16 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
         </Link>
       ),
     },
-    {
-      key: 'schedule',
-      label: (
-        <Link to="">
-          <div className={styles.menuItem}>
-            <CalendarOutlined /> My Schedule
-          </div>
-        </Link>
-      ),
-    },
+    // {
+    //   key: 'schedule',
+    //   label: (
+    //     <Link to="">
+    //       <div className={styles.menuItem}>
+    //         <CalendarOutlined /> My Schedule
+    //       </div>
+    //     </Link>
+    //   ),
+    // },
     {
       key: 'logout',
       label: (

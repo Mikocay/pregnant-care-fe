@@ -8,13 +8,16 @@ import {
 } from '@ant-design/icons';
 import { Typography } from 'antd';
 import styles from './Account.module.css';
+import { Link } from 'react-router-dom';
+import config from '@/config';
 
 const { Title } = Typography;
 
 export interface MenuItem {
   key: string;
-  icon?: React.ReactNode;
+  icon?: JSX.Element;
   label: string;
+  link?: string;
 }
 
 export interface Section {
@@ -27,17 +30,17 @@ const SettingsPage: React.FC = () => {
     {
       title: 'Account',
       items: [
-        { key: 'profile', icon: <EditOutlined />, label: 'Edit profile' },
+        {
+          key: 'profile',
+          icon: <EditOutlined />,
+          label: 'Edit profile',
+          link: config.routes.member.profile,
+        },
         {
           key: 'subscription',
           icon: <UserOutlined />,
           label: 'Manage your subscription',
         },
-        // {
-        //   key: 'restore',
-        //   icon: <UndoOutlined />,
-        //   label: 'Khôi phục danh sách phát',
-        // },
       ],
     },
     {
@@ -53,7 +56,6 @@ const SettingsPage: React.FC = () => {
           icon: <CreditCardOutlined />,
           label: 'Saved payment cards',
         },
-        // { key: 'change', icon: <SwapOutlined />, label: 'Đổi' },
       ],
     },
   ];
@@ -71,13 +73,27 @@ const SettingsPage: React.FC = () => {
             <Title level={3} className={styles.sectionTitle}>
               {section.title}
             </Title>
-            {section.items.map((item) => (
-              <div key={item.key} className={styles.menuItem}>
-                <span className={styles.menuItemIcon}>{item.icon}</span>
-                <span className={styles.menuItemLabel}>{item.label}</span>
-                <RightOutlined className={styles.menuItemArrow} />
-              </div>
-            ))}
+            {section.items.map((item) => {
+              const content = (
+                <div key={item.key} className={styles.menuItem}>
+                  <span className={styles.menuItemIcon}>{item.icon}</span>
+                  <span className={styles.menuItemLabel}>{item.label}</span>
+                  <RightOutlined className={styles.menuItemArrow} />
+                </div>
+              );
+
+              return item.link ? (
+                <Link
+                  to={item.link}
+                  key={item.key}
+                  className={styles.menuItemLink}
+                >
+                  {content}
+                </Link>
+              ) : (
+                content
+              );
+            })}
           </div>
         ))}
       </div>

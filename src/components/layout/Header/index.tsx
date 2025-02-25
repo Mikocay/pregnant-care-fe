@@ -3,6 +3,7 @@ import styles from './Header.module.css';
 import ASSETS from '@/assets';
 import { Link } from 'react-router-dom';
 import { useHeader } from './useHeader';
+import config from '@/config';
 
 type NavigationItem = {
   label: string;
@@ -10,7 +11,7 @@ type NavigationItem = {
 };
 
 type HeaderProps = {
-  items: NavigationItem[];
+  items?: NavigationItem[];
 };
 
 function Header({ items }: HeaderProps) {
@@ -21,13 +22,15 @@ function Header({ items }: HeaderProps) {
     <header className={styles.header}>
       {/* Logo Section */}
       <div className={styles.logo}>
-        <img src={ASSETS.logo} alt="PregnaCare Logo" />
-        <span>PregnaCare</span>
+        <Link className={styles.itemsLink} to={config.routes.public.home}>
+          <img src={ASSETS.logo} alt="PregnaCare Logo" />
+          <span>PregnaCare</span>
+        </Link>
       </div>
 
       {/* Navigation Section */}
       <nav className={styles.navigation}>
-        {items.map((item) => (
+        {items?.map((item) => (
           <Link key={item.label} to={item.href}>
             {item.label}
           </Link>

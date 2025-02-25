@@ -60,6 +60,12 @@
   font-weight: 500;
 }
 
+.menuItemLink {
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
+}
+
 .menuItemArrow {
   margin-left: auto;
   color: #d23f57;
