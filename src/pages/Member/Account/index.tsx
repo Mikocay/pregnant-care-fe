@@ -5,6 +5,7 @@ import {
   CreditCardOutlined,
   HistoryOutlined,
   UserOutlined,
+  HeartOutlined,
 } from '@ant-design/icons';
 import { Typography } from 'antd';
 import styles from './Account.module.css';
@@ -40,6 +41,17 @@ const SettingsPage: React.FC = () => {
           key: 'subscription',
           icon: <UserOutlined />,
           label: 'Manage your subscription',
+        },
+      ],
+    },
+    {
+      title: 'Fetus',
+      items: [
+        {
+          key: 'fetus',
+          icon: <HeartOutlined />,
+          label: 'Your Babies',
+          // link: config.routes.member.profile,
         },
       ],
     },
