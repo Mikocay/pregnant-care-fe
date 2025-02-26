@@ -4,19 +4,21 @@ import {
   EditOutlined,
   CreditCardOutlined,
   HistoryOutlined,
-  SwapOutlined,
   UserOutlined,
-  UndoOutlined,
+  HeartOutlined,
 } from '@ant-design/icons';
 import { Typography } from 'antd';
 import styles from './Account.module.css';
+import { Link } from 'react-router-dom';
+import config from '@/config';
 
 const { Title } = Typography;
 
 export interface MenuItem {
   key: string;
-  icon?: React.ReactNode;
+  icon?: JSX.Element;
   label: string;
+  link?: string;
 }
 
 export interface Section {
@@ -27,35 +29,45 @@ export interface Section {
 const SettingsPage: React.FC = () => {
   const sections: Section[] = [
     {
-      title: 'Tài khoản',
+      title: 'Account',
       items: [
+        {
+          key: 'profile',
+          icon: <EditOutlined />,
+          label: 'Edit profile',
+          link: config.routes.member.profile,
+        },
         {
           key: 'subscription',
           icon: <UserOutlined />,
-          label: 'Quản lý gói đăng ký',
-        },
-        { key: 'profile', icon: <EditOutlined />, label: 'Chỉnh sửa hồ sơ' },
-        {
-          key: 'restore',
-          icon: <UndoOutlined />,
-          label: 'Khôi phục danh sách phát',
+          label: 'Manage your subscription',
         },
       ],
     },
     {
-      title: 'Thanh toán',
+      title: 'Fetus',
+      items: [
+        {
+          key: 'fetus',
+          icon: <HeartOutlined />,
+          label: 'Your Babies',
+          // link: config.routes.member.profile,
+        },
+      ],
+    },
+    {
+      title: 'Payment',
       items: [
         {
           key: 'history',
           icon: <HistoryOutlined />,
-          label: 'Lịch sử đặt hàng',
+          label: 'Order history',
         },
         {
           key: 'payment',
           icon: <CreditCardOutlined />,
-          label: 'Thẻ thanh toán đã lưu',
+          label: 'Saved payment cards',
         },
-        { key: 'change', icon: <SwapOutlined />, label: 'Đổi' },
       ],
     },
   ];
@@ -73,13 +85,27 @@ const SettingsPage: React.FC = () => {
             <Title level={3} className={styles.sectionTitle}>
               {section.title}
             </Title>
-            {section.items.map((item) => (
-              <div key={item.key} className={styles.menuItem}>
-                <span className={styles.menuItemIcon}>{item.icon}</span>
-                <span className={styles.menuItemLabel}>{item.label}</span>
-                <RightOutlined className={styles.menuItemArrow} />
-              </div>
-            ))}
+            {section.items.map((item) => {
+              const content = (
+                <div key={item.key} className={styles.menuItem}>
+                  <span className={styles.menuItemIcon}>{item.icon}</span>
+                  <span className={styles.menuItemLabel}>{item.label}</span>
+                  <RightOutlined className={styles.menuItemArrow} />
+                </div>
+              );
+
+              return item.link ? (
+                <Link
+                  to={item.link}
+                  key={item.key}
+                  className={styles.menuItemLink}
+                >
+                  {content}
+                </Link>
+              ) : (
+                content
+              );
+            })}
           </div>
         ))}
       </div>

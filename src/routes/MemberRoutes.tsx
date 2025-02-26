@@ -1,9 +1,10 @@
 import config from '@/config';
 import MemberLayout from '@/layouts/MemberLayout';
 import MemberSettingLayout from '@/layouts/MemberLayout/SettingLayout';
-import SettingsPage from '@/pages/Account';
+import SettingsPage from '@/pages/Member/Account';
 import Calendar from '@/pages/Member/Calendar';
 import Dashboard from '@/pages/Member/Dashboard';
+import UpdateUserForm from '@/pages/Member/Profile';
 
 const MemberRoutes = [
   {
@@ -18,7 +19,11 @@ const MemberRoutes = [
     path: config.routes.member.account,
     element: <MemberSettingLayout />, // Không sử dụng MemberLayout
     children: [
-      { path: config.routes.member.account, element: <SettingsPage /> },
+      {
+        path: config.routes.member.account,
+        element: <SettingsPage />,
+      },
+      { path: config.routes.member.profile, element: <UpdateUserForm /> },
     ],
   },
 ];
