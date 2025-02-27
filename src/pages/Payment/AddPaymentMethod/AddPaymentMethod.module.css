@@ -1,0 +1,58 @@
+.wrapper {
+    background: linear-gradient(180deg, #fff1f2 0%, #fff5f6 100%);
+    padding: 20px;
+}
+.container {
+    max-width: 480px;
+    padding: 24px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 6px;
+  }
+  
+  .title {
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .flexGroup {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .flexGroup:last-child {
+    margin-bottom: 0;
+  }
+  
+  .flexItem {
+    flex: 1;
+  }
+  
+  .submitButton {
+    background-color: #ff6b81;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+  }
+  
+  .submitButton:hover {
+    background-color: #ff8296 !important;
+  }
+  
+  .cardNumber {
+    width: 70%;
+  }
+  
+  .cardExpiry {
+    width: 30%;
+  }
+
+  .rowPaymentInput {
+    border: 1px solid #cccccc;
+    height: 35px;
+    padding-top: 8px;
+    padding-left: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
