@@ -25,6 +25,8 @@ const routes = {
     confirmEmail: '/confirm-email',
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
+    payment_method: '/accounts/create-payment-method',
+    checkout: '/accounts/checkout',
     unauthorized: '/unauthorized',
   },
 };

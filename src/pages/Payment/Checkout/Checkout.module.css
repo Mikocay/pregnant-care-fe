@@ -1,0 +1,172 @@
+.wrapper {
+    background: linear-gradient(180deg, #fff1f2 0%, #fff5f6 100%);
+    padding: 3.89rem 0;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+  }
+  
+  @media (max-width: 768px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2d3436;
+  }
+  
+  .cardList {
+    display: grid;
+    margin-bottom: 24px;
+  }
+  
+  .cardItem {
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .cardItem:hover {
+    border-color: #ff6b81;
+    box-shadow: 0 2px 8px rgba(255, 107, 129, 0.1);
+  }
+  
+  .selectedCard {
+    border-color: #ff6b81;
+    background-color: #fff9f9;
+  }
+  
+  .cardInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .cardLogo {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff0f0;
+    border-radius: 8px;
+    color: #ff6b81;
+  }
+  
+  .cardDetails {
+    flex: 1;
+  }
+  
+  .cardNumber {
+    font-size: 16px;
+    margin-bottom: 4px;
+    color: #2d3436;
+    font-weight: 500;
+  }
+  
+  .cardExpiry {
+    color: #636e72;
+    font-size: 14px;
+  }
+  
+  .summaryCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    position: sticky;
+    top: 24px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .summaryTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2d3436;
+  }
+  
+  .summaryRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #636e72;
+  }
+  
+  .summaryTotal {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    color: #2d3436;
+  }
+  
+  .checkoutButton {
+    background-color: #ff6b81;
+    height: 48px;
+    font-size: 16px;
+    margin-top: 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(255, 107, 129, 0.2);
+  }
+  
+  .checkoutButton:hover {
+    background-color: #ff5268 !important;
+    box-shadow: 0 6px 16px rgba(255, 107, 129, 0.3);
+  }
+  
+  .addCardButton {
+    width: 100%;
+    height: 80px;
+    border: 2px dashed #dfe6e9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fff;
+    color: #636e72;
+  }
+  
+  .addCardButton:hover {
+    border-color: #ff6b81;
+    color: #ff6b81;
+    background: #fff9f9;
+  }
+  
+  .badge {
+    background: #ff6b81;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .paymentIcons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    color: #b2bec3;
+  }
