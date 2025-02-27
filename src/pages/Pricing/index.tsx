@@ -46,14 +46,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Button
-                type={plan.type === '1-month' ? 'primary' : 'default'}
-                className={`${styles.button} ${
-                  plan.type === '1-month' ? styles.popularButton : ''
-                }`}
-              >
-                Choose
-              </Button>
+              <Button className={styles.button}>Choose</Button>
             </div>
           </Card>
         ))}
