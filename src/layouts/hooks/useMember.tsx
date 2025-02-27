@@ -14,7 +14,7 @@ export const useMember = () => {
   };
 
   useEffect(() => {
-    if (path.includes(config.routes.member.calendar)) {
+    if (path.includes(config.routes.member.calendar) || path.includes(config.routes.member.pregnancy)) {
       setHideContent(true);
     }
     //! Add more conditions here
