@@ -4,6 +4,7 @@ import MemberSettingLayout from '@/layouts/MemberLayout/SettingLayout';
 import SettingsPage from '@/pages/Member/Account';
 import Calendar from '@/pages/Member/Calendar';
 import Dashboard from '@/pages/Member/Dashboard';
+import Pregnancy from '@/pages/Member/Pregnancy';
 import UpdateUserForm from '@/pages/Member/Profile';
 
 const MemberRoutes = [
@@ -13,6 +14,8 @@ const MemberRoutes = [
     children: [
       { path: config.routes.member.dashboard, element: <Dashboard /> },
       { path: config.routes.member.calendar, element: <Calendar /> },
+      { path: config.routes.member.pregnancy, element: <Pregnancy /> },
+
     ],
   },
   {

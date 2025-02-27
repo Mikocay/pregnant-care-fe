@@ -29,7 +29,11 @@ const MemberLayout = () => {
       icon: <CalendarOutlined />,
       label: <Link to={config.routes.member.calendar}>Calendar</Link>,
     },
-    { key: '3', icon: <ClockCircleOutlined />, label: 'Fetal growth chart' },
+    {
+      key: '3',
+      icon: <ClockCircleOutlined />,
+      label: <Link to={config.routes.member.pregnancy}>Pregnancy</Link>
+    },
     { key: '4', icon: <InboxOutlined />, label: 'Fetal growth chart' },
     { key: '5', icon: <EyeOutlined />, label: 'Mother status' },
     { key: '6', icon: <BellOutlined />, label: 'Fetal growth chart' },

@@ -40,7 +40,6 @@ interface Week {
   max: number;
 }
 export interface FetusStandard {
-
   _id: string;
   name: string;
   unit: string;
@@ -49,3 +48,21 @@ export interface FetusStandard {
   createdAt: string;
 }
 
+export interface Fetus {
+  _id: string;
+  name: string;
+  dueDate: number;
+  gender: "male" | "female";
+
+}
+export interface FetusStandardSummary {
+  name: string;
+  unit: string;
+}
+
+export interface GrowthMetric {
+  name: string;
+  unit: string;
+  value: number;
+  week: number;
+}
