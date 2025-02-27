@@ -49,7 +49,7 @@ export const useHomePage = () => {
         'Identify platforms where communities thrive and facilitate meaningful interactions',
         'Share knowledge, resources, and experiences to empower others',
         'Build a sense of belonging through collaboration and mutual support',
-        'Professional services and tools are available to create and maintain thriving communities',
+        'Professional services and tools are available to create and maintain thriving communities.',
       ],
     },
   ];
