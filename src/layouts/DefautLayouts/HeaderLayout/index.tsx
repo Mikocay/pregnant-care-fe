@@ -1,18 +1,26 @@
 import { Layout } from 'antd';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { Outlet } from 'react-router-dom';
 
-type HeaderLayoutProps = {
-  children: JSX.Element;
-};
+const navigationItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Community', href: '/community' },
+  { label: 'Contact us', href: '/contact' },
+];
 
-const HeaderLayout = ({ children }: HeaderLayoutProps) => {
+const HeaderLayout = () => {
   const { Content } = Layout;
 
   return (
     <Layout>
-      <Header />
-      <Content>{children}</Content>
+      <Header items={navigationItems} />
+      <Content>
+        <Outlet />
+      </Content>
       <Footer />
     </Layout>
   );

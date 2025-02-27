@@ -56,7 +56,7 @@ const RouterComponent = () => {
         //* Member routes *
         {
           element: <PrivateRoute allowedRoles={[ROLE.MEMBER]} />,
-          children: [MemberRoutes],
+          children: [...MemberRoutes],
         },
       ],
     },

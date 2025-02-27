@@ -19,7 +19,8 @@ export const useSignup = () => {
       form.setFields([
         {
           name: 'email',
-          errors: error.includes('Email') ? [error] : [],
+          errors:
+            error.includes('Email') || error.includes('User') ? [error] : [],
         },
         {
           name: 'password',
