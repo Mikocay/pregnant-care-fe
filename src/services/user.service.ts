@@ -53,10 +53,10 @@ export const userService = {
   getPaymentMethods: () => {
     return axiosPrivate.get(`${API_ENDPOINTS.users.payment_method}`);
   },
-    
+
   postPaymentMethod: (payload: any) => {
     return axiosPrivate.post(`${API_ENDPOINTS.users.payment_method}`, payload);
-  }
+  },
 
   //* Get User Self Info *******************
   getUserSelfInfo: (): Promise<AxiosResponse<User>> => {
