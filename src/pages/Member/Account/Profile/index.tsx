@@ -12,7 +12,6 @@ import {
 } from 'antd';
 import {
   UserOutlined,
-  GlobalOutlined,
   PhoneOutlined,
   CalendarOutlined,
   EditOutlined,
@@ -20,6 +19,7 @@ import {
 } from '@ant-design/icons';
 import styles from './Profile.module.css';
 import { useNavigate } from 'react-router-dom';
+import countries from 'world-countries';
 
 const { Option } = Select;
 
@@ -31,6 +31,16 @@ interface UserFormData {
   phoneNumber: string;
   dateOfBirth: Date;
 }
+
+interface Country {
+  label: string;
+  value: string;
+}
+
+const countryList: Country[] = countries.map((country) => ({
+  label: country.name.common,
+  value: country.cca2, // Mã quốc gia 2 ký tự (VD: VN, US, JP)
+}));
 
 const UpdateUserForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -139,12 +149,22 @@ const UpdateUserForm: React.FC = () => {
                 name="nationality"
                 label="Nationality"
                 rules={[
-                  { required: true, message: 'Please input your nationality!' },
+                  {
+                    required: true,
+                    message: 'Please select your nationality!',
+                  },
                 ]}
               >
-                <Input
-                  prefix={<GlobalOutlined className={styles.inputIcon} />}
-                  placeholder="Nationality"
+                <Select
+                  placeholder="Select nationality"
+                  showSearch
+                  optionFilterProp="label"
+                  filterOption={(input, option) =>
+                    option
+                      ? option.label.toLowerCase().includes(input.toLowerCase())
+                      : false
+                  }
+                  options={countryList}
                 />
               </Form.Item>
             </Col>

@@ -11,9 +11,11 @@ const routes = {
   member: {
     dashboard: '/member',
     calendar: '/member/calendar',
-    account: '/member/account',
     pregnancy: '/member/pregnancy',
+    //* Account Routes
+    account: '/member/account',
     profile: '/member/account/profile',
+    subscription: '/member/account/subscription',
   },
 
   public: {

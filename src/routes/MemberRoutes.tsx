@@ -5,7 +5,8 @@ import SettingsPage from '@/pages/Member/Account';
 import Calendar from '@/pages/Member/Calendar';
 import Dashboard from '@/pages/Member/Dashboard';
 import Pregnancy from '@/pages/Member/Pregnancy';
-import UpdateUserForm from '@/pages/Member/Profile';
+import UpdateUserForm from '@/pages/Member/Account/Profile';
+import SubscriptionPage from '@/pages/Member/Account/Subscription';
 
 const MemberRoutes = [
   {
@@ -15,7 +16,6 @@ const MemberRoutes = [
       { path: config.routes.member.dashboard, element: <Dashboard /> },
       { path: config.routes.member.calendar, element: <Calendar /> },
       { path: config.routes.member.pregnancy, element: <Pregnancy /> },
-
     ],
   },
   {
@@ -27,6 +27,10 @@ const MemberRoutes = [
         element: <SettingsPage />,
       },
       { path: config.routes.member.profile, element: <UpdateUserForm /> },
+      {
+        path: config.routes.member.subscription,
+        element: <SubscriptionPage />,
+      },
     ],
   },
 ];
