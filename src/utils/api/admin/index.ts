@@ -1,5 +1,5 @@
 export const ADMIN = {
-  managePlans: '/admin/membership-plan',
+  managePlans: '/membership-plan',
   findAllFetusStandards: '/admin/fetus-standard/find-all',
   findFetusStandardByWeek: '/admin/fetus-standard/find-by-week',
   createFetusStandard: '/admin/fetus-standard/create',
