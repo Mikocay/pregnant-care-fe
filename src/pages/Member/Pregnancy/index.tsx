@@ -1,13 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
 import { Button } from 'antd';
 import AddPregnancy from './AddPregnancy';
+import { RootState } from '@/redux/store/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
+import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
+import { useParams } from 'react-router-dom';
 
 function Pregnancy() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const growthMetricsByWeek = useAppSelector((state: RootState) => state.fetus.growthMetricsByWeek);
+
+  useEffect(() => {
+    try {
+      if (id) {
+        dispatch(fetchGrowthMetricByWeek(id))
+      };
+
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, [dispatch, id]);
+
 
   const handleMouseDown = (e: React.MouseEvent, index: number) => {
     if ((e.target as HTMLElement).closest('.indiana-card')) {
@@ -38,7 +57,8 @@ function Pregnancy() {
       >
         {[...Array(41)].map((_, index) => (
           <div
-            className={`indiana-card ${activeIndex === index ? 'active-card' : ''}`}
+            className={`indiana-card ${activeIndex === index ? 'active-card' : ''
+              } ${growthMetricsByWeek.some((item) => item.week === index + 1) ? 'active-card' : ''}`}
             style={{ display: 'flex' }}
             key={index}
             onMouseDown={(e) => handleMouseDown(e, index)}
@@ -75,6 +95,7 @@ function Pregnancy() {
         <p>This is the content for week {activeIndex + 1}.</p>
       </div>
       <AddPregnancy
+        id={id || ''}
         week={activeIndex + 1}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}

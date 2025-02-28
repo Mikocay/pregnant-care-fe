@@ -14,6 +14,7 @@ const routes = {
     pregnancy: '/member/pregnancy',
     //* Account Routes
     account: '/member/account',
+    pregnancyByWeek: '/member/pregnancy/:id',
     profile: '/member/account/profile',
     subscription: '/member/account/subscription',
   },

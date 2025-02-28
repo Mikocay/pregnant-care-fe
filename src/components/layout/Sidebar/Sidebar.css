@@ -70,22 +70,17 @@
   border-inline-end: none !important;
 }
 
-.menu-item {
-  height: 50px !important;
-  line-height: 50px !important;
-  margin: 4px 0 !important;
-  margin-left: 4px !important;
-  padding-left: 24px !important;
-  border-radius: 0 !important;
-  position: relative;
+.ant-menu-submenu-title {
+  color: black !important;
 }
-
 .ant-menu-item-selected {
   background-color: #fff1f1 !important;
   color: #ff6b6b !important;
   font-weight: 500;
 }
-
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+  background-color: white !important;
+}
 .ant-menu-item-selected::before {
   content: '';
   position: absolute;

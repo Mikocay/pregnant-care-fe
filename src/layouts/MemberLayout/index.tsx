@@ -3,11 +3,11 @@ import {
   SearchOutlined,
   EditOutlined,
   HomeOutlined,
-  ClockCircleOutlined,
   EyeOutlined,
   BellOutlined,
   InboxOutlined,
   CalendarOutlined,
+  PlusOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
@@ -16,10 +16,50 @@ import config from '@/config';
 import { useMember } from '../hooks/useMember';
 import HeaderAuth from '@/components/layout/Header/HeaderAuth/HeaderAuth';
 import { useHeader } from '@/components/layout/Header/useHeader';
+import { Baby } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
+import { RootState } from '@/redux/store/store';
+import { useEffect } from 'react';
+import { fetchFetus } from '@/redux/features/fetus/slice';
+import React from 'react';
+import { Fetus } from '@/types';
 
 const { Header, Content } = Layout;
 
 const MemberLayout = () => {
+  const dispatch = useAppDispatch();
+  const fetuses = useAppSelector((state: RootState) => state.fetus.fetuses);
+
+
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    dispatch(fetchFetus(userId as string));
+  }, [dispatch]);
+
+
+  // Create children for the Fetus menu item
+  const fetusChildren = [
+    // Add all the baby names first
+    ...fetuses.map((fetus: Fetus) => ({
+      key: fetus._id, // Ensure unique key
+      label: (
+        <Link to={`${config.routes.member.pregnancy}/${fetus._id}`} style={{ textDecoration: 'none' }}>
+          {fetus.name}
+        </Link>
+      ),
+    })),
+    // Add the "Add New Baby" button at the end
+    {
+      key: 'add-new-baby',
+      label: (
+        <Link to={`${config.routes.member.account}`} style={{ textDecoration: 'none' }}>
+          <PlusOutlined /> Add new fetus
+        </Link>
+      ),
+      className: 'add-new-baby-item'
+    }
+  ];
   const { user, handleLogout } = useHeader();
   const { hideContent, createButton } = useMember();
   const menuItems = [
@@ -27,12 +67,13 @@ const MemberLayout = () => {
     {
       key: '2',
       icon: <CalendarOutlined />,
-      label: <Link to={config.routes.member.calendar}>Calendar</Link>,
+      label: <Link to={config.routes.member.calendar} style={{ textDecoration: 'none' }}>Calendar</Link>,
     },
     {
       key: '3',
-      icon: <ClockCircleOutlined />,
-      label: <Link to={config.routes.member.pregnancy}>Pregnancy</Link>
+      icon: <Baby size={16} />,
+      label: 'Fetus',
+      children: fetusChildren
     },
     { key: '4', icon: <InboxOutlined />, label: 'Fetal growth chart' },
     { key: '5', icon: <EyeOutlined />, label: 'Mother status' },

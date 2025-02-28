@@ -1,10 +1,11 @@
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric } from "@/types";
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek } from "@/types";
 
 export interface FetusState {
     fetusStandardsNameAndUnit: {
         data: FetusStandard[];
     }
     fetusStandardsByWeek: {
+        // map(arg0: (field: any) => { name: any; unit: any; value: number; }): unknown;
         reduce(arg0: (acc: { [key: string]: string; }, field: any) => { [key: string]: string; }, arg1: {}): any;
         length: number;
         data: FetusStandardSummary[];
@@ -12,8 +13,9 @@ export interface FetusState {
     growthMetrics: {
         data: GrowthMetric[];
     }
-    fetuses: {
-        map(arg0: (fetus: Fetus) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode;
-        data: Fetus[];
-    }
+    fetuses: Fetus[]
+
+
+    growthMetricsByWeek: GrowthMetricByWeek[];
+
 }

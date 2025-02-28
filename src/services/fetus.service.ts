@@ -1,5 +1,5 @@
 import { axiosPrivate } from '@/config/axios';
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric } from '@/types';
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetricByWeek } from '@/types';
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -18,7 +18,7 @@ export const fetusStandard = {
     //#endregion
 
     //#region createGrowthMetrics
-    createGrowthMetrics: (fetusId: string, metrics: GrowthMetric[]): Promise<AxiosResponse<GrowthMetric[]>> => {
+    createGrowthMetrics: (fetusId: string, metrics: GrowthMetricByWeek[]): Promise<AxiosResponse<GrowthMetricByWeek[]>> => {
         return axiosPrivate.post(`${API_ENDPOINTS.members.createGrowthMetric}/${fetusId}`, metrics);
     },
     //#endregion
@@ -26,6 +26,12 @@ export const fetusStandard = {
     //#region getFetusesByUser
     getFetusesByUser: (userId: string): Promise<AxiosResponse<Fetus[]>> => {
         return axiosPrivate.get(`${API_ENDPOINTS.members.getFetusesByUser}/${userId}`);
+    },
+    //#endregion
+
+    //#region findAllGrowthMetricByMember
+    findAllGrowthMetricByMember: (fetusId: string): Promise<AxiosResponse<GrowthMetricByWeek[]>> => {
+        return axiosPrivate.get(`${API_ENDPOINTS.members.getGrowthMetricByFetus}/${fetusId}`);
     },
     //#endregion
 };

@@ -55,14 +55,37 @@ export interface Fetus {
   gender: "male" | "female";
 
 }
+
+export interface Fetus {
+  _id: string;
+  name: string;
+  dueDate: number;
+  gender: "male" | "female";
+  isDeleted: boolean;
+  metrics: GrowthMetricByWeek[];
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 export interface FetusStandardSummary {
   name: string;
   unit: string;
+}
+
+export interface GrowthMetricData {
+  name: string;
+  unit: string;
+  value: number;
+}
+
+export interface GrowthMetricByWeek {
+  week: number;
+  data: GrowthMetricData[];
 }
 
 export interface GrowthMetric {
   name: string;
   unit: string;
   value: number;
-  week: number;
 }
