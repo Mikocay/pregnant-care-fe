@@ -11,10 +11,12 @@ const routes = {
   member: {
     dashboard: '/member',
     calendar: '/member/calendar',
-    account: '/member/account',
     pregnancy: '/member/pregnancy',
+    //* Account Routes
+    account: '/member/account',
     pregnancyByWeek: '/member/pregnancy/:id',
     profile: '/member/account/profile',
+    subscription: '/member/account/subscription',
   },
 
   public: {
@@ -29,6 +31,8 @@ const routes = {
     confirmEmail: '/confirm-email',
     validateEmail: '/users/validate-email',
     forgotPassword: '/forgot-password',
+    payment_method: '/accounts/create-payment-method',
+    checkout: '/accounts/checkout',
     unauthorized: '/unauthorized',
   },
 };

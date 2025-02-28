@@ -1,10 +1,28 @@
-import { Card, Button } from 'antd';
+import { Card, Button, message } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import styles from './Pricing.module.css';
 import usePricing from './usePricing';
+import { useNavigate } from 'react-router-dom';
 
 export default function PricingPage() {
   const { plans } = usePricing();
+  const navigate = useNavigate();
+
+  const handleUpgrade = (
+    membershipPlanId: string,
+    planName: string,
+    price: number,
+  ) => {
+    if (plans) {
+      navigate(
+        `/accounts/checkout?planId=${membershipPlanId}&planName=${encodeURIComponent(
+          planName,
+        )}&planPrice=${encodeURIComponent(price)}`,
+      );
+    } else {
+      message.error('Please select a plan before upgrading.');
+    }
+  };
 
   return (
     <main className={styles.content}>
@@ -51,6 +69,7 @@ export default function PricingPage() {
                 className={`${styles.button} ${
                   plan.type === '1-month' ? styles.popularButton : ''
                 }`}
+                onClick={() => handleUpgrade(plan.id, plan.name, plan.price)}
               >
                 Choose
               </Button>

@@ -4,11 +4,14 @@ import { Provider } from 'react-redux';
 import store from './redux/store/store';
 import App from './app';
 import '@/styles/globals.css';
+import StripeWrapper from './components/StripeWrapper';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <StripeWrapper>
+        <App />
+      </StripeWrapper>
     </Provider>
   </StrictMode>,
 );

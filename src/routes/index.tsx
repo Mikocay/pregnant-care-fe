@@ -16,6 +16,8 @@ import PublicLayout from '@/layouts/PublicLayout';
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
 const PricingPage = lazy(() => import('@/pages/Pricing'));
+const AddPaymentMethod = lazy(() => import('@/pages/Payment/AddPaymentMethod'));
+const Checkout = lazy(() => import('@/pages/Payment/Checkout'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
@@ -27,6 +29,14 @@ const RouterComponent = () => {
         {
           path: config.routes.public.pricing,
           element: <PricingPage />,
+        },
+        {
+          path: config.routes.auth.payment_method,
+          element: <AddPaymentMethod />,
+        },
+        {
+          path: config.routes.auth.checkout,
+          element: <Checkout />,
         },
       ],
     },
