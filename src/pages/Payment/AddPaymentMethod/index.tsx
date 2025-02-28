@@ -1,28 +1,33 @@
 import React, { useRef } from 'react';
-import { Form, Input, Select, Button, Space } from 'antd';
-import { CreditCardOutlined } from '@ant-design/icons';
+import { Form, Input, Select, Button, Space, message } from 'antd';
 import styles from './AddPaymentMethod.module.css';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { userService } from '@/services/user.service';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
 const AddPaymentMethod: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const card = useRef();
   const [form] = Form.useForm();
 
-  const onFinish = async (values: any) => {
+  const onFinish = async () => {
     try {
       const res = await stripe.createPaymentMethod({
         type: 'card',
         card: elements.getElement(CardElement),
       });
       if (res) {
-        await userService.postPaymentMethod({
+        const resp = await userService.postPaymentMethod({
           paymentMethodId: res.paymentMethod.id,
         });
+        if (resp) {
+          message.success('Payment method added successfully');
+          navigate(-1);
+        }
       }
     } catch (error) {
       console.error('Error:', error);

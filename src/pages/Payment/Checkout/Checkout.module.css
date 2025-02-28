@@ -170,3 +170,8 @@
     margin-top: 16px;
     color: #b2bec3;
   }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.8;
+  }
