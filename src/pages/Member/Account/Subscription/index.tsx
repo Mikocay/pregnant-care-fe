@@ -1,45 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Layout,
   Typography,
   Card,
   Button,
-  Tabs,
-  Table,
-  Tag,
-  Steps,
-  Statistic,
-  Row,
-  Col,
+  Modal,
+  Radio,
+  Space,
   Divider,
   Badge,
-  Space,
-  Alert,
+  Tag,
+  Row,
+  Col,
+  notification,
 } from 'antd';
 import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  DollarOutlined,
-  CalendarOutlined,
-  HeartOutlined,
-  BellOutlined,
-  SettingOutlined,
-  CreditCardOutlined,
+  CheckCircleFilled,
+  CrownFilled,
+  SafetyCertificateFilled,
+  RocketFilled,
+  CloseCircleOutlined,
 } from '@ant-design/icons';
-import type { TabsProps, TableColumnsType } from 'antd';
+import type { RadioChangeEvent } from 'antd';
 import styles from './Subscription.module.css';
 
-const { Header, Content, Footer } = Layout;
-const { Title, Text } = Typography;
-const { Step } = Steps;
-
-interface PaymentHistory {
-  key: string;
-  date: string;
-  amount: number;
-  status: 'success' | 'pending' | 'failed';
-  plan: string;
-}
+const { Content } = Layout;
+const { Title, Text, Paragraph } = Typography;
 
 interface SubscriptionPlan {
   id: string;
@@ -48,38 +34,37 @@ interface SubscriptionPlan {
   period: string;
   features: string[];
   recommended?: boolean;
+  icon: React.ReactNode;
+  color: string;
 }
 
 const SubscriptionPage: React.FC = () => {
   const [currentPlan, setCurrentPlan] = useState<string>('premium');
-  const [daysLeft, setDaysLeft] = useState<number>(23);
-  const [pregnancyWeek, setPregnancyWeek] = useState<number>(24);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Simulate API call to fetch subscription data
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] =
+    useState<boolean>(false);
+  const [isCancelModalVisible, setIsCancelModalVisible] =
+    useState<boolean>(false);
+  const [selectedPlan, setSelectedPlan] = useState<string>('premium');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const subscriptionPlans: SubscriptionPlan[] = [
     {
       id: 'basic',
-      name: 'Basic',
+      name: 'Basic Plan',
       price: 4.99,
       period: 'month',
       features: [
         'Weekly pregnancy updates',
         'Basic pregnancy tracker',
         'Limited articles access',
+        'Email support',
       ],
+      icon: <SafetyCertificateFilled />,
+      color: '#52c41a',
     },
     {
       id: 'premium',
-      name: 'Premium',
+      name: 'Premium Plan',
       price: 9.99,
       period: 'month',
       features: [
@@ -88,8 +73,12 @@ const SubscriptionPage: React.FC = () => {
         'Full articles access',
         'Nutrition guidance',
         'Personalized tips',
+        'Priority support',
+        'Symptom tracker',
       ],
       recommended: true,
+      icon: <CrownFilled />,
+      color: '#ff7875',
     },
     {
       id: 'annual',
@@ -102,463 +91,277 @@ const SubscriptionPage: React.FC = () => {
         'Exclusive content',
         'Priority support',
         'Baby development videos',
+        'Personalized birth plan',
+        'Expert Q&A access',
       ],
+      icon: <RocketFilled />,
+      color: '#722ed1',
     },
   ];
 
-  const paymentHistory: PaymentHistory[] = [
-    {
-      key: '1',
-      date: '2024-02-15',
-      amount: 9.99,
-      status: 'success',
-      plan: 'Premium',
-    },
-    {
-      key: '2',
-      date: '2024-01-15',
-      amount: 9.99,
-      status: 'success',
-      plan: 'Premium',
-    },
-    {
-      key: '3',
-      date: '2023-12-15',
-      amount: 9.99,
-      status: 'success',
-      plan: 'Premium',
-    },
-    {
-      key: '4',
-      date: '2023-11-15',
-      amount: 4.99,
-      status: 'success',
-      plan: 'Basic',
-    },
-  ];
+  const handleUpdatePlan = () => {
+    setLoading(true);
 
-  const columns: TableColumnsType<PaymentHistory> = [
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-      render: (text) => new Date(text).toLocaleDateString(),
-    },
-    {
-      title: 'Plan',
-      dataIndex: 'plan',
-      key: 'plan',
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
-      render: (amount) => `$${amount.toFixed(2)}`,
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status) => {
-        let color = 'green';
-        let icon = <CheckCircleOutlined />;
+    // Simulate API call
+    setTimeout(() => {
+      setCurrentPlan(selectedPlan);
+      setLoading(false);
+      setIsUpdateModalVisible(false);
 
-        if (status === 'pending') {
-          color = 'gold';
-          icon = <ClockCircleOutlined />;
-        } else if (status === 'failed') {
-          color = 'red';
-          icon = null;
-        }
+      notification.success({
+        message: 'Plan Updated',
+        description: `You have successfully updated to the ${
+          subscriptionPlans.find((plan) => plan.id === selectedPlan)?.name
+        }.`,
+        placement: 'topRight',
+      });
+    }, 1500);
+  };
 
-        return (
-          <Tag color={color} icon={icon}>
-            {status.toUpperCase()}
-          </Tag>
-        );
-      },
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: () => (
-        <Button type="link" size="small">
-          View Receipt
-        </Button>
-      ),
-    },
-  ];
+  const handleCancelPlan = () => {
+    setLoading(true);
 
-  const items: TabsProps['items'] = [
-    {
-      key: '1',
-      label: 'Current Plan',
-      children: (
-        <div className={styles.currentPlanTab}>
-          <Row gutter={[24, 24]}>
-            <Col xs={24} md={16}>
-              <Card className={styles.subscriptionCard}>
-                <div className={styles.subscriptionHeader}>
-                  <div>
-                    <Title level={4}>Your Current Subscription</Title>
-                    <Text type="secondary">
-                      Manage your pregnancy tracking subscription
-                    </Text>
-                  </div>
-                  <Badge status="success" text="Active" />
-                </div>
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      setIsCancelModalVisible(false);
 
-                <Divider />
+      notification.info({
+        message: 'Subscription Canceled',
+        description:
+          'Your subscription has been canceled. You will still have access until the end of your billing period.',
+        placement: 'topRight',
+      });
+    }, 1500);
+  };
 
-                <Row gutter={[24, 24]}>
-                  <Col xs={24} md={12}>
-                    <Statistic
-                      title="Current Plan"
-                      value="Premium"
-                      prefix={<HeartOutlined />}
-                      className={styles.statistic}
-                    />
-                    <Text type="secondary">Billed monthly</Text>
-                  </Col>
-                  <Col xs={24} md={12}>
-                    <Statistic
-                      title="Next Payment"
-                      value="$9.99"
-                      prefix={<DollarOutlined />}
-                      className={styles.statistic}
-                    />
-                    <Text type="secondary">March 15, 2024</Text>
-                  </Col>
-                </Row>
+  const handlePlanChange = (e: RadioChangeEvent) => {
+    setSelectedPlan(e.target.value);
+  };
 
-                <Divider />
-
-                <div className={styles.subscriptionActions}>
-                  <Space>
-                    <Button type="primary" icon={<CreditCardOutlined />}>
-                      Update Payment Method
-                    </Button>
-                    <Button icon={<SettingOutlined />}>Change Plan</Button>
-                  </Space>
-                  <Button danger>Cancel Subscription</Button>
-                </div>
-              </Card>
-            </Col>
-
-            <Col xs={24} md={8}>
-              <Card className={styles.pregnancyTrackingCard}>
-                <Title level={4}>Pregnancy Progress</Title>
-                <div className={styles.weekCounter}>
-                  <Statistic
-                    title="Current Week"
-                    value={pregnancyWeek}
-                    suffix="/ 40"
-                  />
-                  <div className={styles.babySize}>
-                    <img
-                      src="/placeholder.svg?height=60&width=60"
-                      alt="Baby size illustration"
-                      className={styles.babySizeIcon}
-                    />
-                    <Text>Baby is the size of a corn</Text>
-                  </div>
-                </div>
-                <div className={styles.progressBar}>
-                  <div
-                    className={styles.progressFill}
-                    style={{ width: `${(pregnancyWeek / 40) * 100}%` }}
-                  />
-                </div>
-                <div className={styles.trimesterInfo}>
-                  <Text>Second Trimester</Text>
-                  <Text type="secondary">
-                    {40 - pregnancyWeek} weeks remaining
-                  </Text>
-                </div>
-                <Divider />
-                <Button type="link" icon={<CalendarOutlined />} block>
-                  View Detailed Pregnancy Timeline
-                </Button>
-              </Card>
-            </Col>
-          </Row>
-
-          <Card
-            className={styles.featuresCard}
-            title="Premium Features Included"
-          >
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Daily Updates</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Get daily updates about your baby's development
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Nutrition Guidance</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Personalized nutrition plans for each trimester
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Symptom Tracker</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Track and manage pregnancy symptoms
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Appointment Reminders</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Never miss an important doctor's appointment
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Expert Articles</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Access to premium content from health experts
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} sm={12} md={8}>
-                <div className={styles.featureItem}>
-                  <CheckCircleOutlined className={styles.featureIcon} />
-                  <div>
-                    <Text strong>Community Access</Text>
-                    <Text
-                      type="secondary"
-                      className={styles.featureDescription}
-                    >
-                      Connect with other expecting parents
-                    </Text>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </div>
-      ),
-    },
-    {
-      key: '2',
-      label: 'Change Plan',
-      children: (
-        <div className={styles.changePlanTab}>
-          <Alert
-            message="Changing plans will take effect immediately"
-            description="Your account will be charged or credited the prorated difference for the remainder of your billing cycle."
-            type="info"
-            showIcon
-            className={styles.planAlert}
-          />
-
-          <Row gutter={[16, 16]} className={styles.plansContainer}>
-            {subscriptionPlans.map((plan) => (
-              <Col xs={24} md={8} key={plan.id}>
-                <Card
-                  className={`${styles.planCard} ${
-                    currentPlan === plan.id ? styles.selectedPlan : ''
-                  } ${plan.recommended ? styles.recommendedPlan : ''}`}
-                  title={
-                    <div className={styles.planCardTitle}>
-                      {plan.name}
-                      {plan.recommended && <Tag color="gold">RECOMMENDED</Tag>}
-                    </div>
-                  }
-                  actions={[
-                    currentPlan === plan.id ? (
-                      <Button key="current" disabled>
-                        Current Plan
-                      </Button>
-                    ) : (
-                      <Button
-                        type="primary"
-                        onClick={() => setCurrentPlan(plan.id)}
-                      >
-                        Select Plan
-                      </Button>
-                    ),
-                  ]}
-                >
-                  <div className={styles.planPrice}>
-                    <Title level={2}>${plan.price}</Title>
-                    <Text type="secondary">per {plan.period}</Text>
-                  </div>
-
-                  <Divider />
-
-                  <ul className={styles.featuresList}>
-                    {plan.features.map((feature, index) => (
-                      <li key={index} className={styles.featureItem}>
-                        <CheckCircleOutlined className={styles.checkIcon} />
-                        <Text>{feature}</Text>
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      ),
-    },
-    {
-      key: '3',
-      label: 'Payment History',
-      children: (
-        <div className={styles.paymentHistoryTab}>
-          <Card>
-            <Title level={4}>Payment History</Title>
-            <Text type="secondary" className={styles.paymentHistoryDescription}>
-              View all your previous transactions
-            </Text>
-
-            <Table
-              columns={columns}
-              dataSource={paymentHistory}
-              pagination={{ pageSize: 5 }}
-              className={styles.paymentTable}
-            />
-          </Card>
-        </div>
-      ),
-    },
-    {
-      key: '4',
-      label: 'Notifications',
-      children: (
-        <div className={styles.notificationsTab}>
-          <Card>
-            <Title level={4}>Notification Preferences</Title>
-            <Text type="secondary">
-              Manage how you receive pregnancy tracking updates
-            </Text>
-
-            <Divider />
-
-            <div className={styles.notificationSettings}>
-              <div className={styles.notificationItem}>
-                <div>
-                  <Text strong>Weekly Summary</Text>
-                  <Text
-                    type="secondary"
-                    className={styles.notificationDescription}
-                  >
-                    Receive a weekly summary of your pregnancy progress
-                  </Text>
-                </div>
-                <Button type="primary" icon={<BellOutlined />}>
-                  Enabled
-                </Button>
-              </div>
-
-              <Divider />
-
-              <div className={styles.notificationItem}>
-                <div>
-                  <Text strong>Payment Reminders</Text>
-                  <Text
-                    type="secondary"
-                    className={styles.notificationDescription}
-                  >
-                    Get notified before your subscription renews
-                  </Text>
-                </div>
-                <Button type="primary" icon={<BellOutlined />}>
-                  Enabled
-                </Button>
-              </div>
-
-              <Divider />
-
-              <div className={styles.notificationItem}>
-                <div>
-                  <Text strong>Special Offers</Text>
-                  <Text
-                    type="secondary"
-                    className={styles.notificationDescription}
-                  >
-                    Receive notifications about special offers and discounts
-                  </Text>
-                </div>
-                <Button icon={<BellOutlined />}>Disabled</Button>
-              </div>
-
-              <Divider />
-
-              <div className={styles.notificationItem}>
-                <div>
-                  <Text strong>New Features</Text>
-                  <Text
-                    type="secondary"
-                    className={styles.notificationDescription}
-                  >
-                    Get notified when new features are added to your plan
-                  </Text>
-                </div>
-                <Button type="primary" icon={<BellOutlined />}>
-                  Enabled
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </div>
-      ),
-    },
-  ];
+  const getCurrentPlan = () => {
+    return subscriptionPlans.find((plan) => plan.id === currentPlan);
+  };
 
   return (
     <Layout className={styles.layout}>
       <Content className={styles.content}>
-        <div className={styles.pageHeader}>
-          <Title level={2}>Subscription Management</Title>
-          <Text type="secondary">
-            Manage your pregnancy tracking subscription
-          </Text>
-        </div>
+        <div className={styles.pageContainer}>
+          <div className={styles.pageHeader}>
+            <div>
+              <Title level={2} className={styles.pageTitle}>
+                Your Subscription
+              </Title>
+              <Text type="secondary">
+                Manage your pregnancy tracking subscription
+              </Text>
+            </div>
+            <div className={styles.headerActions}>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => setIsUpdateModalVisible(true)}
+                className={styles.updateButton}
+              >
+                Update Plan
+              </Button>
+              <Button
+                danger
+                size="large"
+                onClick={() => setIsCancelModalVisible(true)}
+              >
+                Cancel Plan
+              </Button>
+            </div>
+          </div>
 
-        <div className={styles.mainContent}>
-          <Tabs defaultActiveKey="1" items={items} className={styles.tabs} />
+          <Card className={styles.currentPlanCard}>
+            <div className={styles.planHeader}>
+              <div
+                className={styles.planBadge}
+                style={{ backgroundColor: getCurrentPlan()?.color }}
+              >
+                {getCurrentPlan()?.icon}
+              </div>
+              <div className={styles.planInfo}>
+                <div className={styles.planNameContainer}>
+                  <Title level={3} className={styles.planName}>
+                    {getCurrentPlan()?.name}
+                  </Title>
+                  <Badge
+                    status="success"
+                    text="Active"
+                    className={styles.statusBadge}
+                  />
+                </div>
+                <div className={styles.planPrice}>
+                  <Text className={styles.price}>
+                    ${getCurrentPlan()?.price}
+                  </Text>
+                  <Text type="secondary" className={styles.period}>
+                    per {getCurrentPlan()?.period}
+                  </Text>
+                </div>
+              </div>
+            </div>
+
+            <Divider className={styles.divider} />
+
+            <div className={styles.planFeatures}>
+              <Title level={4} className={styles.featuresTitle}>
+                Plan Features
+              </Title>
+              <Row gutter={[24, 16]} className={styles.featuresGrid}>
+                {getCurrentPlan()?.features.map((feature, index) => (
+                  <Col xs={24} sm={12} md={8} key={index}>
+                    <div className={styles.featureItem}>
+                      <CheckCircleFilled
+                        className={styles.featureIcon}
+                        style={{ color: getCurrentPlan()?.color }}
+                      />
+                      <Text>{feature}</Text>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          </Card>
         </div>
       </Content>
+
+      {/* Update Plan Modal */}
+      <Modal
+        title="Update Your Subscription Plan"
+        open={isUpdateModalVisible}
+        onCancel={() => setIsUpdateModalVisible(false)}
+        footer={[
+          <Button key="back" onClick={() => setIsUpdateModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleUpdatePlan}
+            disabled={selectedPlan === currentPlan}
+          >
+            Update Plan
+          </Button>,
+        ]}
+        width={700}
+        className={styles.planModal}
+      >
+        <Paragraph className={styles.modalDescription}>
+          Choose the plan that best fits your pregnancy journey. You can change
+          your plan at any time.
+        </Paragraph>
+
+        <Radio.Group
+          onChange={handlePlanChange}
+          value={selectedPlan}
+          className={styles.planRadioGroup}
+        >
+          <Space direction="vertical" className={styles.planOptions}>
+            {subscriptionPlans.map((plan) => (
+              <Radio
+                key={plan.id}
+                value={plan.id}
+                className={styles.planOption}
+              >
+                <Card
+                  className={`${styles.planSelectionCard} ${
+                    selectedPlan === plan.id ? styles.selectedPlanCard : ''
+                  }`}
+                  bordered={false}
+                >
+                  <div className={styles.planSelectionHeader}>
+                    <div>
+                      <div className={styles.planSelectionTitle}>
+                        <Text strong className={styles.planName}>
+                          {plan.name}
+                        </Text>
+                        {plan.recommended && (
+                          <Tag color="gold">RECOMMENDED</Tag>
+                        )}
+                      </div>
+                      <div className={styles.planSelectionPrice}>
+                        <Text className={styles.price}>${plan.price}</Text>
+                        <Text type="secondary" className={styles.period}>
+                          per {plan.period}
+                        </Text>
+                      </div>
+                    </div>
+                    <div
+                      className={styles.planIcon}
+                      style={{ backgroundColor: plan.color }}
+                    >
+                      {plan.icon}
+                    </div>
+                  </div>
+
+                  <div className={styles.planSelectionFeatures}>
+                    {plan.features.slice(0, 3).map((feature, index) => (
+                      <div key={index} className={styles.planSelectionFeature}>
+                        <CheckCircleFilled
+                          className={styles.featureIcon}
+                          style={{ color: plan.color }}
+                        />
+                        <Text>{feature}</Text>
+                      </div>
+                    ))}
+                    {plan.features.length > 3 && (
+                      <Text type="secondary" className={styles.moreFeatures}>
+                        +{plan.features.length - 3} more features
+                      </Text>
+                    )}
+                  </div>
+                </Card>
+              </Radio>
+            ))}
+          </Space>
+        </Radio.Group>
+      </Modal>
+
+      {/* Cancel Plan Modal */}
+      <Modal
+        title="Cancel Your Subscription"
+        open={isCancelModalVisible}
+        onCancel={() => setIsCancelModalVisible(false)}
+        footer={[
+          <Button key="back" onClick={() => setIsCancelModalVisible(false)}>
+            Keep Subscription
+          </Button>,
+          <Button
+            key="submit"
+            danger
+            loading={loading}
+            onClick={handleCancelPlan}
+          >
+            Confirm Cancellation
+          </Button>,
+        ]}
+        className={styles.cancelModal}
+      >
+        <div className={styles.cancelModalContent}>
+          <div className={styles.cancelIcon}>
+            <CloseCircleOutlined />
+          </div>
+          <Title level={4}>Are you sure you want to cancel?</Title>
+          <Paragraph>If you cancel your subscription:</Paragraph>
+          <ul className={styles.cancelList}>
+            <li>
+              You will lose access to all premium features at the end of your
+              billing period
+            </li>
+            <li>Your subscription will remain active until March 15, 2024</li>
+            <li>You can resubscribe at any time</li>
+          </ul>
+          <Paragraph type="secondary" className={styles.cancelNote}>
+            We're sorry to see you go! If you're having any issues with your
+            subscription, our support team is always here to help.
+          </Paragraph>
+        </div>
+      </Modal>
     </Layout>
   );
 };
