@@ -15,7 +15,7 @@ const MemberRoutes = [
       { path: config.routes.member.dashboard, element: <Dashboard /> },
       { path: config.routes.member.calendar, element: <Calendar /> },
       { path: config.routes.member.pregnancy, element: <Pregnancy /> },
-
+      { path: config.routes.member.pregnancyByWeek, element: <Pregnancy /> },
     ],
   },
   {

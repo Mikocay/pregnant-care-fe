@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric } from '@/types';
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek } from '@/types';
 
 const fetusSlice = createSlice({
   name: 'fetus',
@@ -21,7 +21,7 @@ const fetusSlice = createSlice({
     },
 
     // Fetch Metric theo tuần
-    fetchGrowthMetric: (state, action: PayloadAction<{ fetusId: string, metrics: GrowthMetric[] }>) => { },
+    fetchGrowthMetric: (state, action: PayloadAction<{ fetusId: string, metrics: GrowthMetricByWeek }>) => { },
 
     // Set Metric theo tuần
     setGrowthMetric: (state, action: PayloadAction<GrowthMetric[]>) => {
@@ -33,7 +33,15 @@ const fetusSlice = createSlice({
     // Set Fetus của user
     setFetus: (state, action: PayloadAction<Fetus[]>) => {
       state.fetuses = action.payload
-    }
+    },
+
+    //Fetch Metric theo tuần
+    fetchGrowthMetricByWeek: (state, action: PayloadAction<string>) => { },
+
+    //Set Metric theo tuần
+    setGrowthMetricByWeek: (state, action: PayloadAction<GrowthMetricByWeek[]>) => {
+      state.growthMetricsByWeek = action.payload;
+    },
 
   },
 });
@@ -46,6 +54,8 @@ export const {
   fetchGrowthMetric,
   setGrowthMetric,
   fetchFetus,
-  setFetus
+  setFetus,
+  fetchGrowthMetricByWeek,
+  setGrowthMetricByWeek,
 } = fetusSlice.actions;
 export default fetusSlice.reducer;

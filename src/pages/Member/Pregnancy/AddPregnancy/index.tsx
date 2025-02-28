@@ -1,66 +1,72 @@
-import { Button, Form, Input, Modal, Select, Spin } from 'antd'
+import { Button, Form, Input, Modal, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import styles from './AddPregnancy.module.css';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { RootState } from '@/redux/store/store';
-import { fetchFetus, fetchFetusStandardsByWeek, fetchGrowthMetric } from '@/redux/features/fetus/slice';
-import { Fetus, FetusStandardSummary } from '@/types';
-const { Option } = Select;
+import { fetchFetus, fetchFetusStandardsByWeek, fetchGrowthMetric, fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
+import { FetusStandardSummary, GrowthMetricByWeek } from '@/types';
 
 interface AddPregnancy {
+  id: string;
   week: number;
   open: boolean;
   onClose: () => void;
+
 }
 
-const AddPregnancy: React.FC<AddPregnancy> = ({ week, open, onClose }) => {
+const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-  const { fetusStandardsByWeek, fetuses } = useAppSelector((state: RootState) => state.fetus);
+  const { fetusStandardsByWeek, growthMetricsByWeek } = useAppSelector((state: RootState) => state.fetus);
   const [form] = Form.useForm();
-  const [selectedFetus, setSelectedFetus] = useState<string>('');
+  const fetusesHasWeekData = growthMetricsByWeek.find((item) => item.week === week);
 
+  console.log("fetusStandardsByWeek", fetusStandardsByWeek);
+  console.log("growthMetricsByWeek", growthMetricsByWeek);
   useEffect(() => {
     if (open) {
-      setLoading(true);
-      const fetchData = () => {
-        setLoading(true);
-        try {
-          dispatch(fetchFetusStandardsByWeek(week));
-          dispatch(fetchFetus(localStorage.getItem('userId') as string));
-        } catch (error) {
-          console.log('error', error);
-        }
-        finally {
-          setLoading(false);
-        }
-      };
-      fetchData();
+      dispatch(fetchFetusStandardsByWeek(week))
+
     }
   }, [week, open, dispatch]);
 
   useEffect(() => {
-    if (fetusStandardsByWeek.length > 0) {
-      form.setFieldsValue(
-        fetusStandardsByWeek.reduce((acc: { [key: string]: string }, field) => {
+    if (open) {
+      const fetusesHasWeekData = growthMetricsByWeek.find((item) => item.week === week);
+
+
+      const defaultValues = fetusStandardsByWeek.reduce((acc: Record<string, string>, field) => {
+        if (!fetusesHasWeekData) {
           acc[field.name] = '';
           return acc;
-        }, {})
-      );
+        }
+        acc[field.name] = fetusesHasWeekData.data.find((d) => d.name === field.name)?.value.toString() || '';
+        return acc;
+      }, {});
+
+      form.setFieldsValue(defaultValues);
     }
-  }, [fetusStandardsByWeek, form]);
+  }, [fetusStandardsByWeek, fetusesHasWeekData, open, form, growthMetricsByWeek, week]);
+
 
   const handleSubmit = async (values: Record<string, string>) => {
     try {
       setLoading(true);
-      const formattedData = fetusStandardsByWeek.map((field) => ({
-        name: field.name,
-        unit: field.unit,
-        value: Number(values[field.name]), // Chuyển giá trị thành số
-        week: week,
-      }));
-      // gọi API để lưu dữ liệu
-      dispatch(fetchGrowthMetric({ fetusId: selectedFetus, metrics: formattedData }));
+      console.log("values", values);
+      const formattedData: GrowthMetricByWeek = {
+        week,
+        data: fetusStandardsByWeek.map((field) => ({
+          name: field.name,
+          unit: field.unit,
+          value: Number(values[field.name]) || 0,
+        })),
+      };
+      console.log("formattedData", formattedData);
+      // Gửi dữ liệu lên server
+      await dispatch(fetchGrowthMetric({ fetusId: id, metrics: formattedData }));
+
+      // Gọi lại API để lấy dữ liệu mới
+      await dispatch(fetchGrowthMetricByWeek(id));
 
     } catch (error) {
       console.log('error', error);
@@ -75,24 +81,6 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ week, open, onClose }) => {
         <Spin />
       ) : (
         <Form form={form} layout="vertical" onFinish={handleSubmit} className={styles.form}>
-          <Form.Item
-            name="fetus" label="Select baby" rules={[{ required: true, message: 'Please choose baby' }]}
-          >
-            <Select
-              style={{ width: '100%' }}
-              placeholder="Enter baby"
-              onChange={(value) => setSelectedFetus(value)}
-              value={selectedFetus}
-              allowClear
-            >
-              {fetuses.map((fetus: Fetus) => (
-                <Option key={fetus._id} value={fetus._id}>
-                  {fetus.name} - {fetus.gender === 'male' ? 'Nam' : 'Nữ'}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
           {fetusStandardsByWeek.map((field: FetusStandardSummary) => (
             <Form.Item
               key={field.name}

@@ -31,10 +31,11 @@ export default function Sidebar({ sidebarBody }: { sidebarBody: SidebarBody }) {
         <Menu
           mode="inline"
           defaultSelectedKeys={[location.pathname ? location.pathname : '1']}
+          // defaultSelectedKeys={['fetuses']}
+          // defaultOpenKeys={['3']}
           items={sidebarBody.map((item, index) => ({
             ...item,
             key: item.key || index,
-            className: 'menu-item',
           }))}
         />
       </Sider>

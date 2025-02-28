@@ -13,6 +13,7 @@ const routes = {
     calendar: '/member/calendar',
     account: '/member/account',
     pregnancy: '/member/pregnancy',
+    pregnancyByWeek: '/member/pregnancy/:id',
     profile: '/member/account/profile',
   },
 
