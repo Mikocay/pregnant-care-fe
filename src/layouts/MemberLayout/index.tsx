@@ -30,21 +30,21 @@ const MemberLayout = () => {
   const dispatch = useAppDispatch();
   const fetuses = useAppSelector((state: RootState) => state.fetus.fetuses);
 
-
-
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     dispatch(fetchFetus(userId as string));
   }, [dispatch]);
 
-
   // Create children for the Fetus menu item
   const fetusChildren = [
     // Add all the baby names first
     ...fetuses.map((fetus: Fetus) => ({
-      key: fetus._id, // Ensure unique key
+      key: fetus.id, // Ensure unique key
       label: (
-        <Link to={`${config.routes.member.pregnancy}/${fetus._id}`} style={{ textDecoration: 'none' }}>
+        <Link
+          to={`${config.routes.member.pregnancy}/${fetus.id}`}
+          style={{ textDecoration: 'none' }}
+        >
           {fetus.name}
         </Link>
       ),
@@ -53,12 +53,15 @@ const MemberLayout = () => {
     {
       key: 'add-new-baby',
       label: (
-        <Link to={`${config.routes.member.account}`} style={{ textDecoration: 'none' }}>
+        <Link
+          to={`${config.routes.member.account}`}
+          style={{ textDecoration: 'none' }}
+        >
           <PlusOutlined /> Add new fetus
         </Link>
       ),
-      className: 'add-new-baby-item'
-    }
+      className: 'add-new-baby-item',
+    },
   ];
   const { user, handleLogout } = useHeader();
   const { hideContent, createButton } = useMember();
@@ -67,13 +70,20 @@ const MemberLayout = () => {
     {
       key: '2',
       icon: <CalendarOutlined />,
-      label: <Link to={config.routes.member.calendar} style={{ textDecoration: 'none' }}>Calendar</Link>,
+      label: (
+        <Link
+          to={config.routes.member.calendar}
+          style={{ textDecoration: 'none' }}
+        >
+          Calendar
+        </Link>
+      ),
     },
     {
       key: '3',
       icon: <Baby size={16} />,
       label: 'Fetus',
-      children: fetusChildren
+      children: fetusChildren,
     },
     { key: '4', icon: <InboxOutlined />, label: 'Fetal growth chart' },
     { key: '5', icon: <EyeOutlined />, label: 'Mother status' },

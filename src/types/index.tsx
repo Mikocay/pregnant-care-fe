@@ -49,18 +49,17 @@ export interface FetusStandard {
 }
 
 export interface Fetus {
-  _id: string;
+  id: string;
   name: string;
   dueDate: number;
-  gender: "male" | "female";
-
+  gender: 'male' | 'female';
 }
 
 export interface Fetus {
   _id: string;
   name: string;
   dueDate: number;
-  gender: "male" | "female";
+  gender: 'male' | 'female';
   isDeleted: boolean;
   metrics: GrowthMetricByWeek[];
   userId: string;
