@@ -41,6 +41,7 @@ const SettingsPage: React.FC = () => {
           key: 'subscription',
           icon: <UserOutlined />,
           label: 'Manage your subscription',
+          link: config.routes.member.subscription,
         },
       ],
     },
