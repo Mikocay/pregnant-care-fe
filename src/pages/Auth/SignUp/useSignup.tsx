@@ -54,11 +54,6 @@ export const useSignup = () => {
         type: 'warning',
         message: 'Please check your email to verify your account!',
       });
-    } else if (registerStatus === 'confirming') {
-      showNotification({
-        type: 'warning',
-        message: 'Please check your email to verify your account!',
-      });
     } else if (registerStatus === 'confirmed') {
       showNotification({
         type: 'success',

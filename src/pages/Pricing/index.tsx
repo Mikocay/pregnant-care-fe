@@ -65,10 +65,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               <Button
-                type={plan.type === '1-month' ? 'primary' : 'default'}
-                className={`${styles.button} ${
-                  plan.type === '1-month' ? styles.popularButton : ''
-                }`}
+                className={styles.button}
                 onClick={() => handleUpgrade(plan.id, plan.name, plan.price)}
               >
                 Choose
