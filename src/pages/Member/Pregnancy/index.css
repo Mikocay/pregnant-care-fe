@@ -21,6 +21,7 @@
   cursor: pointer;
 }
 .indiana-card.active-card {
+  box-shadow: #f17421cb  0px 3px 8px; 
   border: 2px solid #ff6600;
 }
 .indiana-scroll-container {

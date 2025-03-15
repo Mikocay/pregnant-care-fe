@@ -36,11 +36,21 @@ const fetusSlice = createSlice({
     },
 
     //Fetch Metric theo tuần
-    fetchGrowthMetricByWeek: (state, action: PayloadAction<string>) => { },
+    fetchGrowthMetricByWeek: (state, action: PayloadAction<string>) => {
+      state.loading = true;
+      state.error = null;
+    },
 
     //Set Metric theo tuần
     setGrowthMetricByWeek: (state, action: PayloadAction<GrowthMetricByWeek[]>) => {
       state.growthMetricsByWeek = action.payload;
+      state.loading = false;
+    },
+
+    // Add error handling reducer
+    fetchGrowthMetricByWeekError: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.error = action.payload;
     },
 
   },
@@ -57,5 +67,6 @@ export const {
   setFetus,
   fetchGrowthMetricByWeek,
   setGrowthMetricByWeek,
+  fetchGrowthMetricByWeekError,
 } = fetusSlice.actions;
 export default fetusSlice.reducer;

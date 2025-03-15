@@ -17,5 +17,7 @@ export interface FetusState {
 
 
     growthMetricsByWeek: GrowthMetricByWeek[];
+    loading: boolean;
+    error: any;
 
 }

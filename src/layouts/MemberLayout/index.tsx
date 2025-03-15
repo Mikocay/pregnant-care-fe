@@ -29,6 +29,7 @@ const { Header, Content } = Layout;
 const MemberLayout = () => {
   const dispatch = useAppDispatch();
   const fetuses = useAppSelector((state: RootState) => state.fetus.fetuses);
+  console.log("fetuses", fetuses);
 
 
 
@@ -42,9 +43,9 @@ const MemberLayout = () => {
   const fetusChildren = [
     // Add all the baby names first
     ...fetuses.map((fetus: Fetus) => ({
-      key: fetus._id, // Ensure unique key
+      key: fetus.id, // Ensure unique key
       label: (
-        <Link to={`${config.routes.member.pregnancy}/${fetus._id}`} style={{ textDecoration: 'none' }}>
+        <Link to={`${config.routes.member.pregnancy}/${fetus.id}`} style={{ textDecoration: 'none' }}>
           {fetus.name}
         </Link>
       ),

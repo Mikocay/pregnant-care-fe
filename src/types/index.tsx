@@ -49,7 +49,7 @@ export interface FetusStandard {
 }
 
 export interface Fetus {
-  _id: string;
+  id: string;
   name: string;
   dueDate: number;
   gender: "male" | "female";
