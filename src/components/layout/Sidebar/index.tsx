@@ -2,7 +2,8 @@ import ASSETS from '@/assets';
 import Sider from 'antd/es/layout/Sider';
 import { Menu } from 'antd';
 import './Sidebar.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import config from '@/config';
 
 type SidebarItem = {
   key: string;
@@ -17,7 +18,7 @@ export default function Sidebar({ sidebarBody }: { sidebarBody: SidebarBody }) {
 
   return (
     <Sider theme="light" width={260} className="sidebar">
-      <div className="sidebar-top">
+      <Link className="sidebar-top" to={config.routes.public.home}>
         <div className="logo">
           <img src={ASSETS.logo} alt="PregnaCare" width={30} />
         </div>
@@ -25,7 +26,7 @@ export default function Sidebar({ sidebarBody }: { sidebarBody: SidebarBody }) {
           <p className="sidebar-title">PregnaCare</p>
           <p className="sidebar-subtitle">Modern Member Dashboard</p>
         </div>
-      </div>
+      </Link>
 
       <Sider theme="light" width={250} className="menu-sider">
         <Menu

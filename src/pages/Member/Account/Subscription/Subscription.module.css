@@ -43,17 +43,19 @@
   margin-bottom: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
 }
 
 .pageTitle {
   margin-bottom: 8px !important;
-  color: #262626;
+  font-weight: bold !important;
+  color: #ff7875 !important;
 }
 
 .headerActions {
   display: flex;
   gap: 16px;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .updateButton {
@@ -122,6 +124,110 @@
 
 .period {
   font-size: 14px;
+}
+
+.description {
+  font-size: 16px;
+  color: #262626af;
+}
+
+/* Due Date Section */
+.dueDateSection {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+
+.dueDateHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dueDateInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dueDateIcon {
+  font-size: 24px;
+  color: #ff7875;
+}
+
+.dueDateValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.expiringTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.progressContainer {
+  width: 200px;
+}
+
+.dueProgress {
+  margin-bottom: 0;
+}
+
+.dueDateNote {
+  font-size: 14px;
+}
+
+/* Warning Banner */
+.warningBanner {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #fff7e6;
+  border: 1px solid #ffd591;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.warningIcon {
+  font-size: 24px;
+  color: #faad14;
+}
+
+.warningText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.closeWarningIcon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 14px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.closeWarningIcon:hover {
+  color: #393939;
+}
+
+.renewButton {
+  background-color: #faad14;
+  border-color: #faad14;
+}
+
+.renewButton:hover {
+  background-color: #ffc53d;
+  border-color: #ffc53d;
 }
 
 .divider {
@@ -298,6 +404,25 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+  }
+
+  .dueDateHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .progressContainer {
+    width: 100%;
+  }
+
+  .warningBanner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .renewButton {
+    width: 100%;
   }
 
   .planFooter {

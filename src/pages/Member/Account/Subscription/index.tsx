@@ -1,146 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layout,
   Typography,
   Card,
   Button,
   Modal,
-  Radio,
-  Space,
   Divider,
   Badge,
-  Tag,
   Row,
   Col,
-  notification,
+  Tag,
+  Progress,
+  Tooltip,
 } from 'antd';
 import {
   CheckCircleFilled,
-  CrownFilled,
-  SafetyCertificateFilled,
-  RocketFilled,
   CloseCircleOutlined,
+  CrownFilled,
+  RocketFilled,
+  SafetyCertificateFilled,
+  CalendarOutlined,
+  WarningOutlined,
+  ClockCircleOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
-import type { RadioChangeEvent } from 'antd';
+
 import styles from './Subscription.module.css';
+import { useSubscription } from './useSubscription';
 
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
-interface SubscriptionPlan {
-  id: string;
-  name: string;
-  price: number;
-  period: string;
-  features: string[];
-  recommended?: boolean;
-  icon: React.ReactNode;
-  color: string;
-}
-
 const SubscriptionPage: React.FC = () => {
-  const [currentPlan, setCurrentPlan] = useState<string>('premium');
-  const [isUpdateModalVisible, setIsUpdateModalVisible] =
-    useState<boolean>(false);
-  const [isCancelModalVisible, setIsCancelModalVisible] =
-    useState<boolean>(false);
-  const [selectedPlan, setSelectedPlan] = useState<string>('premium');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [showExpiringSoon, setShowExpiringSoon] = useState<boolean>(false);
+  const [isDismissed, setIsDismissed] = useState<boolean>(false);
 
-  const subscriptionPlans: SubscriptionPlan[] = [
-    {
-      id: 'basic',
-      name: 'Basic Plan',
-      price: 4.99,
-      period: 'month',
-      features: [
-        'Weekly pregnancy updates',
-        'Basic pregnancy tracker',
-        'Limited articles access',
-        'Email support',
-      ],
-      icon: <SafetyCertificateFilled />,
-      color: '#52c41a',
-    },
-    {
-      id: 'premium',
-      name: 'Premium Plan',
-      price: 9.99,
-      period: 'month',
-      features: [
-        'Daily pregnancy updates',
-        'Advanced pregnancy tracker',
-        'Full articles access',
-        'Nutrition guidance',
-        'Personalized tips',
-        'Priority support',
-        'Symptom tracker',
-      ],
-      recommended: true,
-      icon: <CrownFilled />,
-      color: '#ff7875',
-    },
-    {
-      id: 'annual',
-      name: 'Annual Premium',
-      price: 89.99,
-      period: 'year',
-      features: [
-        'All Premium features',
-        'Save 25% compared to monthly',
-        'Exclusive content',
-        'Priority support',
-        'Baby development videos',
-        'Personalized birth plan',
-        'Expert Q&A access',
-      ],
-      icon: <RocketFilled />,
-      color: '#722ed1',
-    },
-  ];
+  const {
+    subscriptions,
+    handleCancelPlan,
+    handleUpdatePlan,
+    handleCancelButton,
+    loading,
+    handleIsCancelModalVisible,
+    isCancelModalVisible,
+    dueDate,
+    daysRemaining,
+    isExpired,
+    isExpiringSoon,
+  } = useSubscription();
 
-  const handleUpdatePlan = () => {
-    setLoading(true);
+  useEffect(() => {
+    if (isExpiringSoon) {
+      setShowExpiringSoon(true);
+    }
+  }, [isExpiringSoon]);
 
-    // Simulate API call
-    setTimeout(() => {
-      setCurrentPlan(selectedPlan);
-      setLoading(false);
-      setIsUpdateModalVisible(false);
-
-      notification.success({
-        message: 'Plan Updated',
-        description: `You have successfully updated to the ${
-          subscriptionPlans.find((plan) => plan.id === selectedPlan)?.name
-        }.`,
-        placement: 'topRight',
-      });
-    }, 1500);
+  const formatDueDate = (date: Date | null) => {
+    if (!date) return 'N/A';
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
   };
 
-  const handleCancelPlan = () => {
-    setLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      setIsCancelModalVisible(false);
-
-      notification.info({
-        message: 'Subscription Canceled',
-        description:
-          'Your subscription has been canceled. You will still have access until the end of your billing period.',
-        placement: 'topRight',
-      });
-    }, 1500);
-  };
-
-  const handlePlanChange = (e: RadioChangeEvent) => {
-    setSelectedPlan(e.target.value);
-  };
-
-  const getCurrentPlan = () => {
-    return subscriptionPlans.find((plan) => plan.id === currentPlan);
+  const calculateProgress = () => {
+    if (!dueDate || isExpired) return 100;
+    if (daysRemaining > 90) return 25;
+    const percentage = 100 - (daysRemaining / 90) * 100;
+    return Math.min(Math.max(percentage, 0), 100);
   };
 
   return (
@@ -149,9 +77,7 @@ const SubscriptionPage: React.FC = () => {
         <div className={styles.pageContainer}>
           <div className={styles.pageHeader}>
             <div>
-              <Title level={2} className={styles.pageTitle}>
-                Your Subscription
-              </Title>
+              <Title className={styles.pageTitle}>Your Subscription</Title>
               <Text type="secondary">
                 Manage your pregnancy tracking subscription
               </Text>
@@ -160,46 +86,80 @@ const SubscriptionPage: React.FC = () => {
               <Button
                 type="primary"
                 size="large"
-                onClick={() => setIsUpdateModalVisible(true)}
+                onClick={handleUpdatePlan}
                 className={styles.updateButton}
               >
                 Update Plan
               </Button>
-              <Button
-                danger
-                size="large"
-                onClick={() => setIsCancelModalVisible(true)}
-              >
+              <Button danger size="large" onClick={handleCancelButton}>
                 Cancel Plan
               </Button>
             </div>
           </div>
 
+          {showExpiringSoon && !isExpired && !isDismissed && (
+            <div className={styles.warningBanner}>
+              <CloseOutlined
+                className={styles.closeWarningIcon}
+                onClick={() => setIsDismissed(true)}
+              />
+              <WarningOutlined className={styles.warningIcon} />
+              <div className={styles.warningText}>
+                <Text strong>Your subscription will expire soon!</Text>
+                <Text>
+                  Your plan will automatically cancel on{' '}
+                  {formatDueDate(dueDate)}.
+                </Text>
+              </div>
+              <Button
+                type="primary"
+                onClick={handleUpdatePlan}
+                className={styles.renewButton}
+              >
+                Renew Now
+              </Button>
+            </div>
+          )}
+
           <Card className={styles.currentPlanCard}>
             <div className={styles.planHeader}>
               <div
                 className={styles.planBadge}
-                style={{ backgroundColor: getCurrentPlan()?.color }}
+                style={{ backgroundColor: '#ff7875' }}
               >
-                {getCurrentPlan()?.icon}
+                {subscriptions?.type === 'free' ? (
+                  <SafetyCertificateFilled />
+                ) : subscriptions?.type === '1-month' ? (
+                  <CrownFilled />
+                ) : (
+                  <RocketFilled />
+                )}
               </div>
               <div className={styles.planInfo}>
                 <div className={styles.planNameContainer}>
                   <Title level={3} className={styles.planName}>
-                    {getCurrentPlan()?.name}
+                    {subscriptions?.name}
                   </Title>
                   <Badge
-                    status="success"
-                    text="Active"
+                    status={isExpired ? 'error' : 'success'}
+                    text={isExpired ? 'Expired' : 'Active'}
                     className={styles.statusBadge}
                   />
                 </div>
                 <div className={styles.planPrice}>
-                  <Text className={styles.price}>
-                    ${getCurrentPlan()?.price}
-                  </Text>
+                  <Text className={styles.price}>${subscriptions?.price}</Text>
                   <Text type="secondary" className={styles.period}>
-                    per {getCurrentPlan()?.period}
+                    per /{' '}
+                    {subscriptions?.type === '1-month'
+                      ? 'month'
+                      : subscriptions?.type === 'free'
+                      ? 'month'
+                      : 'lifetime'}
+                  </Text>
+                </div>
+                <div>
+                  <Text className={styles.description}>
+                    {subscriptions?.description}
                   </Text>
                 </div>
               </div>
@@ -212,12 +172,12 @@ const SubscriptionPage: React.FC = () => {
                 Plan Features
               </Title>
               <Row gutter={[24, 16]} className={styles.featuresGrid}>
-                {getCurrentPlan()?.features.map((feature, index) => (
+                {subscriptions?.benefits.map((feature, index) => (
                   <Col xs={24} sm={12} md={8} key={index}>
                     <div className={styles.featureItem}>
                       <CheckCircleFilled
                         className={styles.featureIcon}
-                        style={{ color: getCurrentPlan()?.color }}
+                        style={{ color: '#ff7875' }}
                       />
                       <Text>{feature}</Text>
                     </div>
@@ -225,110 +185,77 @@ const SubscriptionPage: React.FC = () => {
                 ))}
               </Row>
             </div>
+
+            <Divider className={styles.divider} />
+
+            {dueDate && subscriptions?.type !== 'free' && (
+              <div className={styles.dueDateSection}>
+                <div className={styles.dueDateHeader}>
+                  <div className={styles.dueDateInfo}>
+                    <CalendarOutlined className={styles.dueDateIcon} />
+                    <div>
+                      <Text strong>Due Date:</Text>
+                      <div className={styles.dueDateValue}>
+                        <Text>{formatDueDate(dueDate)}</Text>
+                        {isExpiringSoon && !isExpired && (
+                          <Tag color="warning" className={styles.expiringTag}>
+                            <ClockCircleOutlined /> {daysRemaining} days left
+                          </Tag>
+                        )}
+                        {isExpired && (
+                          <Tag color="error" className={styles.expiringTag}>
+                            Expired
+                          </Tag>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <Tooltip
+                    title={`${
+                      isExpired
+                        ? 'Subscription expired'
+                        : `${daysRemaining} days remaining`
+                    }`}
+                  >
+                    <div className={styles.progressContainer}>
+                      <Progress
+                        percent={calculateProgress()}
+                        showInfo={false}
+                        strokeColor={
+                          isExpired
+                            ? '#ff4d4f'
+                            : daysRemaining < 30
+                            ? '#faad14'
+                            : '#52c41a'
+                        }
+                        className={styles.dueProgress}
+                      />
+                    </div>
+                  </Tooltip>
+                </div>
+
+                <Text type="secondary" className={styles.dueDateNote}>
+                  {isExpired
+                    ? 'Your subscription has expired. Please renew to continue accessing premium features.'
+                    : `Your subscription will automatically cancel on the due date. ${
+                        daysRemaining <= 30
+                          ? 'Consider renewing soon to avoid interruption.'
+                          : ''
+                      }`}
+                </Text>
+              </div>
+            )}
           </Card>
         </div>
       </Content>
 
-      {/* Update Plan Modal */}
-      <Modal
-        title="Update Your Subscription Plan"
-        open={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
-        footer={[
-          <Button key="back" onClick={() => setIsUpdateModalVisible(false)}>
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleUpdatePlan}
-            disabled={selectedPlan === currentPlan}
-          >
-            Update Plan
-          </Button>,
-        ]}
-        width={700}
-        className={styles.planModal}
-      >
-        <Paragraph className={styles.modalDescription}>
-          Choose the plan that best fits your pregnancy journey. You can change
-          your plan at any time.
-        </Paragraph>
-
-        <Radio.Group
-          onChange={handlePlanChange}
-          value={selectedPlan}
-          className={styles.planRadioGroup}
-        >
-          <Space direction="vertical" className={styles.planOptions}>
-            {subscriptionPlans.map((plan) => (
-              <Radio
-                key={plan.id}
-                value={plan.id}
-                className={styles.planOption}
-              >
-                <Card
-                  className={`${styles.planSelectionCard} ${
-                    selectedPlan === plan.id ? styles.selectedPlanCard : ''
-                  }`}
-                  bordered={false}
-                >
-                  <div className={styles.planSelectionHeader}>
-                    <div>
-                      <div className={styles.planSelectionTitle}>
-                        <Text strong className={styles.planName}>
-                          {plan.name}
-                        </Text>
-                        {plan.recommended && (
-                          <Tag color="gold">RECOMMENDED</Tag>
-                        )}
-                      </div>
-                      <div className={styles.planSelectionPrice}>
-                        <Text className={styles.price}>${plan.price}</Text>
-                        <Text type="secondary" className={styles.period}>
-                          per {plan.period}
-                        </Text>
-                      </div>
-                    </div>
-                    <div
-                      className={styles.planIcon}
-                      style={{ backgroundColor: plan.color }}
-                    >
-                      {plan.icon}
-                    </div>
-                  </div>
-
-                  <div className={styles.planSelectionFeatures}>
-                    {plan.features.slice(0, 3).map((feature, index) => (
-                      <div key={index} className={styles.planSelectionFeature}>
-                        <CheckCircleFilled
-                          className={styles.featureIcon}
-                          style={{ color: plan.color }}
-                        />
-                        <Text>{feature}</Text>
-                      </div>
-                    ))}
-                    {plan.features.length > 3 && (
-                      <Text type="secondary" className={styles.moreFeatures}>
-                        +{plan.features.length - 3} more features
-                      </Text>
-                    )}
-                  </div>
-                </Card>
-              </Radio>
-            ))}
-          </Space>
-        </Radio.Group>
-      </Modal>
-
-      {/* Cancel Plan Modal */}
       <Modal
         title="Cancel Your Subscription"
         open={isCancelModalVisible}
-        onCancel={() => setIsCancelModalVisible(false)}
+        onCancel={handleIsCancelModalVisible}
         footer={[
-          <Button key="back" onClick={() => setIsCancelModalVisible(false)}>
+          <Button key="back" onClick={handleIsCancelModalVisible}>
             Keep Subscription
           </Button>,
           <Button
@@ -343,23 +270,16 @@ const SubscriptionPage: React.FC = () => {
         className={styles.cancelModal}
       >
         <div className={styles.cancelModalContent}>
-          <div className={styles.cancelIcon}>
-            <CloseCircleOutlined />
-          </div>
+          <CloseCircleOutlined className={styles.cancelIcon} />
           <Title level={4}>Are you sure you want to cancel?</Title>
           <Paragraph>If you cancel your subscription:</Paragraph>
           <ul className={styles.cancelList}>
             <li>
-              You will lose access to all premium features at the end of your
-              billing period
+              You will lose premium features after {formatDueDate(dueDate)}.
             </li>
-            <li>Your subscription will remain active until March 15, 2024</li>
-            <li>You can resubscribe at any time</li>
+            <li>Your subscription remains active until then.</li>
+            <li>You can resubscribe anytime.</li>
           </ul>
-          <Paragraph type="secondary" className={styles.cancelNote}>
-            We're sorry to see you go! If you're having any issues with your
-            subscription, our support team is always here to help.
-          </Paragraph>
         </div>
       </Modal>
     </Layout>
