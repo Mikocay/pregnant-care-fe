@@ -1,11 +1,8 @@
-<<<<<<< HEAD
 import TiptapEditor from '@/components/Tiptap';
 import { RootState } from '@/redux/store/store';
 import { useSelector } from 'react-redux';
-=======
 import { Layout, Card, Button, Form, Input, Collapse, Image } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
->>>>>>> 32045a8de873799144e121af8f8c852801b55173
 
 import styles from './HomePage.module.css';
 import PricingPage from '../Pricing';
@@ -15,16 +12,8 @@ import { TestimonialsSection } from './Testimonials';
 import { ServicesSection } from './Services';
 
 const { Panel } = Collapse;
-
-<<<<<<< HEAD
-  return (
-    <TiptapEditor />
-  )
-};
-=======
 export default function Home() {
   const { whyChooseUsFeatures, form } = useHomePage();
->>>>>>> 32045a8de873799144e121af8f8c852801b55173
 
   return (
     <Layout>
