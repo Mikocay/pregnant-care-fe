@@ -27,7 +27,7 @@ function* loginSaga(
     yield call([localStorage, 'setItem'], 'userId', tokenData.userId);
 
     //* Gọi API lấy thông tin user (nếu bắt buộc)
-    const getUser = yield call(userService.getUserInfoById, tokenData.userId);
+    const getUser = yield call(userService.getUserSelfInfo);
     const userRole = getUser.data.data.role;
 
     //* Lưu userRole vào localStorage (hoặc sessionStorage)

@@ -6,7 +6,7 @@ export const useAdmin = () => {
   const location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
-  const [isCreate, setIsCreate] = useState(false);
+  const [hideContent, setHideContent] = useState(false);
 
   const createButton = () => {
     if (path.includes(config.routes.admin.managePlans)) {
@@ -21,24 +21,20 @@ export const useAdmin = () => {
   };
 
   useEffect(() => {
-    console.log('Path:', path);
-
     if (path.includes(config.routes.admin.formPlan)) {
-      setIsCreate(true);
-    } else if (path.includes(config.routes.admin.formGrwothMatrics)) {
-      setIsCreate(true);
+      setHideContent(true);
     }
     else if (path.includes(config.routes.admin.createBlog)) {
       setIsCreate(true);
     }
     //! Add more conditions here
     else {
-      setIsCreate(false);
+      setHideContent(false);
     }
   }, [path]);
 
   return {
     createButton,
-    isCreate,
+    hideContent,
   };
 };

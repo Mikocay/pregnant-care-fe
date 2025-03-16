@@ -16,6 +16,13 @@
 
 .authText {
   color: #ff7875;
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
+}
+
+.authText:hover {
+  color: #ff3c3f;
 }
 
 .signUpButton {
@@ -55,6 +62,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.menuItemLink {
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
 }
 
 .logoutItem {

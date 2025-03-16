@@ -15,6 +15,9 @@ import PublicLayout from '@/layouts/PublicLayout';
 
 //* Lazy load pages
 const Home = lazy(() => import('@/pages/Home'));
+const PricingPage = lazy(() => import('@/pages/Pricing'));
+const AddPaymentMethod = lazy(() => import('@/pages/Payment/AddPaymentMethod'));
+const Checkout = lazy(() => import('@/pages/Payment/Checkout'));
 
 const RouterComponent = () => {
   const router = createBrowserRouter([
@@ -23,6 +26,18 @@ const RouterComponent = () => {
       element: <PublicLayout />,
       children: [
         { index: true, path: config.routes.public.home, element: <Home /> },
+        {
+          path: config.routes.public.pricing,
+          element: <PricingPage />,
+        },
+        {
+          path: config.routes.auth.payment_method,
+          element: <AddPaymentMethod />,
+        },
+        {
+          path: config.routes.auth.checkout,
+          element: <Checkout />,
+        },
       ],
     },
 
@@ -41,7 +56,7 @@ const RouterComponent = () => {
         //* Member routes *
         {
           element: <PrivateRoute allowedRoles={[ROLE.MEMBER]} />,
-          children: [MemberRoutes],
+          children: [...MemberRoutes],
         },
       ],
     },

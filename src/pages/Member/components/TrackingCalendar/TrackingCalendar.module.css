@@ -1,0 +1,98 @@
+.calendarContainer {
+  padding: 20px;
+}
+
+.calendarContainer :global(.rs-calendar-table-cell-content) {
+  height: 80px !important;
+}
+
+.cellWrapper {
+  position: relative;
+  height: 100%;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.date {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.time {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.icons {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.userIcon {
+  color: #333;
+  font-size: 16px;
+}
+
+.teamIcon {
+  color: #1890ff;
+  font-size: 16px;
+}
+
+/* Override rsuite calendar styles */
+:global(.rs-calendar) {
+  width: 100%;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+:global(.rs-calendar-table-cell) {
+  height: 100%;
+  padding: 0 !important;
+  border: 1px solid #f0f0f0;
+}
+
+:global(.rs-calendar-table-cell-content) {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+:global(.rs-calendar-header) {
+  padding: 12px 16px !important;
+}
+
+/* Make sure the cell content takes full height */
+:global(.rs-calendar-table-cell-content) {
+  position: relative;
+  height: 100%;
+}
+
+/* Adjust the header row styling */
+:global(.rs-calendar-table-header-row) {
+  height: 40px;
+  background-color: #fafafa;
+}
+
+:global(.rs-calendar-table-header-cell) {
+  text-align: center;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Style for today's cell */
+:global(.rs-calendar-table-cell-is-today .rs-calendar-table-cell-content) {
+  background-color: #e6f7ff;
+}
+
+/* Remove default hover effect */
+:global(.rs-calendar-table-cell-content:hover) {
+  background-color: transparent !important;
+}

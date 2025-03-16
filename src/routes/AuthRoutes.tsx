@@ -9,6 +9,7 @@ const ValidateEmail = lazy(
   () => import('@/pages/Auth/SignUp/ConfirmEmail/emailConfirm'),
 );
 const ForgetPassword = lazy(() => import('@/pages/Auth/ForgotPassword'));
+
 const UnauthorizedPage = lazy(() => import('@/pages/Auth/Unauthorized'));
 
 const AuthRoutes = [

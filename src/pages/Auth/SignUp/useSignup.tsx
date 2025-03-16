@@ -19,7 +19,8 @@ export const useSignup = () => {
       form.setFields([
         {
           name: 'email',
-          errors: error.includes('Email') ? [error] : [],
+          errors:
+            error.includes('Email') || error.includes('User') ? [error] : [],
         },
         {
           name: 'password',
@@ -49,11 +50,6 @@ export const useSignup = () => {
         message: 'Please check your email to verify your account!',
       });
     } else if (registerStatus === 'pending_confirmation') {
-      showNotification({
-        type: 'warning',
-        message: 'Please check your email to verify your account!',
-      });
-    } else if (registerStatus === 'confirming') {
       showNotification({
         type: 'warning',
         message: 'Please check your email to verify your account!',
