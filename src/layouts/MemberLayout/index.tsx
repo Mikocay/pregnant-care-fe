@@ -39,7 +39,7 @@ const MemberLayout = () => {
   const fetusChildren = [
     // Add all the baby names first
     ...fetuses.map((fetus: Fetus) => ({
-      key: fetus._id, // Ensure unique key
+      key: fetus.id, // Ensure unique key
       label: (
         <Link
           to={`${config.routes.member.pregnancy}/${fetus._id}`}
@@ -66,15 +66,9 @@ const MemberLayout = () => {
   const { user, handleLogout } = useHeader();
   const { hideContent, createButton } = useMember();
   const menuItems = [
+    { key: '1', icon: <HomeOutlined />, label: 'Mother Information' },
     {
-      key: '1',
-      icon: <Baby size={16} />,
-      label: 'Fetus',
-      children: fetusChildren,
-    },
-    { key: '2', icon: <HomeOutlined />, label: 'Mother Information' },
-    {
-      key: '3',
+      key: '2',
       icon: <CalendarOutlined />,
       label: (
         <Link
@@ -84,6 +78,12 @@ const MemberLayout = () => {
           Calendar
         </Link>
       ),
+    },
+    {
+      key: '3',
+      icon: <Baby size={16} />,
+      label: 'Fetus',
+      children: fetusChildren,
     },
     { key: '4', icon: <InboxOutlined />, label: 'Fetal growth chart' },
     { key: '5', icon: <EyeOutlined />, label: 'Mother status' },
