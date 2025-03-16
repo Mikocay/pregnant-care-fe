@@ -6,6 +6,7 @@ export const initialState: FetusState = {
   growthMetrics: [],
   fetuses: [],
   growthMetricsByWeek: [],
+  radarChartGrowthMetricsByWeek: [],
   loading: false,
   error: null,
 };

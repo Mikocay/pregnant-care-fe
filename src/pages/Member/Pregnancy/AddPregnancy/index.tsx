@@ -21,8 +21,6 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
   const [form] = Form.useForm();
   const fetusesHasWeekData = growthMetricsByWeek.find((item) => item.week === week);
 
-  console.log("fetusStandardsByWeek", fetusStandardsByWeek);
-  console.log("growthMetricsByWeek", growthMetricsByWeek);
   useEffect(() => {
     if (open) {
       dispatch(fetchFetusStandardsByWeek(week))
@@ -52,7 +50,6 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
   const handleSubmit = async (values: Record<string, string>) => {
     try {
       setLoading(true);
-      console.log("values", values);
       const formattedData: GrowthMetricByWeek = {
         week,
         data: fetusStandardsByWeek.map((field) => ({
@@ -61,7 +58,6 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
           value: Number(values[field.name]) || 0,
         })),
       };
-      console.log("formattedData", formattedData);
       // Gửi dữ liệu lên server
       await dispatch(fetchGrowthMetric({ fetusId: id, metrics: formattedData }));
 

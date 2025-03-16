@@ -6,6 +6,7 @@ import { RootState } from '@/redux/store/store';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
 import { useParams } from 'react-router-dom';
+import ChartRadar from '@/components/ChartRadar';
 
 function Pregnancy() {
   const [isDragging, setIsDragging] = useState(false);
@@ -107,7 +108,10 @@ function Pregnancy() {
 
       </div>
       <div>
-        <p>This is the content for week {activeIndex + 1}.</p>
+        // Chỉ hiển thị radar chart nếu có 2 metric trở lên
+        {growthMetricsByWeek.some((item) => item.week === activeIndex + 1 && item.data.length > 2) && (
+          <ChartRadar week={activeIndex + 1} />
+        )}
       </div>
       <AddPregnancy
         id={id || ''}

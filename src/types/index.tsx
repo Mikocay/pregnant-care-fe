@@ -84,6 +84,16 @@ export interface GrowthMetricByWeek {
   data: GrowthMetricData[];
 }
 
+export interface RadarChartGrowthMetricByWeek {
+  data: RadarChartData[];
+}
+
+export interface RadarChartData {
+  item: string;
+  value: string;
+  score: number;
+}
+
 export interface GrowthMetric {
   name: string;
   unit: string;

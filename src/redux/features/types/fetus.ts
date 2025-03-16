@@ -1,4 +1,4 @@
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek } from "@/types";
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek, RadarChartGrowthMetricByWeek } from "@/types";
 
 export interface FetusState {
     fetusStandardsNameAndUnit: {
@@ -17,6 +17,7 @@ export interface FetusState {
 
 
     growthMetricsByWeek: GrowthMetricByWeek[];
+    radarChartGrowthMetricsByWeek: RadarChartGrowthMetricByWeek;
     loading: boolean;
     error: any;
 
