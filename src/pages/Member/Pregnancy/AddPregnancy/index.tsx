@@ -1,9 +1,14 @@
-import { Button, Form, Input, Modal, Spin } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Button, Form, Input, Modal, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
 import styles from './AddPregnancy.module.css';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { RootState } from '@/redux/store/store';
-import { fetchFetus, fetchFetusStandardsByWeek, fetchGrowthMetric, fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
+import {
+  fetchFetus,
+  fetchFetusStandardsByWeek,
+  fetchGrowthMetric,
+  fetchGrowthMetricByWeek,
+} from '@/redux/features/fetus/slice';
 import { FetusStandardSummary, GrowthMetricByWeek } from '@/types';
 
 interface AddPregnancy {
@@ -11,63 +16,79 @@ interface AddPregnancy {
   week: number;
   open: boolean;
   onClose: () => void;
-
 }
 
 const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-  const { fetusStandardsByWeek, growthMetricsByWeek } = useAppSelector((state: RootState) => state.fetus);
+  const { fetusStandardsByWeek, growthMetricsByWeek } = useAppSelector(
+    (state: RootState) => state.fetus,
+  );
   const [form] = Form.useForm();
-  const fetusesHasWeekData = growthMetricsByWeek.find((item) => item.week === week);
+  const fetusesHasWeekData = growthMetricsByWeek.find(
+    (item) => item.week === week,
+  );
 
-  console.log("fetusStandardsByWeek", fetusStandardsByWeek);
-  console.log("growthMetricsByWeek", growthMetricsByWeek);
+  console.log('fetusStandardsByWeek', fetusStandardsByWeek);
+  console.log('growthMetricsByWeek', growthMetricsByWeek);
   useEffect(() => {
     if (open) {
-      dispatch(fetchFetusStandardsByWeek(week))
-
+      dispatch(fetchFetusStandardsByWeek(week));
     }
   }, [week, open, dispatch]);
 
   useEffect(() => {
     if (open) {
-      const fetusesHasWeekData = growthMetricsByWeek.find((item) => item.week === week);
+      const fetusesHasWeekData = growthMetricsByWeek.find(
+        (item) => item.week === week,
+      );
 
-
-      const defaultValues = fetusStandardsByWeek.reduce((acc: Record<string, string>, field) => {
-        if (!fetusesHasWeekData) {
-          acc[field.name] = '';
+      const defaultValues = fetusStandardsByWeek.reduce(
+        (acc: Record<string, string>, field) => {
+          if (!fetusesHasWeekData) {
+            acc[field.name] = '';
+            return acc;
+          }
+          acc[field.name] =
+            fetusesHasWeekData.data
+              .find((d) => d.name === field.name)
+              ?.value.toString() || '';
           return acc;
-        }
-        acc[field.name] = fetusesHasWeekData.data.find((d) => d.name === field.name)?.value.toString() || '';
-        return acc;
-      }, {});
+        },
+        {},
+      );
 
       form.setFieldsValue(defaultValues);
     }
-  }, [fetusStandardsByWeek, fetusesHasWeekData, open, form, growthMetricsByWeek, week]);
-
+  }, [
+    fetusStandardsByWeek,
+    fetusesHasWeekData,
+    open,
+    form,
+    growthMetricsByWeek,
+    week,
+  ]);
 
   const handleSubmit = async (values: Record<string, string>) => {
     try {
       setLoading(true);
-      console.log("values", values);
+      console.log('values', values);
       const formattedData: GrowthMetricByWeek = {
         week,
-        data: fetusStandardsByWeek.map((field) => ({
+        data: fetusStandardsByWeek?.map((field) => ({
           name: field.name,
           unit: field.unit,
           value: Number(values[field.name]) || 0,
         })),
       };
-      console.log("formattedData", formattedData);
+      console.log('formattedData', formattedData);
       // Gửi dữ liệu lên server
-      await dispatch(fetchGrowthMetric({ fetusId: id, metrics: formattedData }));
+      await dispatch(
+        fetchGrowthMetric({ fetusId: id, metrics: formattedData }),
+      );
 
       // Gọi lại API để lấy dữ liệu mới
       await dispatch(fetchGrowthMetricByWeek(id));
-
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -76,20 +97,28 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
     }
   };
   return (
-    <Modal title={`Week ${week} Details`} open={open} onCancel={onClose} footer={null}>
+    <Modal
+      title={`Week ${week} Details`}
+      open={open}
+      onCancel={onClose}
+      footer={null}
+    >
       {loading ? (
         <Spin />
       ) : (
-        <Form form={form} layout="vertical" onFinish={handleSubmit} className={styles.form}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          className={styles.form}
+        >
           {fetusStandardsByWeek.map((field: FetusStandardSummary) => (
             <Form.Item
               key={field.name}
               label={`${field.name} (${field.unit})`}
-              name={field.name}>
-              <Input
-                type='number'
-                placeholder={`Enter ${field.name}`}
-              />
+              name={field.name}
+            >
+              <Input type="number" placeholder={`Enter ${field.name}`} />
             </Form.Item>
           ))}
           <Button type="primary" htmlType="submit">
@@ -98,7 +127,7 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
         </Form>
       )}
     </Modal>
-  )
-}
+  );
+};
 
-export default AddPregnancy
+export default AddPregnancy;

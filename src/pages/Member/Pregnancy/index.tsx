@@ -1,33 +1,53 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import AddPregnancy from './AddPregnancy';
 import { RootState } from '@/redux/store/store';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
 import { useParams } from 'react-router-dom';
-import MetricsDashboard from './pregnancy-charts/metrics-dashboard';
 
 function Pregnancy() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasShownNotification, setHasShownNotification] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { id } = useParams();
+
   const growthMetricsByWeek = useAppSelector(
     (state: RootState) => state.fetus.growthMetricsByWeek,
   );
 
+  const loading = useAppSelector((state: RootState) => state.fetus.loading);
+
   useEffect(() => {
-    try {
-      if (id) {
-        dispatch(fetchGrowthMetricByWeek(id));
-      }
-    } catch (error) {
-      console.log('error', error);
+    // Ensure that 'id' is not undefined before dispatching API call
+    if (id) {
+      dispatch(fetchGrowthMetricByWeek(id));
+      setHasShownNotification(false); // Reset notification status when ID changes
     }
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (!loading && !hasShownNotification) {
+      if (growthMetricsByWeek?.length === 0) {
+        notification.info({
+          message: 'Please input growth metric for baby',
+          placement: 'top',
+          duration: 3,
+        });
+      } else {
+        notification.success({
+          message: 'Data loaded successfully',
+          placement: 'top',
+          duration: 3,
+        });
+      }
+      setHasShownNotification(true); // Mark notification as shown
+    }
+  }, [loading, hasShownNotification, growthMetricsByWeek?.length]);
 
   const handleMouseDown = (e: React.MouseEvent, index: number) => {
     if ((e.target as HTMLElement).closest('.indiana-card')) {
@@ -60,7 +80,7 @@ function Pregnancy() {
             className={`indiana-card ${
               activeIndex === index ? 'active-card' : ''
             } ${
-              growthMetricsByWeek.some((item) => item.week === index + 1)
+              growthMetricsByWeek?.some((item) => item.week === index + 1)
                 ? 'active-card'
                 : ''
             }`}
@@ -93,7 +113,7 @@ function Pregnancy() {
         </Button>
       </div>
       <div>
-        <MetricsDashboard selectedWeek={activeIndex + 1} />
+        <p>This is the content for week {activeIndex + 1}.</p>
       </div>
       <AddPregnancy
         id={id || ''}

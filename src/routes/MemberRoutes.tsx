@@ -13,9 +13,11 @@ const MemberRoutes = [
     path: config.routes.member.dashboard,
     element: <MemberLayout />, // Layout chỉ áp dụng cho các trang con
     children: [
-      { path: config.routes.member.dashboard, element: <Dashboard /> },
+      { index: true, element: <Dashboard /> },
+      { path: config.routes.member.dashboardByFetus, element: <Dashboard /> },
       { path: config.routes.member.calendar, element: <Calendar /> },
-      { path: config.routes.member.pregnancy, element: <Pregnancy /> },
+      // Corrected path here
+      { path: config.routes.member.pregnancy, element: <Pregnancy /> }, // relative path
       { path: config.routes.member.pregnancyByWeek, element: <Pregnancy /> },
     ],
   },

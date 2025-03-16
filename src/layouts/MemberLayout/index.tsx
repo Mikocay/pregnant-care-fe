@@ -8,6 +8,7 @@ import {
   InboxOutlined,
   CalendarOutlined,
   PlusOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/Sidebar';
@@ -42,13 +43,14 @@ const MemberLayout = () => {
       key: fetus.id, // Ensure unique key
       label: (
         <Link
-          to={`${config.routes.member.pregnancy}/${fetus._id}`}
+          to={`${config.routes.member.pregnancy}/${fetus.id}`}
           style={{ textDecoration: 'none' }}
         >
           {fetus.name}
         </Link>
       ),
     })),
+
     // Add the "Add New Baby" button at the end
     {
       key: 'add-new-baby',
@@ -63,12 +65,33 @@ const MemberLayout = () => {
       className: 'add-new-baby-item',
     },
   ];
+
+  const fetusChildrenDashboard = [
+    // Add all the baby names first
+    ...fetuses.map((fetus: Fetus) => ({
+      key: fetus.id, // Ensure unique key
+      label: (
+        <Link
+          to={`${config.routes.member.dashboard}/${fetus.id}`}
+          style={{ textDecoration: 'none' }}
+        >
+          {fetus.name}
+        </Link>
+      ),
+    })),
+  ];
   const { user, handleLogout } = useHeader();
   const { hideContent, createButton } = useMember();
   const menuItems = [
     { key: '1', icon: <HomeOutlined />, label: 'Mother Information' },
     {
       key: '2',
+      icon: <DashboardOutlined />,
+      label: 'Dashboard',
+      children: fetusChildrenDashboard,
+    },
+    {
+      key: '3',
       icon: <CalendarOutlined />,
       label: (
         <Link
@@ -80,14 +103,14 @@ const MemberLayout = () => {
       ),
     },
     {
-      key: '3',
+      key: '4',
       icon: <Baby size={16} />,
       label: 'Fetus',
       children: fetusChildren,
     },
-    { key: '4', icon: <InboxOutlined />, label: 'Fetal growth chart' },
-    { key: '5', icon: <EyeOutlined />, label: 'Mother status' },
-    { key: '6', icon: <BellOutlined />, label: 'Fetal growth chart' },
+    { key: '5', icon: <InboxOutlined />, label: 'Fetal growth chart' },
+    { key: '6', icon: <EyeOutlined />, label: 'Mother status' },
+    { key: '7', icon: <BellOutlined />, label: 'Fetal growth chart' },
   ];
 
   return (

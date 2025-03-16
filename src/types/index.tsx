@@ -80,6 +80,8 @@ export interface GrowthMetricData {
   name: string;
   unit: string;
   value: number;
+  min?: number;
+  max?: number;
 }
 
 export interface GrowthMetricByWeek {
@@ -103,4 +105,21 @@ export interface MembershipPlan {
   createdAt: string; // hoặc Date nếu bạn parse về Date object
   updatedAt: string; // hoặc Date
   id: string;
+}
+
+export interface Measurement {
+  name: string;
+  unit: string;
+  value: number;
+  min: number;
+  max: number;
+}
+
+export interface WeeklyData {
+  week: number;
+  data: Measurement[];
+}
+
+export interface GrowthMetricsResponse {
+  data: WeeklyData[];
 }
