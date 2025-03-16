@@ -28,6 +28,7 @@ const TiptapEditor = forwardRef((_props, ref) => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = () => {
+              // Upload the file to the server and get the URL
               currentEditor.chain().insertContentAt(pos, {
                 type: 'image',
                 attrs: {
@@ -42,6 +43,7 @@ const TiptapEditor = forwardRef((_props, ref) => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = () => {
+              // Upload the file to the server and get the URL
               currentEditor.chain().insertContent({
                 type: 'image',
                 attrs: {
