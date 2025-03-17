@@ -1,7 +1,7 @@
 .header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center !important;
+  justify-content: space-between !important;
   padding: 16px 24px;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
@@ -24,7 +24,10 @@
 .itemsLink {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: flex;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px;
 }
 
 .itemsLink:hover,

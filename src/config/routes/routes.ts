@@ -10,6 +10,7 @@ const routes = {
 
   member: {
     dashboard: '/member',
+    dashboardByFetus: '/member/:id',
     calendar: '/member/calendar',
     pregnancy: '/member/pregnancy',
     //* Account Routes

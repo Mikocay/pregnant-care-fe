@@ -1,38 +1,59 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './index.css';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import AddPregnancy from './AddPregnancy';
 import { RootState } from '@/redux/store/store';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
 import { useParams } from 'react-router-dom';
+import ChartRadar from '@/components/ChartRadar';
 
 function Pregnancy() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasShownNotification, setHasShownNotification] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const growthMetricsByWeek = useAppSelector((state: RootState) => state.fetus.growthMetricsByWeek);
+
+  const growthMetricsByWeek = useAppSelector(
+    (state: RootState) => state.fetus.growthMetricsByWeek,
+  );
+
+  const loading = useAppSelector((state: RootState) => state.fetus.loading);
 
   useEffect(() => {
-    try {
-      if (id) {
-        dispatch(fetchGrowthMetricByWeek(id))
-      };
-
-    } catch (error) {
-      console.log("error", error);
+    // Ensure that 'id' is not undefined before dispatching API call
+    if (id) {
+      dispatch(fetchGrowthMetricByWeek(id));
+      setHasShownNotification(false); // Reset notification status when ID changes
     }
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (!loading && !hasShownNotification) {
+      if (growthMetricsByWeek?.length === 0) {
+        notification.info({
+          message: 'Please input growth metric for baby',
+          placement: 'top',
+          duration: 3,
+        });
+      } else {
+        notification.success({
+          message: 'Data loaded successfully',
+          placement: 'top',
+          duration: 3,
+        });
+      }
+      setHasShownNotification(true); // Mark notification as shown
+    }
+  }, [loading, hasShownNotification, growthMetricsByWeek?.length]);
 
   const handleMouseDown = (e: React.MouseEvent, index: number) => {
     if ((e.target as HTMLElement).closest('.indiana-card')) {
       setIsDragging(true);
       setActiveIndex(index);
-
     }
   };
 
@@ -49,16 +70,21 @@ function Pregnancy() {
     <div className="pregnancy-container">
       <h1 className="pregnancy-title">My pregnancy week by week</h1>
 
-
       <div
         ref={scrollContainerRef}
-        className={`scrollContainerTimeline indiana-scroll-container ${isDragging ? 'indiana-scroll-container--dragging' : ''}`}
-
+        className={`scrollContainerTimeline indiana-scroll-container ${
+          isDragging ? 'indiana-scroll-container--dragging' : ''
+        }`}
       >
         {[...Array(41)].map((_, index) => (
           <div
-            className={`indiana-card ${activeIndex === index ? 'active-card' : ''
-              } ${growthMetricsByWeek.some((item) => item.week === index + 1) ? 'active-card' : ''}`}
+            className={`indiana-card ${
+              activeIndex === index ? 'active-card' : ''
+            } ${
+              growthMetricsByWeek?.some((item) => item.week === index + 1)
+                ? 'active-card'
+                : ''
+            }`}
             style={{ display: 'flex' }}
             key={index}
             onMouseDown={(e) => handleMouseDown(e, index)}
@@ -81,18 +107,16 @@ function Pregnancy() {
         ))}
       </div>
       <div className="content-box">
-
         <h2>Week {activeIndex + 1} Details</h2>
-
 
         <Button onClick={() => setIsModalOpen(true)} className="content-button">
           Add Pregnancy Details
         </Button>
-
-
       </div>
       <div>
-        <p>This is the content for week {activeIndex + 1}.</p>
+        {growthMetricsByWeek.some(
+          (item) => item.week === activeIndex + 1 && item.data.length > 2,
+        ) && <ChartRadar week={activeIndex + 1} />}
       </div>
       <AddPregnancy
         id={id || ''}
