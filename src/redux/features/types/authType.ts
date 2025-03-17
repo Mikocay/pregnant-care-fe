@@ -15,9 +15,6 @@ export interface UserState {
   error: string | null;
 }
 
-export interface User {
-  id: string;
-}
 
 export interface ResetPasswordForm {
   token: string;
@@ -30,10 +27,10 @@ export interface AuthState {
   userId: string;
   userRole: string;
   registrationStatus:
-    | 'idle'
-    | 'pending_confirmation'
-    | 'confirming'
-    | 'confirmed'
-    | 'failed';
+  | 'idle'
+  | 'pending_confirmation'
+  | 'confirming'
+  | 'confirmed'
+  | 'failed';
   registeredEmail: string | null;
 }

@@ -63,4 +63,28 @@ export const userService = {
   getUserSelfInfo: (): Promise<AxiosResponse<Data>> => {
     return axiosPrivate.get(API_ENDPOINTS.users.selfUser);
   },
+
+  // Get User by Admin
+  getUser: (page: number, limit: number): Promise<AxiosResponse> => {
+    console.log('page', page);
+    console.log('limit', limit);
+    const response = axiosPrivate.get(`${API_ENDPOINTS.users.allUsers}?page=${page}&limit=${limit}`);
+    console.log("response", response);
+    return response;
+  },
+
+  // Create User by Admin
+  createUser: (email: string, password: string): Promise<AxiosResponse> => {
+    return axiosPrivate.post(API_ENDPOINTS.users.allUsers, { email, password });
+  },
+
+  // Edit User by Admin
+  editUser: (id: string, body: User): Promise<AxiosResponse> => {
+    return axiosPrivate.put(`${API_ENDPOINTS.users.allUsers}/${id}`, body);
+  },
+
+  // Delete User by Admin
+  deleteUser: (id: string): Promise<AxiosResponse> => {
+    return axiosPrivate.delete(`${API_ENDPOINTS.users.allUsers}/${id}`);
+  }
 };
