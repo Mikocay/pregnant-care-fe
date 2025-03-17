@@ -52,45 +52,30 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor, onImageUpload }) =>
       try {
         setIsUploading(true);
         
-        // Generate a unique ID for this image
         const imageId = `img-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
         
-        // Insert the temporary image with the data URL
+        // Insert with temporary URL
         editor.chain().focus().setImage({ 
           src: imageUrl,
-          alt: `Image ${imageId} (uploading...)`
+          alt: `Image ${imageId} (uploading...)`,
         }).run();
         
-        // Upload to S3 and get the URL back
+        // Upload to S3
         const s3Url = await onImageUpload(currentFile, imageUrl, imageId);
+        console.log('S3 URL received in menu:', s3Url);
         
-        // Using ProseMirror-compatible approach instead of querySelectorAll
-        editor.chain().focus().command(({ tr, state }) => {
-          // Find image with the specific alt text
-          let foundPos = -1;
-          state.doc.descendants((node, pos) => {
-            if (node.type.name === 'image' && node.attrs.alt === `Image ${imageId} (uploading...)`) {
-              foundPos = pos;
-              return false; // stop searching
-            }
-            return true; // continue searching
-          });
-
-          if (foundPos >= 0) {
-            // Update the image attributes
-            tr.setNodeMarkup(foundPos, undefined, {
-              ...state.doc.nodeAt(foundPos)?.attrs,
-              src: s3Url,
-              alt: `Image ${imageId}`
-            });
-            return true;
-          }
-          return false;
-        }).run();
+        // Use HTML replacement approach for more reliable update
+        const tempHtml = editor.getHTML();
+        const updatedHtml = tempHtml.replace(
+          new RegExp(`src="${imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g'),
+          `src="${s3Url}"`
+        );
         
-        setImageModalVisible(false)
-        setImageUrl('')
-        setCurrentFile(null)
+        editor.commands.setContent(updatedHtml);
+        
+        setImageModalVisible(false);
+        setImageUrl('');
+        setCurrentFile(null);
       } catch (error) {
         console.error('Error uploading image:', error);
         message.error('Failed to upload image to storage');

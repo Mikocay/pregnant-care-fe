@@ -14,13 +14,14 @@ interface UploadFileResponse {
     key: string;
 }
 
-const uploadImage = (file: File): Promise<AxiosResponse<UploadFileResponse>> => {
+const uploadImage = async (file: File): Promise<AxiosResponse<UploadFileResponse>> => {
     // Create a FormData instance for multipart/form-data upload
     const formData = new FormData();
     formData.append('file', file);
     
     // Send as multipart/form-data - axios will set the correct Content-Type header
-    return axiosUpload.post(`upload/single`, formData);};
+    const response = await  axiosUpload.post(`upload/single`, formData);
+    return response.data;};
 
 export const s3Service = {
     uploadImage
