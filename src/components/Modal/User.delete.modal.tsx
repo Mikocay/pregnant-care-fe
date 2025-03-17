@@ -1,5 +1,5 @@
 import { IUser } from "@/redux/features/types/userType";
-import { deleteUserPending } from "@/redux/features/user/userSlice";
+import { deleteUserPending } from "@/redux/features/user/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { Button, Modal, notification, Spin } from "antd";
 import { useEffect } from "react";

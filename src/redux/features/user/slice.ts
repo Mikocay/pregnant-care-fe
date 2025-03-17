@@ -1,67 +1,17 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../types/userType";
+import { initialState } from "./state";
 import { PaginationData } from "@/types/PaginationData";
-
-export interface CounterState {
-  isPending: boolean;
-  isError: boolean;
-
-  isCreating: boolean;
-  isCreateSuccess: boolean;
-
-  isEditing: boolean;
-  isEditSuccess: boolean;
-
-  isDeleting: boolean;
-  isDeleteSuccess: boolean;
-
-  data: IUser[];
-  errors: boolean;
-  message: string;
-
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-const initialState: CounterState = {
-  //For Fetching
-  isPending: false,
-  isError: false,
-
-  //For Create
-  isCreating: false,
-  isCreateSuccess: false,
-
-  //For Edit
-  isEditing: false,
-  isEditSuccess: false,
-
-  //For Delete
-  isDeleting: false,
-  isDeleteSuccess: false,
-
-  data: [],
-  errors: false,
-  message: "",
-
-  total: 0,
-  page: 1,
-  limit: 10,
-  totalPages: 0,
-};
-
+import { User } from "../types/userType";
 
 export const fetchUserPending = createAction<{ page: number, limit: number }>("fetchUserPending");
-export const fetchUserSuccess = createAction<PaginationData<IUser>>("fetchUserSuccess");
+export const fetchUserSuccess = createAction<PaginationData<User>>("fetchUserSuccess");
 export const fetchUserFailed = createAction("fetchUserFailed");
 
 export const createUserPending = createAction<{ email: string, password: string }>("createUserPending");
 export const createUserSuccess = createAction("createUserSuccess");
 export const createUserFailed = createAction<{ message: string }>("createUserFailed");
 
-export const editUserPending = createAction<{ id: string, body: Partial<IUser> }>("editUserPending");
+export const editUserPending = createAction<{ id: string, body: Partial<User> }>("editUserPending");
 export const editUserSuccess = createAction("editUserSuccess");
 export const editUserFailed = createAction<{ message: string }>("editUserFailed");
 
@@ -84,7 +34,8 @@ export const userSlice = createSlice({
       .addCase(fetchUserSuccess, (state, action) => {
         state.isPending = false
         state.errors = false
-        state.data = action.payload.data
+        // Make sure we're storing the array part of the data
+        state.data = action.payload.data || []
         state.total = action.payload.total
         state.page = action.payload.page
         state.limit = action.payload.limit

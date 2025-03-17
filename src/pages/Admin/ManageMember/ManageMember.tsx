@@ -1,8 +1,9 @@
 import UserCreateModal from "@/components/Modal/User.create.modal";
 import UserDeleteModal from "@/components/Modal/User.delete.modal";
 import UserEditModal from "@/components/Modal/User.edit.modal";
-import { IUser } from "@/redux/features/types/userType";
-import { fetchUserPending } from "@/redux/features/user/userSlice";
+import { User } from "@/redux/features/types/userType";
+// import { IUser } from "@/redux/features/types/userType";
+import { fetchUserPending } from "@/redux/features/user/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons"
 import { Button, Input, Table, TableColumnsType, Tag } from "antd"
@@ -15,27 +16,21 @@ function ManageMember() {
   const [isOpenCreateModal, setIsOpenCreateModal] = useState<boolean>(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState<boolean>(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
-  const [dataUser, setDataUser] = useState<IUser>({} as IUser);
+  const [dataUser, setDataUser] = useState<User>({} as User);
 
   const limit = 2;
   const isPending = useAppSelector(state => state.users.isPending);
-  const { data, total } = useAppSelector(state => state.users);
+  const userData = useAppSelector(state => state.users.data);
+  console.log("userData", userData);
+  // Extract the actual array of users from the nested structure
+  const users = Array.isArray(userData.data) ? userData.data : [];
+  const total = useAppSelector(state => state.users.total) || 0;
 
   useEffect(() => {
     dispatch(fetchUserPending({ page, limit }));
   }, [page, dispatch]);
 
-  const handleEditUser = (user: IUser) => {
-    setDataUser(user);
-    setIsOpenUpdateModal(true);
-  }
-
-  const handleDelete = (user: IUser) => {
-    setDataUser(user);
-    setIsOpenDeleteModal(true);
-  }
-
-  const columns: TableColumnsType<IUser> = [
+  const columns: TableColumnsType<User> = [
     {
       title: 'No',
       render: (_, __, index) => (page - 1) * limit + index + 1,
@@ -93,51 +88,35 @@ function ManageMember() {
         </Tag>
       )
     },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (user: IUser) => (
-        <>
-          <Button
-            type="text"
-            icon={<EditOutlined />}
-            onClick={() => handleEditUser(user)}
-            className="edit-button"
-          />
-          <Button
-            type="text"
-            icon={<DeleteOutlined />}
-            className="delete-button"
-            onClick={() => handleDelete(user)}
-          />
-        </>
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   render: (user: IUser) => (
+    //     <>
+    //       <Button
+    //         type="text"
+    //         icon={<EditOutlined />}
+    //         // onClick={() => handleEditUser(user)}
+    //         className="edit-button"
+    //       />
+    //       <Button
+    //         type="text"
+    //         icon={<DeleteOutlined />}
+    //         className="delete-button"
+    //       // onClick={() => handleDelete(user)}
+    //       />
+    //     </>
 
-      ),
-    },
+    //   ),
+    // },
   ];
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 20px' }} >
-        <Button type="primary" className="create-button" onClick={() => setIsOpenCreateModal(true)}>
-          Create <EditOutlined />
-        </Button>
-      </div>
       <Content className="content">
-        <div className="content-header">
-          <Input
-            placeholder="Search"
-            prefix={<SearchOutlined />}
-            className="search-input"
-          />
-          <div className="sort-dropdown">
-            Sort by: Newest
-          </div>
-        </div>
-
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={users}
           pagination={{
             current: page,
             total: total,
@@ -155,17 +134,17 @@ function ManageMember() {
         setIsOpenCreateModal={setIsOpenCreateModal}
       />
 
-      <UserEditModal
+      {/* <UserEditModal
         dataUser={dataUser}
         isOpenUpdateModal={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
-      />
+      /> */}
 
-      <UserDeleteModal
+      {/* <UserDeleteModal
         dataUser={dataUser}
         isOpenDeleteModal={isOpenDeleteModal}
         setIsOpenDeleteModal={setIsOpenDeleteModal}
-      />
+      /> */}
     </>
   )
 }

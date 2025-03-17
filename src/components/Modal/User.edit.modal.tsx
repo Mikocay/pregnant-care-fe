@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { useEffect, useState } from "react";
 import { Button, Input, Modal, Form, Select, Spin, notification } from "antd"
-import { editUserPending } from "@/redux/features/user/userSlice";
+import { editUserPending } from "@/redux/features/user/slice";
 import { IUser } from "@/redux/features/types/userType";
 const { Option } = Select;
 

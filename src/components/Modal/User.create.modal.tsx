@@ -1,4 +1,4 @@
-import { createUserPending } from "@/redux/features/user/userSlice";
+import { createUserPending } from "@/redux/features/user/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
 import { Button, Input, Modal, Form, Spin, notification } from "antd"
 import { useEffect } from "react";
