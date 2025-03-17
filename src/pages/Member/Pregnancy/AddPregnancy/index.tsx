@@ -4,7 +4,6 @@ import styles from './AddPregnancy.module.css';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { RootState } from '@/redux/store/store';
 import {
-  fetchFetus,
   fetchFetusStandardsByWeek,
   fetchGrowthMetric,
   fetchGrowthMetricByWeek,
@@ -12,28 +11,43 @@ import {
 import { FetusStandardSummary, GrowthMetricByWeek } from '@/types';
 
 interface AddPregnancy {
-  id: string;
   week: number;
   open: boolean;
   onClose: () => void;
 }
 
-const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
+const AddPregnancy: React.FC<AddPregnancy> = ({ week, open, onClose }) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-  const { fetusStandardsByWeek, growthMetricsByWeek } = useAppSelector(
-    (state: RootState) => state.fetus,
-  );
+  const { fetusStandardsByWeek, growthMetricsByWeek, selectedFetus } =
+    useAppSelector((state: RootState) => state.fetus);
   const [form] = Form.useForm();
+  const fetusId = selectedFetus?.id;
   const fetusesHasWeekData = growthMetricsByWeek.find(
     (item) => item.week === week,
   );
+
+  // Fetch standards for the selected week when modal opens or week changes
   useEffect(() => {
     if (open) {
       dispatch(fetchFetusStandardsByWeek(week));
     }
   }, [week, open, dispatch]);
 
+  // Reset form when fetusId changes
+  useEffect(() => {
+    if (fetusId) {
+      // Reset the form when fetus changes
+      form.resetFields();
+
+      // If modal is open, fetch data for the new fetus
+      if (open) {
+        dispatch(fetchGrowthMetricByWeek(fetusId));
+      }
+    }
+  }, [fetusId, form, open, dispatch]);
+
+  // Update form values when data changes or fetus changes
   useEffect(() => {
     if (open) {
       const fetusesHasWeekData = growthMetricsByWeek.find(
@@ -64,9 +78,15 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
     form,
     growthMetricsByWeek,
     week,
+    fetusId, // Add fetusId as a dependency to update when fetus changes
   ]);
 
   const handleSubmit = async (values: Record<string, string>) => {
+    if (!fetusId) {
+      console.error('No fetus selected');
+      return;
+    }
+
     try {
       setLoading(true);
       const formattedData: GrowthMetricByWeek = {
@@ -78,12 +98,10 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
         })),
       };
       // Gửi dữ liệu lên server
-      await dispatch(
-        fetchGrowthMetric({ fetusId: id, metrics: formattedData }),
-      );
+      await dispatch(fetchGrowthMetric({ fetusId, metrics: formattedData }));
 
       // Gọi lại API để lấy dữ liệu mới
-      await dispatch(fetchGrowthMetricByWeek(id));
+      await dispatch(fetchGrowthMetricByWeek(fetusId));
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -91,13 +109,13 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
       onClose();
     }
   };
+
+  const modalTitle = selectedFetus
+    ? `${selectedFetus.name}: Week ${week} Details`
+    : `Week ${week} Details`;
+
   return (
-    <Modal
-      title={`Week ${week} Details`}
-      open={open}
-      onCancel={onClose}
-      footer={null}
-    >
+    <Modal title={modalTitle} open={open} onCancel={onClose} footer={null}>
       {loading ? (
         <Spin />
       ) : (
@@ -116,7 +134,7 @@ const AddPregnancy: React.FC<AddPregnancy> = ({ id, week, open, onClose }) => {
               <Input type="number" placeholder={`Enter ${field.name}`} />
             </Form.Item>
           ))}
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={!fetusId}>
             Submit
           </Button>
         </Form>

@@ -13,6 +13,7 @@ import { User } from '@/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { ROLE } from '@/constants';
+import FetusSelector from '@/components/FetusSelector';
 
 interface HeaderAuthProps {
   user?: User | null;
@@ -52,16 +53,6 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
         </Link>
       ),
     },
-    // {
-    //   key: 'schedule',
-    //   label: (
-    //     <Link to="">
-    //       <div className={styles.menuItem}>
-    //         <CalendarOutlined /> My Schedule
-    //       </div>
-    //     </Link>
-    //   ),
-    // },
     {
       key: 'logout',
       label: (
@@ -91,6 +82,7 @@ export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
 
   return (
     <div className={styles.container}>
+      {userRole === ROLE.MEMBER && <FetusSelector />}
       <BellOutlined className={styles.notification} />
       <span>Welcome, {user.firstName || 'guest'}</span>
       <Dropdown

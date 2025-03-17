@@ -1,12 +1,10 @@
-'use client';
-
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import FetalDashboard from './components/index';
-import { Spin, Result } from 'antd'; // Import Result from Ant Design for error handling
+import { Spin, Result, Empty } from 'antd'; // Added Empty from Ant Design
 import { axiosPrivate } from '@/config/axios';
 import { API_ENDPOINTS } from '@/utils/api';
-import { useParams } from 'react-router-dom';
+import { useAppSelector } from '@/redux/store/hooks'; // Added Redux hooks
 
 // Define the interface for the data structure
 interface FetalDataItem {
@@ -23,16 +21,20 @@ interface FetalDataItem {
 const Dashboard: React.FC = () => {
   const [fetalData, setFetalData] = useState<FetalDataItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null); // To handle any errors
-  const { id } = useParams(); // Get `id` from URL params
+  const [error, setError] = useState<string | null>(null);
+
+  // Get selectedFetus from Redux state instead of URL params
+  const { selectedFetus, fetuses } = useAppSelector((state) => state.fetus);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); // Set loading to true every time we start fetching data
-      setError(null); // Reset any existing error state
+      if (!selectedFetus?.id) return;
+
+      setLoading(true);
+      setError(null);
       try {
         const response = await axiosPrivate.get(
-          `${API_ENDPOINTS.members.getGrowthMetricByFetus}/${id}`,
+          `${API_ENDPOINTS.members.getGrowthMetricByFetus}/${selectedFetus.id}`,
         );
         // Check if response is in the expected format
         if (Array.isArray(response)) {
@@ -55,14 +57,50 @@ const Dashboard: React.FC = () => {
         console.error('Error fetching data:', error);
         setError('Failed to fetch data. Please try again later.');
       } finally {
-        setLoading(false); // Once fetching is complete, set loading to false
+        setLoading(false);
       }
     };
 
-    if (id) {
-      fetchData(); // Fetch data when `id` changes
-    }
-  }, [id]); // The effect will re-run whenever `id` changes
+    fetchData();
+  }, [selectedFetus?.id]); // Dependency is now selectedFetus?.id
+
+  if (!selectedFetus && fetuses.length > 0) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '50vh',
+        }}
+      >
+        <Empty
+          description="Please select a fetus from the selector above"
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      </div>
+    );
+  }
+
+  if (!selectedFetus) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '50vh',
+        }}
+      >
+        <Empty
+          description="No fetus data available. Please add a fetus first."
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -104,12 +142,12 @@ const Dashboard: React.FC = () => {
           height: '50vh',
         }}
       >
-        <h1>No data available</h1>
+        <Empty description="No growth metric data available for this fetus" />
       </div>
     );
   }
 
-  return <FetalDashboard fetalData={fetalData} key={id} />;
+  return <FetalDashboard fetalData={fetalData} key={selectedFetus.id} />;
 };
 
 export default Dashboard;

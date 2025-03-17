@@ -5,7 +5,6 @@ import AddPregnancy from './AddPregnancy';
 import { RootState } from '@/redux/store/store';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
-import { useParams } from 'react-router-dom';
 import ChartRadar from '@/components/ChartRadar';
 
 function Pregnancy() {
@@ -15,7 +14,7 @@ function Pregnancy() {
   const [hasShownNotification, setHasShownNotification] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-  const { id } = useParams();
+  const { selectedFetus } = useAppSelector((state: RootState) => state.fetus);
 
   const growthMetricsByWeek = useAppSelector(
     (state: RootState) => state.fetus.growthMetricsByWeek,
@@ -25,11 +24,11 @@ function Pregnancy() {
 
   useEffect(() => {
     // Ensure that 'id' is not undefined before dispatching API call
-    if (id) {
-      dispatch(fetchGrowthMetricByWeek(id));
+    if (selectedFetus?.id) {
+      dispatch(fetchGrowthMetricByWeek(selectedFetus.id));
       setHasShownNotification(false); // Reset notification status when ID changes
     }
-  }, [dispatch, id]);
+  }, [dispatch, selectedFetus?.id]);
 
   useEffect(() => {
     if (!loading && !hasShownNotification) {
@@ -115,12 +114,11 @@ function Pregnancy() {
       </div>
       <div>
         {/* Chỉ hiển thị radar chart nếu có 2 metric trở lên */}
-        {growthMetricsByWeek.some((item) => item.week === activeIndex + 1 && item.data.length > 2) && (
-          <ChartRadar week={activeIndex + 1} />
-        )}
+        {growthMetricsByWeek.some(
+          (item) => item.week === activeIndex + 1 && item.data.length > 2,
+        ) && <ChartRadar week={activeIndex + 1} />}
       </div>
       <AddPregnancy
-        id={id || ''}
         week={activeIndex + 1}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
