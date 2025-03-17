@@ -49,4 +49,29 @@ export const userService = {
   getUserInfoById: (userId: string): Promise<AxiosResponse<User>> => {
     return axiosPrivate.get(`${API_ENDPOINTS.users.oneUser}/${userId}`);
   },
+
+  //* Get Payment Methods *******************
+  getPaymentMethods: () => {
+    return axiosPrivate.get(`${API_ENDPOINTS.users.payment_method}`);
+  },
+
+  postPaymentMethod: (payload: any) => {
+    return axiosPrivate.post(`${API_ENDPOINTS.users.payment_method}`, payload);
+  },
+
+  postPaymentIntent: (payload: any) => {
+    return axiosPrivate.post(`${API_ENDPOINTS.users.payment_intent}`, payload);
+  },
+
+  postPaymentIntentConfirm: (payload: any) => {
+    return axiosPrivate.post(
+      `${API_ENDPOINTS.users.payment_intent_confirm}`,
+      payload,
+    );
+  },
+
+  //* Get User Self Info *******************
+  getUserSelfInfo: (): Promise<AxiosResponse<User>> => {
+    return axiosPrivate.get(API_ENDPOINTS.users.selfUser);
+  },
 };

@@ -4,13 +4,15 @@ import type { MenuProps } from 'antd';
 import {
   BellOutlined,
   UserOutlined,
-  SettingOutlined,
-  CalendarOutlined,
   LogoutOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons';
 import styles from './HeaderAuth.module.css';
 import config from '@/config';
 import { User } from '@/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
+import { ROLE } from '@/constants';
 
 interface HeaderAuthProps {
   user?: User | null;
@@ -18,37 +20,48 @@ interface HeaderAuthProps {
 }
 
 export default function HeaderAuth({ user, onLogout }: HeaderAuthProps) {
+  const { userRole } = useSelector((state: RootState) => state.auth);
   const dropdownItemsAuth: MenuProps['items'] = [
     {
-      key: 'profile',
+      key: 'account',
       label: (
-        <Link to="">
+        <Link
+          className={styles.menuItemLink}
+          to={userRole === ROLE.MEMBER ? config.routes.member.account : ''}
+        >
           <div className={styles.menuItem}>
-            <UserOutlined /> My Profile
+            <UserOutlined /> Account
           </div>
         </Link>
       ),
     },
     {
-      key: 'settings',
+      key: 'dashboard',
       label: (
-        <Link to="">
+        <Link
+          className={styles.menuItemLink}
+          to={
+            userRole === ROLE.ADMIN
+              ? config.routes.admin.dashboard
+              : config.routes.member.dashboard
+          }
+        >
           <div className={styles.menuItem}>
-            <SettingOutlined /> Settings
+            <DashboardOutlined /> Dashboard
           </div>
         </Link>
       ),
     },
-    {
-      key: 'schedule',
-      label: (
-        <Link to="">
-          <div className={styles.menuItem}>
-            <CalendarOutlined /> My Schedule
-          </div>
-        </Link>
-      ),
-    },
+    // {
+    //   key: 'schedule',
+    //   label: (
+    //     <Link to="">
+    //       <div className={styles.menuItem}>
+    //         <CalendarOutlined /> My Schedule
+    //       </div>
+    //     </Link>
+    //   ),
+    // },
     {
       key: 'logout',
       label: (

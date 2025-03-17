@@ -1,0 +1,502 @@
+/* CSS Variables */
+:root {
+  --primary-color: #ff4d4f;
+  --primary-light: #ffe1e1;
+  --background-light: #fff5f5;
+  --text-color: #333;
+  --text-secondary: #666;
+  --border-radius: 20px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --box-shadow-hover: 0 15px 40px rgba(255, 77, 79, 0.1);
+  --gradient-primary: linear-gradient(135deg, #ff4d4f 0%, #ff7a7a 100%);
+  --transition-speed: 0.3s;
+}
+
+/* Common Styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header h2 {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-weight: bold;
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  padding: 6rem 0;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.heroContent {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.heroText {
+  flex: 1;
+  animation: fadeInUp 1s ease-out;
+}
+
+.heroText h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-weight: 800;
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroText p {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.heroImage {
+  flex: 1;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Why Choose Us Section */
+.whyChooseUs {
+  padding: 80px 0;
+  background-color: var(--background-light);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.featureCard {
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+  border: none !important;
+  box-shadow: var(--box-shadow) !important;
+  transition: all var(--transition-speed);
+  background: #fff !important;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover) !important;
+}
+
+.cardContent {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  padding: 30px;
+}
+
+.textContent {
+  flex: 1;
+}
+
+.textContent h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.pointsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pointsList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.pointsList li:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.pointsList li:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.pointsList li:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.pointsList li:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.checkIcon {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  margin-top: 2px;
+  transition: transform var(--transition-speed);
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+}
+
+.featureIcon {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  transition: transform var(--transition-speed);
+}
+
+/* Services Section */
+.services {
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.serviceCard {
+  padding: 40px 20px;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed);
+}
+
+.serviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover) !important;
+}
+
+.serviceCard h3 {
+  margin: 20px 0;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.serviceCard p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Pricing Section */
+.pricing {
+  padding: 80px 0;
+  background-color: var(--background-light);
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.pricingCard {
+  text-align: center;
+  border-radius: var(--border-radius) !important;
+  transition: all var(--transition-speed);
+}
+
+.pricingCard.featured {
+  transform: scale(1.05);
+  border: 3px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    var(--gradient-primary) border-box;
+}
+
+.price {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin: 20px 0;
+}
+
+.priceFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0;
+}
+
+.priceFeatures li {
+  padding: 10px 0;
+  color: var(--text-secondary);
+}
+
+/* FAQ Section */
+.faq {
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.faqCollapse {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Testimonials Section */
+.testimonials {
+  padding: 80px 0;
+  background-color: var(--background-light);
+}
+
+.testimonialSlider {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testimonialCard {
+  margin: 20px;
+  text-align: center;
+  border-radius: var(--border-radius) !important;
+}
+
+.testimonialAvatar {
+  margin-bottom: 20px;
+}
+
+.avatarImage {
+  border-radius: 50%;
+}
+
+.testimonialText {
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.testimonialAuthor {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.testimonialRole {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+/* Contact Section */
+.contact {
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.contactForm {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+/* Footer */
+.footer {
+  background: var(--text-color);
+  color: #fff;
+  padding: 60px 0;
+}
+
+.footerContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.footerSection h4 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.footerSection p {
+  color: #ccc;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 15px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Decorative Elements */
+.shape1,
+.shape2 {
+  position: absolute;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  filter: blur(40px);
+  z-index: 99;
+}
+
+.shape1 {
+  width: 400px;
+  height: 400px;
+  top: -200px;
+  right: -200px;
+  opacity: 0.1;
+}
+
+.shape2 {
+  width: 300px;
+  height: 300px;
+  bottom: -150px;
+  left: -150px;
+  opacity: 0.1;
+}
+
+.dots1,
+.dots2 {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(var(--primary-light) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
+
+.dots1 {
+  top: 10%;
+  right: 5%;
+}
+
+.dots2 {
+  bottom: 10%;
+  left: 5%;
+  transform: rotate(45deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .heroContent {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+  }
+
+  .heroText h1 {
+    font-size: 2.5rem;
+  }
+
+  .header h2 {
+    font-size: 2rem;
+  }
+
+  .cardContent {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .iconContainer {
+    margin: 0 auto 24px;
+  }
+
+  .pointsList li {
+    text-align: left;
+  }
+
+  .pricingCard.featured {
+    transform: none;
+  }
+
+  .footerContent {
+    text-align: center;
+  }
+
+  .socialLinks {
+    justify-content: center;
+  }
+}
+
+/* Hover Effects */
+.featureCard:hover .checkIcon {
+  transform: scale(1.1);
+}
+
+.featureCard:hover .featureIcon {
+  transform: scale(1.05);
+}
+
+.serviceCard:hover .featureIcon {
+  transform: scale(1.1);
+}
+
+.socialLinks button:hover {
+  transform: translateY(-3px);
+  color: var(--primary-color) !important;
+}

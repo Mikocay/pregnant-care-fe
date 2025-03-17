@@ -30,14 +30,14 @@ const SignUp: React.FC = () => {
             requiredMark="optional"
             form={form}
           >
-            <Form.Item
+            {/* <Form.Item
               name="fullname"
               rules={[
                 { required: true, message: 'Please enter your full name!' },
               ]}
             >
               <Input placeholder="Full Name" size="large" />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               name="email"
