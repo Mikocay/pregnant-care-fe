@@ -16,10 +16,15 @@ function Pregnancy() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const growthMetricsByWeek = useAppSelector((state: RootState) => state.fetus.growthMetricsByWeek);
+
+  const growthMetricsByWeek = useAppSelector(
+    (state: RootState) => state.fetus.growthMetricsByWeek,
+  );
+
   const loading = useAppSelector((state: RootState) => state.fetus.loading);
 
   useEffect(() => {
+    // Ensure that 'id' is not undefined before dispatching API call
     if (id) {
       dispatch(fetchGrowthMetricByWeek(id));
       setHasShownNotification(false); // Reset notification status when ID changes
@@ -28,7 +33,7 @@ function Pregnancy() {
 
   useEffect(() => {
     if (!loading && !hasShownNotification) {
-      if (growthMetricsByWeek.length === 0) {
+      if (growthMetricsByWeek?.length === 0) {
         notification.info({
           message: 'Please input growth metric for baby',
           placement: 'top',
@@ -43,7 +48,7 @@ function Pregnancy() {
       }
       setHasShownNotification(true); // Mark notification as shown
     }
-  }, [loading, hasShownNotification, growthMetricsByWeek.length]);
+  }, [loading, hasShownNotification, growthMetricsByWeek?.length]);
 
   const handleMouseDown = (e: React.MouseEvent, index: number) => {
     if ((e.target as HTMLElement).closest('.indiana-card')) {
@@ -65,16 +70,21 @@ function Pregnancy() {
     <div className="pregnancy-container">
       <h1 className="pregnancy-title">My pregnancy week by week</h1>
 
-
       <div
         ref={scrollContainerRef}
-        className={`scrollContainerTimeline indiana-scroll-container ${isDragging ? 'indiana-scroll-container--dragging' : ''}`}
-
+        className={`scrollContainerTimeline indiana-scroll-container ${
+          isDragging ? 'indiana-scroll-container--dragging' : ''
+        }`}
       >
         {[...Array(41)].map((_, index) => (
           <div
-            className={`indiana-card ${activeIndex === index ? 'active-card' : ''
-              } ${growthMetricsByWeek.some((item) => item.week === index + 1) ? 'active-card' : ''}`}
+            className={`indiana-card ${
+              activeIndex === index ? 'active-card' : ''
+            } ${
+              growthMetricsByWeek?.some((item) => item.week === index + 1)
+                ? 'active-card'
+                : ''
+            }`}
             style={{ display: 'flex' }}
             key={index}
             onMouseDown={(e) => handleMouseDown(e, index)}
@@ -97,15 +107,11 @@ function Pregnancy() {
         ))}
       </div>
       <div className="content-box">
-
         <h2>Week {activeIndex + 1} Details</h2>
-
 
         <Button onClick={() => setIsModalOpen(true)} className="content-button">
           Add Pregnancy Details
         </Button>
-
-
       </div>
       <div>
         {/* Chỉ hiển thị radar chart nếu có 2 metric trở lên */}

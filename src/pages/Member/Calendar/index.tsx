@@ -1,7 +1,7 @@
-import TrackingCalendar from '@/pages/Member/components/TrackingCalendar';
+import TrackingCalendar from '@/pages/Member/Calendar/TrackingCalendar';
 
 const Calendar = () => {
-  const dueDate = new Date('2025-6-16');
+  const dueDate = new Date('2025-4-16');
 
   return <TrackingCalendar dueDate={dueDate} />;
 };

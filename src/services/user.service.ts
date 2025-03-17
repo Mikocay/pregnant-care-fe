@@ -1,5 +1,6 @@
 import { axiosClient, axiosPrivate } from '@/config/axios';
 import { RegisterFormData } from '@/redux/features/types/authType';
+import { User } from '@/types';
 
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
@@ -14,20 +15,8 @@ interface AuthResponse {
   userId: string;
 }
 
-export interface User {
-  data: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    role: string;
-    status: string;
-    bloodType: string;
-    nationality: string;
-    dateOfBirth: string | null;
-    avatarUrl: string | null;
-  };
+export interface Data {
+  data: User;
 }
 
 export const userService = {
@@ -71,7 +60,7 @@ export const userService = {
   },
 
   //* Get User Self Info *******************
-  getUserSelfInfo: (): Promise<AxiosResponse<User>> => {
+  getUserSelfInfo: (): Promise<AxiosResponse<Data>> => {
     return axiosPrivate.get(API_ENDPOINTS.users.selfUser);
   },
 

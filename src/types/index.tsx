@@ -3,6 +3,10 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  membership: {
+    dueDate: string | null;
+    plan: string;
+  };
   phoneNumber: string;
   role: string;
   status: string;
@@ -52,15 +56,14 @@ export interface Fetus {
   id: string;
   name: string;
   dueDate: number;
-  gender: "male" | "female";
-
+  gender: 'male' | 'female';
 }
 
 export interface Fetus {
   _id: string;
   name: string;
   dueDate: number;
-  gender: "male" | "female";
+  gender: 'male' | 'female';
   isDeleted: boolean;
   metrics: GrowthMetricByWeek[];
   userId: string;
@@ -77,6 +80,8 @@ export interface GrowthMetricData {
   name: string;
   unit: string;
   value: number;
+  min?: number;
+  max?: number;
 }
 
 export interface GrowthMetricByWeek {
@@ -98,4 +103,33 @@ export interface GrowthMetric {
   name: string;
   unit: string;
   value: number;
+}
+
+export interface MembershipPlan {
+  name: string;
+  price: number;
+  type: string; // hoặc mở rộng thêm nếu có các loại khác
+  description: string;
+  isActive: boolean;
+  benefits: string[];
+  createdAt: string; // hoặc Date nếu bạn parse về Date object
+  updatedAt: string; // hoặc Date
+  id: string;
+}
+
+export interface Measurement {
+  name: string;
+  unit: string;
+  value: number;
+  min: number;
+  max: number;
+}
+
+export interface WeeklyData {
+  week: number;
+  data: Measurement[];
+}
+
+export interface GrowthMetricsResponse {
+  data: WeeklyData[];
 }
