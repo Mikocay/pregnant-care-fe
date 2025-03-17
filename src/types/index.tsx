@@ -101,3 +101,19 @@ export interface GrowthMetric {
   unit: string;
   value: number;
 }
+
+export interface PaginationResponse<T> {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: {
+    data: T[];
+    pagination: {
+      total: number;
+      pageSize: number;
+      current: number;
+      next: number | null;
+      prev: number | null;
+    };
+  };
+}

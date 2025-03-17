@@ -6,8 +6,10 @@ const routes = {
     managePlans: '/admin/manage-plans',
     formPlan: '/admin/form-plan',
     blog: '/admin/blog',
+    blogDetail: '/admin/blog/:id',
     createBlog: '/admin/create-blog',
     formGrwothMatrics: '/admin/form-growth-matrics',
+    transactions: '/admin/transactions',
   },
 
   member: {

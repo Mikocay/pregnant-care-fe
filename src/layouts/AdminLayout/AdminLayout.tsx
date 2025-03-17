@@ -9,6 +9,7 @@ import {
   BellOutlined,
   InboxOutlined,
   ReadOutlined,
+  PayCircleOutlined,
 } from '@ant-design/icons';
 import './AdminLayout.css';
 import { Link, Outlet } from 'react-router-dom';
@@ -59,7 +60,12 @@ const AdminLayout = () => {
       key: '7',
       icon: <ReadOutlined />,
       label: <Link to={config.routes.admin.blog}>Blog</Link>,
-    }
+    },
+    {
+      key: '8',
+      icon: <PayCircleOutlined />,
+      label: <Link to={config.routes.admin.transactions}>Transactions</Link>,
+    },
   ];
 
   return (
