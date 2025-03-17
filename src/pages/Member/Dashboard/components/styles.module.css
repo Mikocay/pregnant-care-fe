@@ -1,0 +1,241 @@
+.dashboard {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.header {
+  background-color: #fff;
+  padding: 0 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.logoIcon {
+  font-size: 24px;
+  color: #ff4d4f;
+  margin-right: 12px;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.content {
+  padding: 24px;
+  margin: 0;
+  min-height: calc(100vh - 64px);
+}
+
+.tabs {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Overview Tab */
+.overviewContainer {
+  padding: 8px 0;
+}
+
+.weekSelectorCard {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.statsRow {
+  margin-bottom: 16px;
+}
+
+.progressCard {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+/* Charts Tab */
+.chartsContainer {
+  padding: 8px 0;
+}
+
+.chartCard {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.measurementSelect {
+  width: 240px;
+}
+
+/* Data Tab */
+.dataContainer {
+  padding: 8px 0;
+}
+
+.tableCard {
+  border-radius: 8px;
+}
+
+.dataTable {
+  margin-top: 16px;
+}
+
+/* Week Selector */
+.weekSelectorContainer {
+  padding: 8px 0;
+}
+
+.weekSelectorHeader {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.selectedWeek {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1890ff;
+}
+
+.weekSlider {
+  margin-bottom: 24px;
+}
+
+.trimesterMarkers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.trimester {
+  display: flex;
+  align-items: center;
+}
+
+.trimesterIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Measurement Card */
+.measurementCard {
+  height: 100%;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.measurementCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.weekIndicator {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+/* Progress Bar */
+.progressBarContainer {
+  padding: 8px 0;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progressValue {
+  font-size: 16px;
+}
+
+.progressBarWrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.progressMinMax {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.progressMin,
+.progressMax {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.progressBar {
+  height: 12px;
+}
+
+.progressStatus {
+  display: block;
+  text-align: right;
+  color: #52c41a;
+  font-size: 12px;
+}
+
+/* Add new styles for the card footer */
+.cardFooter {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rangeIndicator {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .logoText {
+    font-size: 16px;
+  }
+
+  .chartHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .measurementSelect {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .trimesterMarkers {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

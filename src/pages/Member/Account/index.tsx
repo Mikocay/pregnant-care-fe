@@ -68,7 +68,7 @@ const SettingsPage: React.FC = () => {
           key: 'payment',
           icon: <CreditCardOutlined />,
           label: 'Saved payment cards',
-          link: config.routes.auth.checkout,
+          link: config.routes.auth.payment_method,
         },
       ],
     },

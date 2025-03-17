@@ -27,6 +27,15 @@
   margin: 0;
 }
 
+.sidebar-title {
+  margin: 0 !important;
+}
+
+.sidebar-subtitle {
+  margin: 0 !important;
+  margin-top: 2px !important;
+}
+
 .menu {
   border: none;
 }

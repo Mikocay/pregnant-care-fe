@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './state';
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek } from '@/types';
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetric, GrowthMetricByWeek, RadarChartGrowthMetricByWeek } from '@/types';
 
 const fetusSlice = createSlice({
   name: 'fetus',
@@ -36,11 +36,29 @@ const fetusSlice = createSlice({
     },
 
     //Fetch Metric theo tuần
-    fetchGrowthMetricByWeek: (state, action: PayloadAction<string>) => { },
+    fetchGrowthMetricByWeek: (state, action: PayloadAction<string>) => {
+      state.loading = true;
+      state.error = null;
+    },
 
     //Set Metric theo tuần
     setGrowthMetricByWeek: (state, action: PayloadAction<GrowthMetricByWeek[]>) => {
       state.growthMetricsByWeek = action.payload;
+      state.loading = false;
+    },
+
+    // Add error handling reducer
+    fetchGrowthMetricByWeekError: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    //Fetch Radar Chart theo tuần
+    fetchRadarChartGrowthMetricByWeek: (state, action: PayloadAction<{fetusId: string, week: number}>) => {},
+
+    //Set Radar Chart theo tuần
+    setRadarChartGrowthMetricByWeek: (state, action: PayloadAction<RadarChartGrowthMetricByWeek>) => {
+      state.radarChartGrowthMetricsByWeek = action.payload;
     },
 
   },
@@ -57,5 +75,8 @@ export const {
   setFetus,
   fetchGrowthMetricByWeek,
   setGrowthMetricByWeek,
+  fetchGrowthMetricByWeekError,
+  fetchRadarChartGrowthMetricByWeek,
+  setRadarChartGrowthMetricByWeek
 } = fetusSlice.actions;
 export default fetusSlice.reducer;

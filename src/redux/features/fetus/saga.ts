@@ -1,6 +1,20 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { fetchFetus, fetchFetusStandards, fetchFetusStandardsByWeek, fetchGrowthMetric, fetchGrowthMetricByWeek, setFetus, setFetusStandards, setFetusStandardsByWeek, setGrowthMetric, setGrowthMetricByWeek } from './slice';
+
+import {
+  fetchFetus,
+  fetchFetusStandards,
+  fetchFetusStandardsByWeek,
+  fetchGrowthMetric,
+  fetchGrowthMetricByWeek,
+  fetchRadarChartGrowthMetricByWeek,
+  setFetus,
+  setFetusStandards,
+  setFetusStandardsByWeek,
+  setGrowthMetric,
+  setGrowthMetricByWeek,
+  setRadarChartGrowthMetricByWeek,
+} from './slice';
 import { fetusStandard } from '@/services/fetus.service';
 
 export function* findAll(): SagaIterator {
@@ -13,9 +27,14 @@ export function* findAll(): SagaIterator {
 }
 
 // Lấy Fetus Standards theo tuần
-export function* findByWeek(action: ReturnType<typeof fetchFetusStandardsByWeek>): SagaIterator {
+export function* findByWeek(
+  action: ReturnType<typeof fetchFetusStandardsByWeek>,
+): SagaIterator {
   try {
-    const response = yield call(fetusStandard.findFetusStandardByWeek, action.payload);
+    const response = yield call(
+      fetusStandard.findFetusStandardByWeek,
+      action.payload,
+    );
     yield put(setFetusStandardsByWeek(response.data.data));
   } catch (error) {
     yield put(setFetusStandardsByWeek([]));
@@ -24,10 +43,16 @@ export function* findByWeek(action: ReturnType<typeof fetchFetusStandardsByWeek>
 }
 
 // Nhập Metric theo tuần
-export function* addMetric(action: ReturnType<typeof fetchGrowthMetric>): SagaIterator {
+export function* addMetric(
+  action: ReturnType<typeof fetchGrowthMetric>,
+): SagaIterator {
   try {
     const { fetusId, metrics } = action.payload;
-    const response = yield call(fetusStandard.createGrowthMetrics, fetusId, metrics);
+    const response = yield call(
+      fetusStandard.createGrowthMetrics,
+      fetusId,
+      metrics,
+    );
     yield put(setGrowthMetric(response.data.data));
   } catch (error) {
     console.log('error', error);
@@ -35,7 +60,9 @@ export function* addMetric(action: ReturnType<typeof fetchGrowthMetric>): SagaIt
 }
 
 //Lấy Fetus của user
-export function* findFetusByUser(action: ReturnType<typeof fetchFetus>): SagaIterator {
+export function* findFetusByUser(
+  action: ReturnType<typeof fetchFetus>,
+): SagaIterator {
   try {
     const response = yield call(fetusStandard.getFetusesByUser, action.payload);
     yield put(setFetus(response.data.data));
@@ -45,15 +72,37 @@ export function* findFetusByUser(action: ReturnType<typeof fetchFetus>): SagaIte
 }
 
 //Lấy Metric theo tuần
-export function* findGrowthMetricByWeek(action: ReturnType<typeof fetchGrowthMetricByWeek>): SagaIterator {
+export function* findGrowthMetricByWeek(
+  action: ReturnType<typeof fetchGrowthMetricByWeek>,
+): SagaIterator {
   try {
-    const response = yield call(fetusStandard.findAllGrowthMetricByMember, action.payload);
+    const response = yield call(
+      fetusStandard.findAllGrowthMetricByMember,
+      action.payload,
+    );
 
-    yield put(setGrowthMetricByWeek(response.data.data.data));
+    yield put(setGrowthMetricByWeek(response.data.data));
   } catch (error) {
     console.log('error', error);
 
     yield put(setGrowthMetricByWeek([]));
+  }
+}
+
+//Lấy Radar Chart theo tuần
+export function* findRadarChartGrowthMetricByWeek(
+  action: ReturnType<typeof fetchRadarChartGrowthMetricByWeek>,
+): SagaIterator {
+  try {
+    const response = yield call(
+      fetusStandard.getRadarChartGrowthMetricByMember,
+      action.payload.fetusId,
+      action.payload.week,
+    );
+    yield put(setRadarChartGrowthMetricByWeek(response.data.data));
+  } catch (error) {
+    console.log('error', error);
+    yield put(setRadarChartGrowthMetricByWeek({ data: [] }));
   }
 }
 export default function* fetusSaga() {
@@ -62,4 +111,8 @@ export default function* fetusSaga() {
   yield takeLatest(fetchGrowthMetric.type, addMetric);
   yield takeLatest(fetchFetus.type, findFetusByUser);
   yield takeLatest(fetchGrowthMetricByWeek.type, findGrowthMetricByWeek);
+  yield takeLatest(
+    fetchRadarChartGrowthMetricByWeek.type,
+    findRadarChartGrowthMetricByWeek,
+  );
 }
