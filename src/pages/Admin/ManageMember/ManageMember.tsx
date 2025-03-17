@@ -5,8 +5,8 @@ import { User } from "@/redux/features/types/userType";
 // import { IUser } from "@/redux/features/types/userType";
 import { fetchUserPending } from "@/redux/features/user/slice";
 import { useAppDispatch, useAppSelector } from "@/redux/store/hooks";
-import { DeleteOutlined, EditOutlined, SearchOutlined } from "@ant-design/icons"
-import { Button, Input, Table, TableColumnsType, Tag } from "antd"
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
+import { Button,  Table, TableColumnsType, Tag } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useEffect, useState } from "react";
 
@@ -22,14 +22,24 @@ function ManageMember() {
   const isPending = useAppSelector(state => state.users.isPending);
   const userData = useAppSelector(state => state.users.data);
   console.log("userData", userData);
-  // Extract the actual array of users from the nested structure
   const users = Array.isArray(userData.data) ? userData.data : [];
-  const total = useAppSelector(state => state.users.total) || 0;
+  console.log("users", users);
+
+  const total = userData.total;
 
   useEffect(() => {
     dispatch(fetchUserPending({ page, limit }));
   }, [page, dispatch]);
 
+  const handleEditUser = (user: User) => {
+    setDataUser(user);
+    setIsOpenUpdateModal(true);
+  }
+
+  const handleDelete = (user: User) => {
+    setDataUser(user);
+    setIsOpenDeleteModal(true);
+  }
   const columns: TableColumnsType<User> = [
     {
       title: 'No',
@@ -88,27 +98,26 @@ function ManageMember() {
         </Tag>
       )
     },
-    // {
-    //   title: 'Action',
-    //   key: 'action',
-    //   render: (user: IUser) => (
-    //     <>
-    //       <Button
-    //         type="text"
-    //         icon={<EditOutlined />}
-    //         // onClick={() => handleEditUser(user)}
-    //         className="edit-button"
-    //       />
-    //       <Button
-    //         type="text"
-    //         icon={<DeleteOutlined />}
-    //         className="delete-button"
-    //       // onClick={() => handleDelete(user)}
-    //       />
-    //     </>
-
-    //   ),
-    // },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (user: User) => (
+        <>
+          <Button
+            type="text"
+            icon={<EditOutlined />}
+            onClick={() => handleEditUser(user)}
+            className="edit-button"
+          />
+          <Button
+            type="text"
+            icon={<DeleteOutlined />}
+            className="delete-button"
+          onClick={() => handleDelete(user)}
+          />
+        </>
+      ),
+    },
   ];
 
   return (
@@ -134,17 +143,17 @@ function ManageMember() {
         setIsOpenCreateModal={setIsOpenCreateModal}
       />
 
-      {/* <UserEditModal
+      <UserEditModal
         dataUser={dataUser}
         isOpenUpdateModal={isOpenUpdateModal}
         setIsOpenUpdateModal={setIsOpenUpdateModal}
-      /> */}
+      />
 
-      {/* <UserDeleteModal
+      <UserDeleteModal
         dataUser={dataUser}
         isOpenDeleteModal={isOpenDeleteModal}
         setIsOpenDeleteModal={setIsOpenDeleteModal}
-      /> */}
+      />
     </>
   )
 }

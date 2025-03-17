@@ -39,7 +39,7 @@ export function* editUser(action: PayloadAction<{ id: string, body: User }>) {
   try {
     const { id, body } = action.payload;
     const response: ApiResponse<User> = yield call(userService.editUser, id, body)
-    if (response.success) {
+    if (response.data.success) {
       yield put(editUserSuccess())
       //fetching users if success
       yield put(fetchUserPending({ page: 1, limit: 10 }));
@@ -55,7 +55,7 @@ export function* editUser(action: PayloadAction<{ id: string, body: User }>) {
 export function* deleteUser(action: PayloadAction<{ id: string }>) {
   try {
     const response: ApiResponse<User> = yield call([userService, userService.deleteUser], action.payload.id)
-    if (response.success) {
+    if (response.data.success) {
       yield put(deleteUserSuccess())
       //fetching users if success
       yield put(fetchUserPending({ page: 1, limit: 10 }));

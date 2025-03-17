@@ -11,6 +11,8 @@ interface UserDeleteProps {
 }
 
 const UserDeleteModal = (props: UserDeleteProps) => {
+    const userId = localStorage.getItem('userId');
+
     const { dataUser, isOpenDeleteModal, setIsOpenDeleteModal } = props;
     const [api, contextHolder] = notification.useNotification();
     const dispatch = useAppDispatch();
@@ -22,8 +24,16 @@ const UserDeleteModal = (props: UserDeleteProps) => {
 
     const handleSubmit = () => {
         if (dataUser.id) {
-            dispatch(deleteUserPending({ id: dataUser.id }))
-        }
+            if(dataUser.id === userId) {
+                api.error({
+                    message: "Failed",
+                    description: "You can't delete yourself",
+                })
+            }else{
+                dispatch(deleteUserPending({ id: dataUser.id }))
+
+            }
+        } 
     }
     useEffect(() => {
         if (isDeleteSuccess) {
