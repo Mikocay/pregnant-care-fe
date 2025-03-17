@@ -108,7 +108,7 @@ function Pregnancy() {
 
       </div>
       <div>
-        // Chỉ hiển thị radar chart nếu có 2 metric trở lên
+        {/* Chỉ hiển thị radar chart nếu có 2 metric trở lên */}
         {growthMetricsByWeek.some((item) => item.week === activeIndex + 1 && item.data.length > 2) && (
           <ChartRadar week={activeIndex + 1} />
         )}
