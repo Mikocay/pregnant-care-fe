@@ -7,7 +7,6 @@ import TiptapEditor from '@/components/Tiptap'
 
 const { Title, Paragraph } = Typography
 
-// ✅ Validation Schema với Yup
 const schema = yup.object({
   title: yup.string().required('Title is required'),
   description: yup.string().required('Description is required'),
@@ -15,9 +14,8 @@ const schema = yup.object({
 
 const FormCreateBlog = () => {
   const [previewVisible, setPreviewVisible] = useState(false)
-  const editorRef = useRef<{ getHTML: () => string } | null>(null)
+  const editorRef = useRef<{ getHTML: () => string,  getImages: () => string} | null>(null)
 
-  // ✅ Sử dụng React Hook Form
   const {
     control,
     handleSubmit,
@@ -35,7 +33,12 @@ const FormCreateBlog = () => {
     try {
       const content = editorRef.current?.getHTML() || ''
       console.log({ ...data, content })
-
+      const imageMetadataJSON = editorRef.current?.getImages()
+      console.log('Image metadata:', imageMetadataJSON)
+    
+      // Get just the image types
+    //   const imageTypes = editorRef.current.getImageTypes()
+    // console.log('Image types:', imageTypes)
       message.success('Blog post saved successfully')
     } catch (error) {
       message.error('Error saving blog post')

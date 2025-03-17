@@ -7,6 +7,7 @@ export const useAdmin = () => {
   const path = location.pathname;
   const navigate = useNavigate();
   const [hideContent, setHideContent] = useState(false);
+  const [isCreate, setIsCreate] = useState(false);
 
   const createButton = () => {
     if (path.includes(config.routes.admin.managePlans)) {
@@ -36,5 +37,6 @@ export const useAdmin = () => {
   return {
     createButton,
     hideContent,
+    isCreate
   };
 };

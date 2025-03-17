@@ -3,23 +3,28 @@ import {
   BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined, 
   LinkOutlined, PictureOutlined, HighlightOutlined, AlignLeftOutlined, 
   AlignCenterOutlined, AlignRightOutlined, DownOutlined, UnorderedListOutlined, 
-  UploadOutlined 
+  UploadOutlined, LoadingOutlined 
 } from '@ant-design/icons'
 import { Editor } from '@tiptap/react'
-import { Dropdown, Menu, Divider, Button, Modal, Input, Upload } from 'antd'
+import { Dropdown, Menu, Divider, Button, Modal, Input, Upload, message } from 'antd'
 import MenuButton from './MenuButton'
+
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 interface FloatingMenuProps {
   editor: Editor | null;
+  onImageUpload?: (file: File, imageUrl: string, imageId: string) => Promise<string>;
+  isUploading?: boolean;
 }
 
-const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
+const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor, onImageUpload }) => {
   const [linkModalVisible, setLinkModalVisible] = useState(false)
   const [imageModalVisible, setImageModalVisible] = useState(false)
   const [link, setLink] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [currentFile, setCurrentFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   if (!editor) {
     return null
@@ -42,10 +47,57 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
     setLink('')
   }
 
-  const handleImageOk = () => {
-    editor.chain().focus().setImage({ src: imageUrl }).run()
-    setImageModalVisible(false)
-    setImageUrl('')
+  const handleImageOk = async () => {
+    if (imageUrl && currentFile && onImageUpload) {
+      try {
+        setIsUploading(true);
+        
+        // Generate a unique ID for this image
+        const imageId = `img-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        
+        // Insert the temporary image with the data URL
+        editor.chain().focus().setImage({ 
+          src: imageUrl,
+          alt: `Image ${imageId} (uploading...)`
+        }).run();
+        
+        // Upload to S3 and get the URL back
+        const s3Url = await onImageUpload(currentFile, imageUrl, imageId);
+        
+        // Using ProseMirror-compatible approach instead of querySelectorAll
+        editor.chain().focus().command(({ tr, state }) => {
+          // Find image with the specific alt text
+          let foundPos = -1;
+          state.doc.descendants((node, pos) => {
+            if (node.type.name === 'image' && node.attrs.alt === `Image ${imageId} (uploading...)`) {
+              foundPos = pos;
+              return false; // stop searching
+            }
+            return true; // continue searching
+          });
+
+          if (foundPos >= 0) {
+            // Update the image attributes
+            tr.setNodeMarkup(foundPos, undefined, {
+              ...state.doc.nodeAt(foundPos)?.attrs,
+              src: s3Url,
+              alt: `Image ${imageId}`
+            });
+            return true;
+          }
+          return false;
+        }).run();
+        
+        setImageModalVisible(false)
+        setImageUrl('')
+        setCurrentFile(null)
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        message.error('Failed to upload image to storage');
+      } finally {
+        setIsUploading(false);
+      }
+    }
   }
 
   return (
@@ -60,64 +112,77 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
         tooltipTitle='Bullet Lists'
         icon={<UnorderedListOutlined />}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        type={editor.isActive('bulletList') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('bulletList') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
 
       <MenuButton
         tooltipTitle="Bold"
         icon={<BoldOutlined />}
         onClick={() => editor.chain().focus().toggleBold().run()}
-        type={editor.isActive('bold') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('bold') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Italic"
         icon={<ItalicOutlined />}
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        type={editor.isActive('italic') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('italic') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Strikethrough"
         icon={<StrikethroughOutlined />}
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        type={editor.isActive('strike') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('strike') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Underline"
         icon={<UnderlineOutlined />}
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        type={editor.isActive('underline') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('underline') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Highlight"
         icon={<HighlightOutlined />}
         onClick={() => editor.chain().focus().toggleHighlight().run()}
-        type={editor.isActive('highlight') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('highlight') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <Divider type="vertical" />
       <MenuButton
         tooltipTitle="Align Left"
         icon={<AlignLeftOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
-        type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Align Center"
         icon={<AlignCenterOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('center').run()}
-        type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Align Right"
         icon={<AlignRightOutlined />}
         onClick={() => editor.chain().focus().setTextAlign('right').run()}
-        type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <Divider type="vertical" />
       <MenuButton
         tooltipTitle="Link"
         icon={<LinkOutlined />}
         onClick={() => setLinkModalVisible(true)}
-        type={editor.isActive('link') ? 'primary' : 'default'} tooltipProps={{}} />
+        type={editor.isActive('link') ? 'primary' : 'default'} 
+        tooltipProps={{}} />
       <MenuButton
         tooltipTitle="Image"
-        icon={<PictureOutlined />}
-        onClick={() => setImageModalVisible(true)} tooltipProps={{}} />
+        icon={isUploading ? <LoadingOutlined /> : <PictureOutlined />}
+        onClick={() => setImageModalVisible(true)} 
+        tooltipProps={{}} 
+        disabled={isUploading}
+        />
 
       {/* Link Modal */}
       <Modal
         title="Insert Link"
-        visible={linkModalVisible}
+        open={linkModalVisible}
         onOk={handleLinkOk}
         onCancel={() => setLinkModalVisible(false)}
       >
@@ -131,12 +196,14 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
       {/* Image Modal */}
       <Modal
         title="Insert Image"
-        visible={imageModalVisible}
+        open={imageModalVisible}
         onOk={handleImageOk}
         onCancel={() => setImageModalVisible(false)}
+        confirmLoading={isUploading}
       >
         <Upload
           beforeUpload={(file) => {
+            setCurrentFile(file) // Store the file object
             const reader = new FileReader()
             reader.onload = (e) => {
               setImageUrl(e.target?.result as string)
@@ -145,24 +212,25 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({ editor }) => {
             return false
           }}
           showUploadList={false}
+          disabled={isUploading}
         >
-          <Button icon={<UploadOutlined />}>Upload Image</Button>
+          <Button icon={isUploading ? <LoadingOutlined /> : <UploadOutlined />} disabled={isUploading}>
+            Upload Image
+          </Button>
         </Upload>
         {imageUrl && (
-          <img 
-            src={imageUrl} 
-            alt="Uploaded" 
-            style={{ 
-              marginTop: '10px', 
-              maxWidth: '100%', 
-              maxHeight: '200px', // Limit height
-              width: 'auto', 
-              height: 'auto',
-              display: 'block', 
-              marginLeft: 'auto', 
-              marginRight: 'auto'
-            }} 
-          />
+          <div style={{ marginTop: '10px', textAlign: 'center' }}>
+            <img 
+              src={imageUrl} 
+              alt="Preview" 
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '200px',
+                width: 'auto',
+                height: 'auto'
+              }} 
+            />
+          </div>
         )}
       </Modal>
     </div>
