@@ -1,16 +1,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
+
 import {
   fetchFetus,
   fetchFetusStandards,
   fetchFetusStandardsByWeek,
   fetchGrowthMetric,
   fetchGrowthMetricByWeek,
+  fetchRadarChartGrowthMetricByWeek,
   setFetus,
   setFetusStandards,
   setFetusStandardsByWeek,
   setGrowthMetric,
   setGrowthMetricByWeek,
+  setRadarChartGrowthMetricByWeek,
 } from './slice';
 import { fetusStandard } from '@/services/fetus.service';
 
@@ -85,10 +88,31 @@ export function* findGrowthMetricByWeek(
     yield put(setGrowthMetricByWeek([]));
   }
 }
+
+//Lấy Radar Chart theo tuần
+export function* findRadarChartGrowthMetricByWeek(
+  action: ReturnType<typeof fetchRadarChartGrowthMetricByWeek>,
+): SagaIterator {
+  try {
+    const response = yield call(
+      fetusStandard.getRadarChartGrowthMetricByMember,
+      action.payload.fetusId,
+      action.payload.week,
+    );
+    yield put(setRadarChartGrowthMetricByWeek(response.data.data));
+  } catch (error) {
+    console.log('error', error);
+    yield put(setRadarChartGrowthMetricByWeek({ data: [] }));
+  }
+}
 export default function* fetusSaga() {
   yield takeLatest(fetchFetusStandards.type, findAll);
   yield takeLatest(fetchFetusStandardsByWeek.type, findByWeek);
   yield takeLatest(fetchGrowthMetric.type, addMetric);
   yield takeLatest(fetchFetus.type, findFetusByUser);
   yield takeLatest(fetchGrowthMetricByWeek.type, findGrowthMetricByWeek);
+  yield takeLatest(
+    fetchRadarChartGrowthMetricByWeek.type,
+    findRadarChartGrowthMetricByWeek,
+  );
 }

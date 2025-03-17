@@ -62,13 +62,19 @@ const FetalDashboard: React.FC<DashboardProps> = ({ fetalData }) => {
   const [selectedMeasurement, setSelectedMeasurement] =
     useState<string>('Weight');
 
+  console.log('fetalData:', fetalData);
+
   useEffect(() => {
-    if (!fetalData) return; // Set the selected week to the latest week by default
-    const latestWeekData = getLatestWeekData(fetalData);
-    if (latestWeekData) {
-      setSelectedWeek(latestWeekData.week);
+    if (fetalData.length > 0) {
+      // Reset selectedWeek mỗi khi fetalData thay đổi
+      const latestWeekData = getLatestWeekData(fetalData);
+      if (latestWeekData) {
+        setSelectedWeek(latestWeekData.week);
+      }
     }
-  }, [fetalData]);
+  }, [fetalData]); // Chạy lại khi fetalData thay đổi
+
+  if (!fetalData) return <div>There are no data...</div>;
 
   const weeklyData = fetalData;
   const formattedData = formatData(weeklyData);

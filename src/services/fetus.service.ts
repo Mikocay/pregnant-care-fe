@@ -1,5 +1,5 @@
 import { axiosPrivate } from '@/config/axios';
-import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetricByWeek } from '@/types';
+import { Fetus, FetusStandard, FetusStandardSummary, GrowthMetricByWeek, RadarChartGrowthMetricByWeek } from '@/types';
 import { API_ENDPOINTS } from '@/utils/api';
 import { AxiosResponse } from 'axios';
 
@@ -32,6 +32,12 @@ export const fetusStandard = {
     //#region findAllGrowthMetricByMember
     findAllGrowthMetricByMember: (fetusId: string): Promise<AxiosResponse<GrowthMetricByWeek[]>> => {
         return axiosPrivate.get(`${API_ENDPOINTS.members.getGrowthMetricByFetus}/${fetusId}`);
+    },
+    //#endregion
+
+    //#region radarChartGrowthMetricByMember
+    getRadarChartGrowthMetricByMember: (fetusId: string, week: number): Promise<AxiosResponse<RadarChartGrowthMetricByWeek>> => {
+        return axiosPrivate.get(`${API_ENDPOINTS.members.getRadarChartGrowthMetricByFetus}/${fetusId}/${week}`);
     },
     //#endregion
 };
