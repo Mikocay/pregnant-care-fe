@@ -7,6 +7,7 @@ import Dashboard from '@/pages/Member/Dashboard';
 import Pregnancy from '@/pages/Member/Pregnancy';
 import UpdateUserForm from '@/pages/Member/Account/Profile';
 import SubscriptionPage from '@/pages/Member/Account/Subscription';
+import BlogDetail from '@/pages/Admin/ManageBlogs/BlogDetail';
 
 const MemberRoutes = [
   {
@@ -19,6 +20,7 @@ const MemberRoutes = [
       // Corrected path here
       { path: config.routes.member.pregnancy, element: <Pregnancy /> }, // relative path
       { path: config.routes.member.pregnancyByWeek, element: <Pregnancy /> },
+      { path: config.routes.member.blogDetail, element: <BlogDetail /> }, // Add route for blog detail
     ],
   },
   {

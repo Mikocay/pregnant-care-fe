@@ -17,6 +17,7 @@ const routes = {
     dashboardByFetus: '/member/:id',
     calendar: '/member/calendar',
     pregnancy: '/member/pregnancy',
+    blogDetail: '/member/blog/:id',
     //* Account Routes
     account: '/member/account',
     pregnancyByWeek: '/member/pregnancy/:id',

@@ -6,6 +6,7 @@ import { RootState } from '@/redux/store/store';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { fetchGrowthMetricByWeek } from '@/redux/features/fetus/slice';
 import ChartRadar from '@/components/ChartRadar';
+import BlogPreview from '@/components/BlogPreview';
 
 function Pregnancy() {
   const [isDragging, setIsDragging] = useState(false);
@@ -105,14 +106,26 @@ function Pregnancy() {
           </div>
         ))}
       </div>
-      <div className="content-box">
-        <h2>Week {activeIndex + 1} Details</h2>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+        }}
+      >
+        <div className="content-box">
+          <h2>Week {activeIndex + 1} Details</h2>
 
-        <Button onClick={() => setIsModalOpen(true)} className="content-button">
-          Add Pregnancy Details
-        </Button>
-      </div>
-      <div>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="content-button"
+          >
+            Add Pregnancy Details
+          </Button>
+        </div>
+
+        {/* Blog preview section */}
+        <BlogPreview week={activeIndex + 1} />
         {/* Chỉ hiển thị radar chart nếu có 2 metric trở lên */}
         {growthMetricsByWeek.some(
           (item) => item.week === activeIndex + 1 && item.data.length > 2,

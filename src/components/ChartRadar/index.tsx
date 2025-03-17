@@ -2,20 +2,22 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hooks';
 import { Radar } from '@ant-design/plots';
 import { RootState } from '@/redux/store/store';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { fetchRadarChartGrowthMetricByWeek } from '@/redux/features/fetus/slice';
 
-function ChartRadar({week}: {week: number}) {
-  const { id } = useParams();
+function ChartRadar({ week }: { week: number }) {
   const dispatch = useAppDispatch();
-  
-  const radarChartGrowthMetricsByWeek =useAppSelector((state: RootState) => state.fetus.radarChartGrowthMetricsByWeek);
-  
+  const { selectedFetus } = useAppSelector((state: RootState) => state.fetus);
+  const radarChartGrowthMetricsByWeek = useAppSelector(
+    (state: RootState) => state.fetus.radarChartGrowthMetricsByWeek,
+  );
+
   useEffect(() => {
-      if (id && week) {
-        dispatch(fetchRadarChartGrowthMetricByWeek({ fetusId: id, week }));
-      }
-    }, [dispatch, id, week]);
+    if (selectedFetus?.id && week) {
+      dispatch(
+        fetchRadarChartGrowthMetricByWeek({ fetusId: selectedFetus.id, week }),
+      );
+    }
+  }, [dispatch, selectedFetus?.id, week]);
 
   const config = {
     data: radarChartGrowthMetricsByWeek,
@@ -49,14 +51,14 @@ function ChartRadar({week}: {week: number}) {
         title: false,
       },
     },
-    height: 500, 
-    autoFit: false, 
+    height: 500,
+    autoFit: false,
   };
   return (
-    <div >
+    <div>
       <Radar {...config} />
     </div>
-  )
+  );
 }
 
-export default ChartRadar
+export default ChartRadar;
