@@ -52,6 +52,19 @@ export interface FetusStandard {
   createdAt: string;
 }
 
+export interface ICreateBlog {
+  title: string;
+  description: string;
+  content: string;
+  author: string;
+  thumbnailUrl: string;
+  category: string;
+  tags: string[];
+  featureImageUrls: string[];
+  isActive: boolean;
+  publishedAt: string | null;
+}
+
 export interface Fetus {
   id: string;
   name: string;
@@ -132,4 +145,20 @@ export interface WeeklyData {
 
 export interface GrowthMetricsResponse {
   data: WeeklyData[];
+}
+
+export interface PaginationResponse<T> {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: {
+    data: T[];
+    pagination: {
+      total: number;
+      pageSize: number;
+      current: number;
+      next: number | null;
+      prev: number | null;
+    };
+  };
 }

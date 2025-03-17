@@ -14,6 +14,15 @@ const axiosPrivate = axios.create({
   },
   withCredentials: true,
 });
+
+const axiosUpload = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+
+  withCredentials: true,
+});
 // Interceptors cho axiosPrivate
 axiosPrivate.interceptors.request.use(
   (config) => {
@@ -46,6 +55,38 @@ axiosPrivate.interceptors.response.use(
   },
 );
 
+// Interceptors cho axiosPrivate
+axiosUpload.interceptors.request.use(
+  (config) => {
+    // ********** Example **********
+    //! lấy token & userRole từ redux store
+    const token = localStorage.getItem('accessToken');
+    const userRole = localStorage.getItem('userRole');
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    if (userRole) {
+      config.headers['X-User-Role'] = userRole;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+axiosUpload.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Xử lý khi bị unauthorized
+      console.error('Unauthorized! Redirecting to login...');
+    }
+    return Promise.reject(error);
+  },
+);
+
 // Xử lý lỗi toàn cục
 const handleError = (error: AxiosError) => {
   if (error.response) {
@@ -60,5 +101,6 @@ const handleError = (error: AxiosError) => {
 
 axiosClient.interceptors.response.use((response) => response, handleError);
 axiosPrivate.interceptors.response.use((response) => response, handleError);
+axiosUpload.interceptors.response.use((response) => response, handleError);
 
-export { axiosClient, axiosPrivate };
+export { axiosClient, axiosPrivate, axiosUpload };

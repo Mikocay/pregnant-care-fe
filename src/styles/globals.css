@@ -12,6 +12,9 @@
   --gradient-primary: linear-gradient(135deg, #ff4d4f 0%, #ff7a7a 100%);
   --gradient-secondary: linear-gradient(135deg, #ffe1e1 0%, #ffb1b1 100%);
 }
+.ProseMirror:focus-visible {
+  outline: none;
+}
 
 body {
   margin: 0;
@@ -67,4 +70,18 @@ body {
 
 .ant-carousel .slick-dots li.slick-active button {
   background: var(--primary-color) !important;
+}
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
 }

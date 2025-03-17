@@ -1,3 +1,6 @@
+import TiptapEditor from '@/components/Tiptap';
+import { RootState } from '@/redux/store/store';
+import { useSelector } from 'react-redux';
 import { Layout, Card, Button, Form, Input, Collapse, Image } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
@@ -9,7 +12,6 @@ import { TestimonialsSection } from './Testimonials';
 import { ServicesSection } from './Services';
 
 const { Panel } = Collapse;
-
 export default function Home() {
   const { whyChooseUsFeatures, form } = useHomePage();
 
