@@ -1,0 +1,242 @@
+.container {
+  padding: 24px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileCard {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  background: #ffffff;
+  overflow: hidden;
+  padding: 24px 32px;
+}
+
+.cardTitle {
+  text-align: center;
+  margin-bottom: 32px !important;
+  color: #1a1a1a;
+  font-weight: 600 !important;
+  position: relative;
+}
+
+.cardTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #1890ff;
+  border-radius: 2px;
+}
+
+.form {
+  width: 100%;
+}
+
+/* Avatar Section Styling */
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.avatarContainer {
+  position: relative;
+  margin-bottom: 16px;
+  transition: all 0.3s;
+}
+
+.avatarContainer:hover {
+  transform: scale(1.02);
+}
+
+.avatarUploader {
+  width: 100%;
+}
+
+.avatarUploader :global(.ant-upload) {
+  width: 180px !important;
+  height: 180px !important;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f5ff;
+  border: 3px dashed #1890ff;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+  margin: 0 auto;
+}
+
+.avatarUploader :global(.ant-upload:hover) {
+  border-color: #40a9ff;
+  background-color: #e6f7ff;
+  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.25);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.successIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: #52c41a;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+  border: 2px solid white;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.uploadButtonContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.cameraIcon {
+  font-size: 36px;
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.uploadText {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+.avatarHint {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.avatarRequirements {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Form Fields Styling */
+.formFields {
+  padding: 0 8px;
+}
+
+.inputIcon {
+  color: #bfbfbf;
+}
+
+.datePicker {
+  width: 100%;
+}
+
+.divider {
+  margin: 32px 0 24px;
+}
+
+.submitButton {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.submitButton :global(.ant-btn) {
+  height: 48px;
+  min-width: 180px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  transition: all 0.3s;
+}
+
+.submitButton :global(.ant-btn:hover) {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profileCard {
+    padding: 20px;
+    margin: 0 16px;
+  }
+
+  .avatarUploader :global(.ant-upload) {
+    width: 150px !important;
+    height: 150px !important;
+  }
+
+  .avatarSection {
+    margin-bottom: 20px;
+  }
+
+  .cardTitle {
+    font-size: 24px !important;
+  }
+
+  .submitButton :global(.ant-btn) {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 16px;
+  }
+
+  .profileCard {
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .cardTitle {
+    font-size: 20px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .cardTitle::after {
+    width: 40px;
+  }
+}

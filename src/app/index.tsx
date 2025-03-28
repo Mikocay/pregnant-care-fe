@@ -1,5 +1,7 @@
-import { Counter } from '@/features/counter/Counter';
+import RouterComponent from '@/routes';
 
-export const App = () => {
-  return <Counter />;
+const App = () => {
+  return <RouterComponent />;
 };
+
+export default App;

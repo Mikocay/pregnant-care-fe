@@ -1,4 +1,4 @@
-const STRING_EMPTY = "";
+const STRING_EMPTY = '';
 
 const HTTP_STATUS = {
   BAD_REQUEST: 400,
@@ -10,12 +10,12 @@ const HTTP_STATUS = {
 };
 
 const ROLE = {
-
+  GUEST: 'guest',
+  MEMBER: 'member',
+  ADMIN: 'admin',
 };
 
-const APPOINTMENT_RULE = [
-
-];
+const APPOINTMENT_RULE = [];
 
 const WEB_SOCKET_STATE = {
   CONNECTING: 0,
@@ -25,6 +25,10 @@ const WEB_SOCKET_STATE = {
   NOTCONNECTED: 4,
 };
 
+const LOCAL_STOREAGE = {
+  ACCESS_TOKEN: 'access_token',
+  USER: 'user',
+};
 
 export {
   STRING_EMPTY,
@@ -32,4 +36,5 @@ export {
   ROLE,
   APPOINTMENT_RULE,
   WEB_SOCKET_STATE,
+  LOCAL_STOREAGE,
 };

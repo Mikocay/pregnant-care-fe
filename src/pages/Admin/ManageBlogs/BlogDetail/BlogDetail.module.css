@@ -1,0 +1,83 @@
+.container {
+  padding: 24px;
+  background-color: white;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.meta {
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.description {
+  margin: 16px 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  font-style: italic;
+  border-left: 3px solid #1890ff;
+  padding-left: 12px;
+}
+
+.coverImage {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin: 16px 0 24px;
+  border-radius: 8px;
+}
+
+.content {
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  margin: 24px 0;
+  border-radius: 4px;
+}
+
+.content h2,
+.content h3,
+.content h4 {
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.content p {
+  margin-bottom: 16px;
+}
+
+.backButton {
+  margin-bottom: 16px;
+}
